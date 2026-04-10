@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的單字列表</title>
+  <link rel="stylesheet" href="wordlist.css">
+</head>
+<body>
+  <!-- 頁面標題列 | Page header bar -->
+  <header>
+    <div class="header-inner">
+      <h1>📚 我的單字列表</h1>
+      <div class="header-actions">
+        <!-- 搜尋欄 | Search bar -->
+        <input type="text" id="searchInput" placeholder="搜尋單字或翻譯…" class="search-input" autocomplete="off">
+        <!-- 單字計數 | Word count -->
+        <span id="wordCount" class="word-count-badge">0 個單字</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 卡片格狀佈局 | Card grid layout -->
+    <div id="cardGrid" class="card-grid"></div>
+
+    <!-- 空狀態提示 | Empty state -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="empty-icon">📖</div>
+      <p class="empty-title">還沒有儲存任何單字</p>
+      <p class="empty-tip">使用快捷鍵 Alt + Shift + W 或網頁右鍵選單<br>框選英文文字來新增單字卡</p>
+    </div>
+
+    <!-- 搜尋無結果 | No search results -->
+    <div id="noResults" class="empty-state" style="display: none;">
+      <div class="empty-icon">🔍</div>
+      <p class="empty-title">找不到符合的單字</p>
+    </div>
+  </main>
+
+  <script src="wordlist.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# 敏感設定檔 (Sensitive config files)
+.mcp.json
+
+# Node.js 依賴套件 (Node.js dependencies)
+node_modules/
+todo-app/node_modules/
+
+# 建置輸出 (Build output)
+dist/
+build/
+
+# 環境變數 (Environment variables)
+.env
+.env.local
+.env.*.local
+
+# 系統檔案 (OS files)
+.DS_Store
+Thumbs.db
+
+# IDE 設定 (IDE settings)
+.vscode/
+.idea/

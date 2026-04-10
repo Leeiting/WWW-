@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>英文單字卡</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- 標題列 | Header bar -->
+  <div class="header">
+    <span class="title">📚 英文單字卡</span>
+    <span class="word-count" id="wordCount">…</span>
+  </div>
+
+  <!-- 開啟單字列表按鈕 | Open word list button -->
+  <div class="section">
+    <button class="btn-primary" id="openWordlist">開啟單字列表</button>
+  </div>
+
+  <!-- API Key 設定區 | API Key settings -->
+  <div class="section">
+    <label class="label" for="apiKey">Gemini API Key</label>
+    <input type="password" id="apiKey" placeholder="請輸入 API Key" class="input" autocomplete="off">
+    <button class="btn-secondary" id="saveKey">儲存</button>
+    <div class="save-msg" id="saveMsg"></div>
+  </div>
+
+  <!-- 快捷鍵提示 | Shortcut hint -->
+  <div class="tip">快捷鍵：Alt + Shift + W　｜　或右鍵選單</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

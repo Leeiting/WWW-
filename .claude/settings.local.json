@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(explorer \"d:\\\\fih機器人\\\\todo.html\")"
+    ]
+  }
+}

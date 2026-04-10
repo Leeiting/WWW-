@@ -1,0 +1,35 @@
+.inputRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.inputRow input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.inputRow input:focus {
+  border-color: #4f8ef7;
+}
+
+.inputRow button {
+  padding: 12px 20px;
+  background: #4f8ef7;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.inputRow button:hover {
+  background: #2d6fdb;
+}

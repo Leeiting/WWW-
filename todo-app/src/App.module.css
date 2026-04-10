@@ -1,0 +1,14 @@
+.container {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.container h1 {
+  text-align: center;
+  color: #1a1a2e;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
