@@ -1,0 +1,259 @@
+/* ── 遮罩 ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(3px);
+}
+
+/* ── 彈窗主體 ── */
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+/* ── Step 1：榮恩身份確認 ── */
+.ronStep {
+  padding: 40px 36px;
+  text-align: center;
+}
+
+.ronIcon {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.ronTitle {
+  font-family: var(--font-title);
+  font-size: 20px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.ronQuestion {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.ronBtnGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btnYes {
+  padding: 12px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: background var(--transition);
+}
+.btnYes:hover { background: var(--red-bright); }
+
+.btnNo {
+  padding: 12px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background var(--transition);
+}
+.btnNo:hover { background: var(--gold-light); }
+
+/* ── Step 1b：榮恩二次確認 ── */
+.confirmStep {
+  padding: 32px 36px;
+  text-align: center;
+}
+
+.confirmWarning {
+  background: rgba(139, 0, 0, 0.15);
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.confirmWarning strong { color: var(--red-bright); }
+
+/* ── Step 2：配送方式 ── */
+.deliveryStep {
+  padding: 32px 36px;
+}
+
+.stepTitle {
+  font-family: var(--font-title);
+  font-size: 18px;
+  color: var(--gold);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.deliveryOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.deliveryOption {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: left;
+}
+
+.deliveryOption:hover { border-color: var(--gold); }
+.deliveryOption.selected { border-color: var(--gold); background: rgba(201, 151, 46, 0.1); }
+
+.deliveryEmoji { font-size: 28px; flex-shrink: 0; }
+
+.deliveryInfo { flex: 1; }
+.deliveryName {
+  font-family: var(--font-title);
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.deliveryDesc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+/* 配送時間與費用垂直排列 */
+.deliveryMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.deliveryTime {
+  font-size: 11px;
+  color: var(--gold);
+  text-align: right;
+}
+.deliveryFee {
+  font-size: 11px;
+  color: var(--text);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ── Step 3：訂單確認 ── */
+.confirmOrderStep {
+  padding: 32px 36px;
+}
+
+.receipt {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.receiptRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.receiptRow:last-child { border-bottom: none; }
+
+.receiptRowHighlight {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.receiptTotal {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-title);
+  font-size: 16px;
+  color: var(--gold-light);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px solid var(--border);
+}
+
+.ronNote {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: center;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+/* ── 通用按鈕 ── */
+.primaryBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: background var(--transition);
+  margin-bottom: 8px;
+}
+.primaryBtn:hover { background: var(--gold-light); }
+.primaryBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.secondaryBtn {
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-size: 12px;
+  transition: all var(--transition);
+}
+.secondaryBtn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── 成功頁面 ── */
+.successStep {
+  padding: 48px 36px;
+  text-align: center;
+}
+
+.successIcon { font-size: 64px; margin-bottom: 16px; }
+.successTitle {
+  font-family: var(--font-title);
+  font-size: 22px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.successMsg { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 28px; }

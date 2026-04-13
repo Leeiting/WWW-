@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Marauder — 衛氏巫師法寶店規格書</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+TC:wght@300;400;700&display=swap');
+
+    :root {
+      --bg: #1a0f07;
+      --surface: #2c1810;
+      --surface2: #3d2215;
+      --gold: #c9972e;
+      --gold-light: #e8b84b;
+      --red: #8b0000;
+      --red-bright: #cc2200;
+      --text: #e8d5b0;
+      --text-dim: #a08060;
+      --border: #5a3a1a;
+      --green: #2d6a2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(139,0,0,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(201,151,46,0.06) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9972e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: 'Noto Serif TC', serif;
+      min-height: 100vh;
+    }
+
+    /* ── 側邊欄 ── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 240px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #sidebar .logo {
+      padding: 28px 20px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    #sidebar .logo h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+    #sidebar .logo p {
+      color: var(--text-dim);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    #sidebar nav { padding: 16px 0; flex: 1; }
+    #sidebar nav a {
+      display: block;
+      padding: 9px 20px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 13px;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    #sidebar nav a:hover,
+    #sidebar nav a.active {
+      color: var(--gold);
+      border-left-color: var(--gold);
+      background: rgba(201,151,46,0.08);
+    }
+    #sidebar nav .section-label {
+      padding: 14px 20px 4px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    #sidebar .version-tag {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .badge {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── 主內容 ── */
+    #main {
+      margin-left: 240px;
+      padding: 0 48px 80px;
+      max-width: 1100px;
+    }
+
+    /* 封面 */
+    .cover {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+    .cover .eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .cover h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-shadow: 0 0 40px rgba(201,151,46,0.3);
+    }
+    .cover .subtitle {
+      font-size: 16px;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .meta-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .meta-item .label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .meta-item .value {
+      font-size: 14px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* 章節 */
+    section { margin-bottom: 64px; scroll-margin-top: 24px; }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    h2 .num {
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 12px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: var(--gold-light);
+      margin: 28px 0 14px;
+      padding-left: 12px;
+      border-left: 3px solid var(--gold);
+    }
+
+    h4 {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 700;
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    p { line-height: 1.8; margin-bottom: 14px; color: var(--text); font-size: 14px; }
+
+    /* 表格 */
+    .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead tr { background: var(--surface2); }
+    th {
+      padding: 10px 14px;
+      text-align: left;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(90,58,26,0.4);
+      color: var(--text);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    tr:hover td { background: rgba(201,151,46,0.04); }
+    td code, th code { font-family: monospace; background: rgba(255,255,255,0.07); padding: 1px 6px; border-radius: 3px; font-size: 12px; }
+
+    /* 卡片 */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .card.danger { border-color: var(--red); }
+    .card.gold { border-color: var(--gold); }
+
+    /* code block */
+    pre {
+      background: #0d0805;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+      color: #c8b89a;
+    }
+    code { font-family: 'Fira Code', 'Courier New', monospace; }
+
+    /* 清單 */
+    ul, ol { padding-left: 20px; margin-bottom: 14px; }
+    li { line-height: 1.8; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+
+    /* inline */
+    strong { color: var(--gold-light); }
+    em { color: var(--text-dim); font-style: italic; }
+
+    /* 狀態機 */
+    .flowbox {
+      background: #0d0805;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.9;
+      color: #c8b89a;
+      margin-bottom: 16px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    /* 權限 ✅❌ */
+    td.center { text-align: center; }
+
+    /* AC 標籤 */
+    .ac-tag {
+      display: inline-block;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      font-family: monospace;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    /* 里程碑 */
+    .phase {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .phase h4 { margin-top: 0; color: var(--gold); font-size: 14px; }
+    .phase ul { list-style: none; padding: 0; }
+    .phase ul li::before { content: "□ "; color: var(--text-dim); }
+
+    /* 風險 */
+    .risk-row td:first-child { color: var(--gold-light); font-weight: bold; }
+
+    /* 備注 blockquote */
+    blockquote {
+      border-left: 4px solid var(--red);
+      background: rgba(139,0,0,0.1);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    blockquote em { color: var(--gold); font-style: italic; display: block; margin-top: 8px; }
+
+    /* callout */
+    .callout {
+      background: rgba(201,151,46,0.08);
+      border: 1px solid rgba(201,151,46,0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      color: var(--text-dim);
+    }
+    .callout strong { color: var(--gold); }
+
+    /* ASCII 元件圖 */
+    .ascii {
+      background: #0d0805;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #c8b89a;
+      white-space: pre;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    @media (max-width: 768px) {
+      #sidebar { display: none; }
+      #main { margin-left: 0; padding: 0 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 側邊欄 -->
+<nav id="sidebar">
+  <div class="logo">
+    <h2>⚡ Project<br>Marauder</h2>
+    <p>衛氏巫師法寶店規格書</p>
+  </div>
+  <nav>
+    <div class="section-label">文件導覽</div>
+    <a href="#cover">封面資訊</a>
+    <div class="section-label">章節</div>
+    <a href="#s1">一、專案概述</a>
+    <a href="#s2">二、使用者角色</a>
+    <a href="#s3">三、技術架構</a>
+    <a href="#s4">四、功能規格</a>
+    <a href="#s5">五、介面規格</a>
+    <a href="#s6">六、驗收標準</a>
+    <a href="#s7">七、開發里程碑</a>
+    <a href="#s8">八、風險事項</a>
+  </nav>
+  <div class="version-tag">v1.0 · 2026-04-10 <span class="badge">草案</span></div>
+</nav>
+
+<!-- 主內容 -->
+<div id="main">
+
+  <!-- 封面 -->
+  <div class="cover" id="cover">
+    <div class="eyebrow">📜 專案開發規格書</div>
+    <h1>Project Marauder</h1>
+    <div class="subtitle">衛氏巫師法寶店（Weasleys' Wizard Wheezes）數位轉型平台</div>
+    <div class="meta-grid">
+      <div class="meta-item"><div class="label">專案代號</div><div class="value">Project Marauder</div></div>
+      <div class="meta-item"><div class="label">版本</div><div class="value">v1.0</div></div>
+      <div class="meta-item"><div class="label">文件狀態</div><div class="value">草案 <span class="badge">待確認</span></div></div>
+      <div class="meta-item"><div class="label">作者</div><div class="value" style="font-size:12px">喬治・衛斯理 / 弗雷・衛斯理 / 李亦婷</div></div>
+      <div class="meta-item"><div class="label">建立日期</div><div class="value">2026-04-10</div></div>
+      <div class="meta-item"><div class="label">最後更新</div><div class="value">2026-04-10</div></div>
+    </div>
+  </div>
+
+  <!-- 一 -->
+  <section id="s1">
+    <h2><span class="num">1</span> 專案概述</h2>
+
+    <h3>1.1 專案目標</h3>
+    <p>打造一個充滿驚喜與不確定性的電商平台，透過後台強大的「惡作劇控制系統（Prank Console）」，讓管理員（喬治與弗雷）能即時操控前台消費者的購物體驗，藉此對抗無聊的魔法部法規。</p>
+
+    <h3>1.2 核心價值</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>面向</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>前台</strong></td><td>混亂、有趣、沉浸式的斜角巷購物感</td></tr>
+        <tr><td><strong>後台</strong></td><td>高度可控的商品管理、動態定價機制與突發事件觸發器</td></tr>
+        <tr><td><strong>差異化</strong></td><td>唯一一家會主動嚇跑顧客又能讓顧客上癮的魔法電商</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>1.3 專案範圍（Scope）</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="card gold">
+        <h4>✅ 納入（In-Scope）</h4>
+        <ul>
+          <li>商品瀏覽、搜尋、加入購物車、結帳</li>
+          <li>後台商品 CRUD 管理</li>
+          <li>惡搞模式（動態定價、音效、飛七圖層）</li>
+          <li>榮恩識別系統（家屬服務費）</li>
+          <li>緊急切換「文具店模式」（Mischief Managed）</li>
+        </ul>
+      </div>
+      <div class="card danger">
+        <h4>❌ 排除（Out-Scope）</h4>
+        <ul>
+          <li>真實金流串接（Galleon 不可兌換現金）</li>
+          <li>行動 App（iOS / Android）</li>
+          <li>多語言支援（僅繁體中文）</li>
+          <li>真實的石內卜教授</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>1.4 術語說明</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>術語</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Galleon（金加隆）</strong></td><td>主要貨幣單位，1 Galleon = 17 Sickle</td></tr>
+        <tr><td><strong>Sickle（銀閃）</strong></td><td>次要貨幣單位，1 Sickle = 29 Knut</td></tr>
+        <tr><td><strong>Knut（納特）</strong></td><td>最小貨幣單位</td></tr>
+        <tr><td><strong>榮恩稅</strong></td><td>結帳總額 × 2 的家屬服務費邏輯</td></tr>
+        <tr><td><strong>石內卜來訪</strong></td><td>庫存歸零時觸發的缺貨警告狀態</td></tr>
+        <tr><td><strong>Prank Console</strong></td><td>後台惡作劇控制中心</td></tr>
+        <tr><td><strong>Mischief Managed</strong></td><td>緊急切換「普通文具店」模式的掩護機制</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 二 -->
+  <section id="s2">
+    <h2><span class="num">2</span> 使用者角色與權限</h2>
+
+    <h3>2.1 角色定義</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>角色</th><th>識別方式</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>一般消費者</strong></td><td>無特殊標記</td><td>瀏覽商品、加入購物車、結帳，需承受隨機惡搞特效</td></tr>
+        <tr><td><strong>榮恩・衛斯理</strong></td><td>結帳時自行申報</td><td>系統套用「家屬服務費 100%」，結帳金額 × 2</td></tr>
+        <tr><td><strong>管理員（喬治/弗雷）</strong></td><td>後台帳號密碼</td><td>擁有完整後台控制權限，可觸發全站特效</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>2.2 功能存取權限對照表</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>功能</th><th style="text-align:center">一般消費者</th><th style="text-align:center">榮恩</th><th style="text-align:center">管理員</th></tr></thead>
+      <tbody>
+        <tr><td>瀏覽商品</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td></tr>
+        <tr><td>加入購物車</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td></tr>
+        <tr><td>結帳（正常價格）</td><td class="center">✅</td><td class="center">❌</td><td class="center">✅</td></tr>
+        <tr><td>結帳（加倍價格）</td><td class="center">❌</td><td class="center">✅</td><td class="center">❌</td></tr>
+        <tr><td>商品 CRUD</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+        <tr><td>觸發惡搞模式</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+        <tr><td>觸發吼叫信模式</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+        <tr><td>觸發飛七巡邏</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+        <tr><td>啟用 Mischief Managed</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+        <tr><td>「從辦公室偷回」庫存</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 三 -->
+  <section id="s3">
+    <h2><span class="num">3</span> 技術架構建議</h2>
+
+    <h3>3.1 技術選型</h3>
+    <h4>前端</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>項目</th><th>選擇</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>框架</td><td><strong>React 19 + TypeScript</strong></td><td>與現有 todo-app 技術棧一致，類型安全</td></tr>
+        <tr><td>建構工具</td><td><strong>Vite</strong></td><td>快速 HMR，與現有專案一致</td></tr>
+        <tr><td>樣式</td><td><strong>CSS Modules + CSS 變數</strong></td><td>元件隔離，主題切換（惡搞/文具店模式）</td></tr>
+        <tr><td>狀態管理</td><td><strong>Zustand</strong></td><td>輕量、適合商品/購物車/惡搞開關狀態</td></tr>
+        <tr><td>路由</td><td><strong>React Router v7</strong></td><td>前後台路由分離</td></tr>
+        <tr><td>動畫</td><td><strong>Framer Motion</strong></td><td>飛七浮動圖層</td></tr>
+      </tbody>
+    </table></div>
+
+    <h4>後端（MVP 階段可省略，用 localStorage）</h4>
+    <div class="table-wrap"><table>
+      <thead><tr><th>項目</th><th>選擇</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td>執行環境</td><td><strong>Node.js + Express</strong></td><td>輕量，與前端同語言</td></tr>
+        <tr><td>資料庫</td><td><strong>Supabase（PostgreSQL）</strong></td><td>免費額度足夠，即時訂閱適合惡搞狀態同步</td></tr>
+        <tr><td>認證</td><td><strong>Supabase Auth</strong></td><td>管理員帳號管理</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><strong>MVP 建議：</strong>Phase 1-2 使用 <code>localStorage</code> 模擬後端，Phase 3 再接入 Supabase。</div>
+
+    <h3>3.2 專案目錄結構</h3>
+    <pre>www-platform/
+├── public/
+│   ├── sounds/
+│   │   └── howler.mp3          # 吼叫信音效
+│   └── images/
+│       ├── dark-mark.svg       # 黑魔標記
+│       └── peeves.gif          # 飛七動圖
+├── src/
+│   ├── components/
+│   │   ├── ProductCard/        # 商品卡片元件
+│   │   ├── Cart/               # 購物車
+│   │   ├── CheckoutModal/      # 結帳彈窗（含榮恩識別）
+│   │   ├── PeevesLayer/        # 飛七浮動圖層
+│   │   ├── HowlerAlert/        # 吼叫信音效元件
+│   │   └── MisManagedOverlay/  # Mischief Managed 掩護介面
+│   ├── pages/
+│   │   ├── Storefront/         # 前台商店
+│   │   ├── Admin/
+│   │   │   ├── Dashboard/      # 後台總覽
+│   │   │   ├── Products/       # 商品管理
+│   │   │   └── PrankConsole/   # 惡作劇控制中心
+│   │   └── StationeryShop/     # Mischief Managed 文具店頁面
+│   ├── store/
+│   │   ├── productStore.ts     # 商品狀態
+│   │   ├── cartStore.ts        # 購物車狀態
+│   │   └── prankStore.ts       # 惡搞模式開關狀態
+│   ├── types/
+│   │   └── index.ts            # 共用型別定義
+│   ├── hooks/
+│   │   └── usePrankMode.ts     # 惡搞模式邏輯
+│   └── App.tsx
+├── package.json
+└── vite.config.ts</pre>
+
+    <h3>3.3 資料模型</h3>
+    <h4>商品（Product）</h4>
+    <pre><code>interface Product {
+  id: string;                    // UUID，格式：WWW-001-Puke
+  name: string;                  // 商品名稱
+  category: ProductCategory;     // 魔法類別（見下方 Enum）
+  price: {
+    galleon: number;             // 金加隆
+    sickle: number;              // 銀閃
+    knut: number;                // 納特
+  };
+  stock: number;                 // 庫存量（0 = 石內卜來訪）
+  dangerLevel: 1 | 2 | 3 | 4 | 5; // 危險等級
+  mediaUrl: string;              // .gif 或 .mp4 商品動圖 URL
+  isHidden: boolean;             // 隱身咒開關（true = 前台不顯示）
+  description: string;           // 商品描述
+  createdAt: string;             // ISO 8601 時間戳記
+}
+
+type ProductCategory =
+  | 'prank'         // 惡作劇
+  | 'defense'       // 防禦咒
+  | 'love_potion'   // 愛情魔藥
+  | 'fireworks'     // 奇妙煙火
+  | 'magical_beast' // 魔法生物</code></pre>
+
+    <h4>系統設定（SystemConfig）</h4>
+    <pre><code>interface SystemConfig {
+  prankModeEnabled: boolean;      // 惡搞模式開關
+  howlerModeEnabled: boolean;     // 吼叫信模式開關
+  peevesPatrolActive: boolean;    // 飛七巡邏開關
+  misManagedActive: boolean;      // Mischief Managed 掩護模式
+  priceRandomMin: number;         // 惡搞定價係數下限（預設 0.5）
+  priceRandomMax: number;         // 惡搞定價係數上限（預設 5.0）
+}</code></pre>
+
+    <h4>購物車項目（CartItem）</h4>
+    <pre><code>interface CartItem {
+  productId: string;
+  productName: string;
+  quantity: number;
+  basePrice: number;             // 以 Knut 為最小單位計算
+  displayPrice: number;          // 惡搞模式下的即時顯示價格
+}</code></pre>
+
+    <h3>3.4 API 端點設計</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>方法</th><th>路徑</th><th>說明</th><th>權限</th></tr></thead>
+      <tbody>
+        <tr><td><code>GET</code></td><td><code>/api/products</code></td><td>取得所有商品（前台，排除隱藏）</td><td>公開</td></tr>
+        <tr><td><code>GET</code></td><td><code>/api/products/all</code></td><td>取得所有商品（含隱藏）</td><td>管理員</td></tr>
+        <tr><td><code>POST</code></td><td><code>/api/products</code></td><td>新增商品</td><td>管理員</td></tr>
+        <tr><td><code>PUT</code></td><td><code>/api/products/:id</code></td><td>更新商品</td><td>管理員</td></tr>
+        <tr><td><code>PATCH</code></td><td><code>/api/products/:id/stock</code></td><td>更新庫存（含「從辦公室偷回」）</td><td>管理員</td></tr>
+        <tr><td><code>DELETE</code></td><td><code>/api/products/:id</code></td><td>刪除商品</td><td>管理員</td></tr>
+        <tr><td><code>GET</code></td><td><code>/api/config</code></td><td>取得系統設定</td><td>管理員</td></tr>
+        <tr><td><code>PUT</code></td><td><code>/api/config</code></td><td>更新系統設定（惡搞開關）</td><td>管理員</td></tr>
+        <tr><td><code>POST</code></td><td><code>/api/checkout</code></td><td>提交訂單（含榮恩識別）</td><td>公開</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>3.5 狀態管理（Zustand Stores）</h3>
+    <pre><code>interface PrankStore {
+  prankModeEnabled: boolean;
+  howlerModeEnabled: boolean;
+  peevesPatrolActive: boolean;
+  misManagedActive: boolean;
+  togglePrankMode: () => void;
+  toggleHowlerMode: () => void;
+  triggerPeevesPatrol: () => void;
+  activateMischiefManaged: () => void;  // 一鍵切換文具店
+  deactivateMischiefManaged: () => void;
+}</code></pre>
+
+    <h3>3.6 Mischief Managed 雙模式切換機制</h3>
+    <div class="flowbox">[管理員按下 "Mischief Managed"]
+         │
+         ▼
+  prankStore.activateMischiefManaged()
+         │
+         ├─ 關閉所有惡搞開關（prankMode、howler、peeves）
+         ├─ 前台路由重導至 /stationery（普通文具店頁面）
+         ├─ 後台顯示「文具店模式進行中」提示
+         └─ localStorage 記錄原始商品資料（不清除）
+
+[管理員按下 "Mischief Managed" 解除]
+         │
+         ▼
+  prankStore.deactivateMischiefManaged()
+         │
+         └─ 前台路由恢復 /，惡搞設定恢復上次狀態</div>
+  </section>
+
+  <!-- 四 -->
+  <section id="s4">
+    <h2><span class="num">4</span> 功能規格</h2>
+
+    <h3>4.1 商品上架系統</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>欄位名稱</th><th>型態</th><th>規範 / 描述</th></tr></thead>
+      <tbody>
+        <tr><td>商品 ID</td><td>UUID</td><td>格式：<code>WWW-{序號}-{縮寫}</code>，如 <code>WWW-001-Puke</code></td></tr>
+        <tr><td>商品名稱</td><td>String</td><td>支援全形中文、魔法符文文字輸入，最多 50 字</td></tr>
+        <tr><td>魔法類別</td><td>Enum</td><td>惡作劇 / 防禦咒 / 愛情魔藥 / 奇妙煙火 / 魔法生物</td></tr>
+        <tr><td>定價</td><td>Object</td><td>包含 <code>galleon</code>、<code>sickle</code>、<code>knut</code> 三欄位（正整數）</td></tr>
+        <tr><td>庫存量</td><td>Integer</td><td>最小值 0；值為 0 時觸發「石內卜來訪」邏輯</td></tr>
+        <tr><td>危險等級</td><td>Slider</td><td>1（安全）～ 5（極度危險），步進值 1</td></tr>
+        <tr><td>商品動圖</td><td>File</td><td>限 <code>.gif</code> 或 <code>.mp4</code>，大小上限 10MB</td></tr>
+        <tr><td>隱身咒開關</td><td>Boolean</td><td><code>true</code> = 前台不渲染此商品（物理性消失）</td></tr>
+        <tr><td>商品描述</td><td>String</td><td>最多 200 字，支援 Markdown 粗體 / 斜體</td></tr>
+      </tbody>
+    </table></div>
+
+    <h4>庫存狀態機</h4>
+    <div class="flowbox">庫存 > 0  ──→  [正常]   按鈕顯示：「立即交出金加隆」（可購買）
+庫存 = 0  ──→  [缺貨]   圖片轉灰階，按鈕禁用，顯示：「石內卜來訪：已被沒收」
+管理員按「從辦公室偷回」──→ 庫存恢復為 5，狀態回到 [正常]</div>
+
+    <h3>4.2 後台控制中心（Prank Console）</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>控制項</th><th>類型</th><th>行為說明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>惡搞模式</strong></td><td>Toggle</td><td>開啟後，前台所有商品價格每 2 秒以 <code>Math.random() * (5 - 0.5) + 0.5</code> 係數即時跳動</td></tr>
+        <tr><td><strong>吼叫信模式</strong></td><td>Toggle</td><td>開啟後，前台自動播放音效：「再不買，石內卜教授要來了，快一點！」並顯示全螢幕警告橫幅</td></tr>
+        <tr><td><strong>飛七巡邏</strong></td><td>一次性觸發</td><td>在前台隨機位置生成飛七（Peeves）浮動圖層，移動 30 秒後自動消失</td></tr>
+        <tr><td><strong>Mischief Managed</strong></td><td>緊急切換</td><td>一鍵清除所有惡搞特效，前台偽裝為「怪洛克文具批發店」</td></tr>
+      </tbody>
+    </table></div>
+
+    <h4>惡搞模式技術規格</h4>
+    <pre><code>// 惡搞定價邏輯（前端執行）
+const getPrankPrice = (basePrice: number): number => {
+  const multiplier = Math.random() * (5.0 - 0.5) + 0.5; // 0.5x ~ 5.0x
+  return Math.round(basePrice * multiplier);
+};
+
+// 每 2000ms 重新計算一次
+useEffect(() => {
+  if (!prankModeEnabled) return;
+  const interval = setInterval(() => {
+    recalculateAllPrices(); // Zustand action
+  }, 2000);
+  return () => clearInterval(interval);
+}, [prankModeEnabled]);</code></pre>
+
+    <h3>4.3 購物車與結帳邏輯</h3>
+    <div class="flowbox">用戶點擊「結帳」
+     │
+     ▼
+彈出身份驗證視窗
+「請問你是否為榮恩・衛斯理？」
+[是的，我是榮恩] ──→ 在明細新增「家屬服務費 100%」
+                       Total = Subtotal + Subtotal × 1.0
+                              = Subtotal × 2
+[不，我只是路過的] ──→ 維持原始小計
+     │
+     ▼
+選擇配送方式
+     │
+     ▼
+確認訂單送出</div>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>選項</th><th>代碼</th><th>說明</th><th>預估時間</th></tr></thead>
+      <tbody>
+        <tr><td>消影術</td><td><code>instant</code></td><td>瞬間送達，不保證完整性</td><td>即時</td></tr>
+        <tr><td>飛天掃帚</td><td><code>broom</code></td><td>快速空運</td><td>1-2 小時</td></tr>
+        <tr><td>騎士墜鬼馬</td><td><code>thestral</code></td><td>標準陸運（僅目睹死亡者可見配送員）</td><td>1-3 天</td></tr>
+        <tr><td>騎士公車</td><td><code>knight_bus</code></td><td>社交體驗方案，途中可能繞路數次</td><td>不定</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>4.4 吼叫信模式（Howler Mode）</h3>
+    <ul>
+      <li>觸發時播放 <code>/sounds/howler.mp3</code></li>
+      <li>同時在頁面頂部顯示全寬紅色橫幅，文字動態打字效果顯示：「再不買，石內卜教授要來了，快一點！」</li>
+      <li>橫幅每 10 秒閃爍一次，直到管理員手動關閉</li>
+      <li><strong>前台使用者無法關閉紅色橫幅</strong>，僅管理員可從後台關閉</li>
+    </ul>
+
+    <h3>4.5 飛七巡邏（Peeves Patrol）</h3>
+    <ul>
+      <li>觸發後在前台隨機 <code>(x, y)</code> 座標生成飛七浮動圖層（<code>position: fixed</code>）</li>
+      <li>飛七以 CSS animation 在畫面內不規則移動</li>
+      <li>若用戶點擊飛七圖層：
+        <ul>
+          <li>第一次點擊：畫面出現魔杖（🪄）圖示</li>
+          <li>第二次點擊：發射閃電（⚡）打中飛七，觸發被雷打到動畫（scale + opacity 漸出），飛七從頁面消失</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 五 -->
+  <section id="s5">
+    <h2><span class="num">5</span> 介面規格</h2>
+
+    <h3>5.1 前台視覺規範</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>設計項目</th><th>規格</th></tr></thead>
+      <tbody>
+        <tr><td><strong>整體風格</strong></td><td>斜角巷木質窗框感，偏暖褐色與暗金色</td></tr>
+        <tr><td><strong>背景</strong></td><td>深褐色（<code>#2C1810</code>），帶半透明魔法藥水污漬圖案（SVG）</td></tr>
+        <tr><td><strong>主色</strong></td><td>暗金色 <code>#C9972E</code></td></tr>
+        <tr><td><strong>強調色</strong></td><td>警告紅 <code>#8B0000</code>（危險等級 5 / 石內卜警告）</td></tr>
+        <tr><td><strong>字型</strong></td><td>標題：<code>Cinzel</code> 魔法風格字型；內文：<code>Noto Serif TC</code></td></tr>
+        <tr><td><strong>卡片排列</strong></td><td>每個商品卡片隨機 <code>rotate: -1deg ~ 1deg</code>（略微歪斜感）</td></tr>
+        <tr><td><strong>黑魔標記</strong></td><td>危險等級 = 5 時，卡片右上角顯示 SVG 黑魔標記，卡片邊框為紅色</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>5.2 商品卡片元件規格（ProductCard）</h3>
+    <div class="ascii">┌──────────────────────────────┐◄─ 危險等級=5 時顯示 [黑魔標記]
+│                              │
+│   [商品動圖 / 圖片區域]       │
+│   200px × 200px              │
+│                              │
+├──────────────────────────────┤
+│  商品名稱（粗體，1-2 行）      │
+│  魔法類別標籤                  │
+│  危險等級：★★★☆☆              │
+│                              │
+│  💰 3 Galleon 5 Sickle       │  ◄─ 惡搞模式：數字每 2 秒跳動
+│                              │
+│  [立即交出金加隆] ←正常庫存    │
+│  [石內卜來訪：已被沒收] ←缺貨  │  ◄─ 灰階圖片，按鈕禁用
+└──────────────────────────────┘</div>
+
+    <h3>5.3 後台管理介面佈局</h3>
+    <div class="ascii">┌──────────────────────────────────────────────────────┐
+│  🔮 WWW 後台控制中心          [Mischief Managed] 🔴   │
+├──────────────┬───────────────────────────────────────┤
+│              │                                        │
+│  📦 商品管理  │  [惡搞模式] ●────○  ON                 │
+│              │  價格跳動係數：0.5x ～ 5.0x             │
+│  🎭 Prank   │                                        │
+│    Console  │  [吼叫信模式] ●────○  OFF               │
+│              │                                        │
+│  📊 訂單     │  [飛七巡邏] [觸發] 按鈕                  │
+│              │                                        │
+│              │  ─────────────────────────────         │
+│              │  商品列表                               │
+│              │  ID │ 名稱 │ 庫存 │ 危險 │ 操作         │
+│              │  ... │ ... │  3  │ ★★★ │ 編輯/刪除     │
+└──────────────┴───────────────────────────────────────┘</div>
+
+    <h3>5.4 Mischief Managed 文具店頁面</h3>
+    <div class="card">
+      <ul>
+        <li>路由：<code>/stationery</code></li>
+        <li>頁面標題：「怪洛克文具批發股份有限公司」</li>
+        <li>陳列：普通鉛筆、橡皮擦、訂書機（假商品，不可購買）</li>
+        <li>背景色：純白 <code>#FFFFFF</code>，字型：標楷體</li>
+        <li>頁尾小字：「本店與任何魔法活動無關」</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 六 -->
+  <section id="s6">
+    <h2><span class="num">6</span> 驗收標準</h2>
+
+    <h3>原始驗收標準</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>編號</th><th>測試案例</th><th>預期結果</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ac-tag">AC-01</span></td><td>在後台將「測奸器」危險等級設為 5</td><td>前台對應商品出現黑魔標記</td></tr>
+        <tr><td><span class="ac-tag">AC-02</span></td><td>庫存歸零後，管理員點擊「從辦公室偷回」按鈕</td><td>庫存恢復為 5，前台「石內卜來訪」警語消失</td></tr>
+        <tr><td><span class="ac-tag">AC-03</span></td><td>用戶在結帳彈窗承認自己是榮恩</td><td>系統在明細中新增一筆「家屬服務費 100%」並計算總價</td></tr>
+        <tr><td><span class="ac-tag">AC-04</span></td><td>飛七出現時，點擊魔法杖使出魔法</td><td>飛七圖層在頁面消失</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>新增技術驗收標準</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>編號</th><th>測試案例</th><th>預期結果</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ac-tag">AC-05</span></td><td>管理員開啟惡搞模式，等待 2 秒</td><td>前台所有商品價格數值更新，係數介於 0.5x ～ 5x</td></tr>
+        <tr><td><span class="ac-tag">AC-06</span></td><td>管理員關閉惡搞模式</td><td>前台所有商品價格立即恢復原始定價</td></tr>
+        <tr><td><span class="ac-tag">AC-07</span></td><td>管理員點擊「Mischief Managed」</td><td>所有惡搞特效停止，前台路由切換至 <code>/stationery</code>，頁面顯示普通文具店</td></tr>
+        <tr><td><span class="ac-tag">AC-08</span></td><td>Mischief Managed 模式解除</td><td>前台路由恢復 <code>/</code>，惡搞設定恢復上次狀態</td></tr>
+        <tr><td><span class="ac-tag">AC-09</span></td><td>將商品「隱身咒」開關設為 ON</td><td>前台商品列表中該商品不渲染（DOM 中不存在）</td></tr>
+        <tr><td><span class="ac-tag">AC-10</span></td><td>吼叫信模式開啟</td><td>頁面頂部出現紅色橫幅，播放音效；無法自動播放時顯示「點擊頁面任意處以啟動警報」</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 七 -->
+  <section id="s7">
+    <h2><span class="num">7</span> 開發里程碑</h2>
+
+    <div class="phase">
+      <h4>Phase 1 — 基礎架構 + 商品 CRUD（Week 1-2）</h4>
+      <ul>
+        <li>初始化 Vite + React + TypeScript 專案</li>
+        <li>建立 Zustand stores（product / cart / prank）</li>
+        <li>商品 CRUD 後台頁面（使用 localStorage）</li>
+        <li>前台商品列表基本顯示</li>
+        <li>商品卡片元件（含危險等級、庫存狀態）</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <h4>Phase 2 — 前台體驗 + 結帳（Week 3）</h4>
+      <ul>
+        <li>前台視覺套用（斜角巷風格）</li>
+        <li>購物車功能</li>
+        <li>榮恩識別彈窗 + 家屬服務費計算</li>
+        <li>配送方式選單</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <h4>Phase 3 — Prank Console（Week 4）</h4>
+      <ul>
+        <li>惡搞模式（動態定價）</li>
+        <li>吼叫信模式（音效 + 橫幅）</li>
+        <li>飛七巡邏圖層 + 誘餌炸彈互動</li>
+        <li>後台控制中心 UI</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <h4>Phase 4 — Mischief Managed + 上線準備（Week 5）</h4>
+      <ul>
+        <li>Mischief Managed 模式（文具店頁面 + 一鍵切換）</li>
+        <li>全站 AC 驗收測試</li>
+        <li>響應式調整（桌面優先）</li>
+        <li>部署至 Vercel / Netlify</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 八 -->
+  <section id="s8">
+    <h2><span class="num">8</span> 風險與注意事項</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>風險</th><th>說明</th><th>緩解方案</th></tr></thead>
+      <tbody class="risk-row">
+        <tr><td>瀏覽器音效限制</td><td>現代瀏覽器禁止頁面自動播放音效（autoplay policy）</td><td>偵測 user gesture 後才播放，並顯示「點擊以啟動警報」提示（AC-10）</td></tr>
+        <tr><td>Math.random 效能</td><td>惡搞模式每 2 秒重算所有商品價格，商品數量多時可能卡頓</td><td>使用 <code>useMemo</code> 惰性計算，商品超過 50 筆時改為 <code>requestAnimationFrame</code> 批次更新</td></tr>
+        <tr><td>法遵風險（魔法部）</td><td>動態定價可能觸發消費者保護法疑慮（麻瓜世界）</td><td>Mischief Managed 緊急切換提供即時掩護；上線前確認目標市場法規</td></tr>
+        <tr><td>SEO 衝突</td><td>惡搞模式下商品名稱閃爍/亂跳影響搜尋引擎索引</td><td>惡搞效果僅套用在視覺層（CSS/JS），HTML 結構保持穩定</td></tr>
+        <tr><td>榮恩誤觸</td><td>消費者不小心承認是榮恩導致加倍收費投訴</td><td>彈窗加入「我確定要承認我是榮恩」二次確認機制，並在收據顯示「您已自願申報家屬身份」</td></tr>
+      </tbody>
+    </table></div>
+
+    <blockquote>
+      ⚠️ <strong>備註（Project Marauder）</strong><br><br>
+      管理員需確保後台具備一鍵清理功能。若魔法部官員來訪，後台必須能切換為「普通的文具店」模式，此功能稱為「惡作劇完畢（Mischief Managed）」。
+      <em>我在此鄭重宣誓：我絕對不懷好意——而且惡作劇才剛開始</em>
+    </blockquote>
+  </section>
+
+</div>
+
+<script>
+  // 側邊欄 active 高亮
+  const sections = document.querySelectorAll('section[id], .cover[id]');
+  const links = document.querySelectorAll('#sidebar nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`#sidebar nav a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

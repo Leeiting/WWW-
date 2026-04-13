@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+TC:wght@300;400;700&display=swap');
+
+/* ── 斜角巷主題 CSS 變數 ── */
+:root {
+  --bg: #1a0f07;
+  --surface: #2c1810;
+  --surface2: #3d2215;
+  --gold: #c9972e;
+  --gold-light: #e8b84b;
+  --red: #8b0000;
+  --red-bright: #cc2200;
+  --text: #e8d5b0;
+  --text-dim: #a08060;
+  --border: #5a3a1a;
+  --green: #2d6a2d;
+
+  --font-title: 'Cinzel', serif;
+  --font-body: 'Noto Serif TC', serif;
+
+  --radius: 8px;
+  --transition: 0.2s ease;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  /* 藥水污漬背景紋理 */
+  background-image:
+    radial-gradient(ellipse at 15% 25%, rgba(139, 0, 0, 0.07) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 75%, rgba(201, 151, 46, 0.05) 0%, transparent 45%),
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9972e' fill-opacity='0.025'%3E%3Ccircle cx='40' cy='40' r='12'/%3E%3Ccircle cx='10' cy='10' r='5'/%3E%3Ccircle cx='70' cy='70' r='5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── 頁面震動動畫（每 10 秒觸發） ── */
+@keyframes pageShake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-3px) rotate(-0.3deg); }
+  20% { transform: translateX(3px) rotate(0.3deg); }
+  30% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  50% { transform: translateX(-1px); }
+  60% { transform: translateX(1px); }
+  70% { transform: translateX(0); }
+}
+
+/* ── 黑魔標記閃爍 ── */
+@keyframes darkMarkBlink {
+  0%, 100% { opacity: 1; color: var(--red-bright); }
+  50% { opacity: 0.4; color: var(--red); }
+}
+
+/* ── 吼叫信橫幅閃爍 ── */
+@keyframes howlerFlash {
+  0%, 100% { background-color: var(--red); }
+  50% { background-color: var(--red-bright); }
+}
+
+/* ── 共用元件 ── */
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--gold-light); }
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+/* ── scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }

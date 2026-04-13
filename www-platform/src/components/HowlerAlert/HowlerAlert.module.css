@@ -1,0 +1,64 @@
+/* ── 吼叫信橫幅（頁面頂部固定） ── */
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--red);
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  animation: howlerFlash 10s ease-in-out infinite;
+  box-shadow: 0 4px 24px rgba(139, 0, 0, 0.6);
+}
+
+/* 文字打字動畫 */
+.text {
+  font-family: var(--font-title);
+  font-size: 15px;
+  letter-spacing: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid #fff;
+  animation: typewriter 2s steps(30, end) forwards,
+             cursorBlink 0.7s step-end infinite 2s;
+  max-width: 600px;
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+@keyframes cursorBlink {
+  0%, 100% { border-color: #fff; }
+  50%       { border-color: transparent; }
+}
+
+/* 音效提示（autoplay 被擋時） */
+.clickHint {
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  text-decoration: underline;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 關閉按鈕（管理員後台才顯示） */
+.closeBtn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.closeBtn:hover { background: rgba(255,255,255,0.35); }

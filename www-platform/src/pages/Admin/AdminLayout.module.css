@@ -1,0 +1,155 @@
+/* ── Admin 整體佈局 ── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── 左側導覽列 ── */
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: #0d0600;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebarLogo {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebarTitle {
+  font-family: var(--font-title);
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+.sidebarSub {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.nav {
+  padding: 12px 0;
+  flex: 1;
+}
+
+.navSection {
+  padding: 10px 20px 4px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13px;
+  border-left: 3px solid transparent;
+  transition: all var(--transition);
+}
+
+.navLink:hover {
+  color: var(--gold);
+  background: rgba(201, 151, 46, 0.06);
+}
+
+.navLink.active {
+  color: var(--gold);
+  border-left-color: var(--gold);
+  background: rgba(201, 151, 46, 0.08);
+}
+
+.navLinkIcon { font-size: 15px; }
+
+/* Mischief Managed 按鈕 */
+.misManagedBtn {
+  margin: 12px 16px;
+  padding: 10px;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background var(--transition);
+  text-align: center;
+}
+.misManagedBtn:hover { background: var(--red-bright); }
+
+.misManagedActive {
+  background: var(--green);
+}
+.misManagedActive:hover { background: #3a8a3a; }
+
+.sidebarFooter {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-dim);
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* ── 右側主內容 ── */
+.main {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg);
+}
+
+/* 頁面頂部列 */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pageTitle {
+  font-family: var(--font-title);
+  font-size: 18px;
+  color: var(--gold);
+}
+
+.topbarActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 前台連結 */
+.storefrontLink {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition);
+}
+.storefrontLink:hover { border-color: var(--gold); color: var(--gold); }
+
+/* 內容區域 */
+.content {
+  padding: 32px;
+}
