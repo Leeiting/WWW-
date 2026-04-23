@@ -1,4 +1,5 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { Product } from '@/types'
 import { useCartStore } from '@/store/cartStore'
 import { usePrankPrice } from '@/hooks/usePrankPrice'
@@ -37,24 +38,34 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, rotation }: ProductCardProps) => {
-  const { id, name, category, price, stock, dangerLevel, mediaUrl, description } = product
+  const { id, name, category, dangerLevel, mediaUrl, description, skuItems } = product
   const addItem = useCartStore(s => s.addItem)
-  // 目前購物車中此商品的數量（用於限制不超過庫存）
-  const cartQty = useCartStore(s => s.items.find(i => i.productId === id)?.quantity ?? 0)
   const prankModeEnabled = usePrankStore(s => s.prankModeEnabled)
 
-  // 基礎價格（Knut）
+  // SKU 選擇狀態（預設選第一個 SKU）
+  const [selectedSkuIdx, setSelectedSkuIdx] = useState(0)
+  const selectedSku = skuItems[selectedSkuIdx] ?? skuItems[0]
+
+  // 目前購物車中此 SKU 的數量（用於限制不超過庫存）
+  const cartQty = useCartStore(s => s.items.find(i => i.skuId === selectedSku?.id)?.quantity ?? 0)
+
+  // 基礎價格（Knut）— 依選中 SKU 計算
   const basePrice = useMemo(
-    () => toKnut(price.galleon, price.sickle, price.knut),
-    [price]
+    () => selectedSku
+      ? toKnut(selectedSku.price.galleon, selectedSku.price.sickle, selectedSku.price.knut)
+      : toKnut(product.price.galleon, product.price.sickle, product.price.knut),
+    [selectedSku, product.price]
   )
 
-  // 惡搞模式下的即時跳動價格
+  // 惡搞模式下的即時跳動價格（僅視覺，不影響結帳，spec §10.2）
   const displayPrice = usePrankPrice(basePrice)
 
-  const isOutOfStock = stock === 0
-  const isAtMax = !isOutOfStock && cartQty >= stock   // 已加滿庫存數量
+  // 中文註解：顯示實際庫存（不扣購物車數量），庫存只在訂單成立後才減少
+  const availableStock = selectedSku?.stock ?? 0
+  const isOutOfStock = availableStock === 0
+  const isAtMax = !isOutOfStock && cartQty >= availableStock
   const isExtremeDanger = dangerLevel === 5
+  const hasMultipleSkus = skuItems.length > 1
 
   const cardClass = [
     styles.card,
@@ -63,12 +74,16 @@ const ProductCard = ({ product, rotation }: ProductCardProps) => {
   ].join(' ')
 
   const handleAddToCart = () => {
-    if (isOutOfStock || isAtMax) return
+    if (!selectedSku || isOutOfStock || isAtMax) return
     addItem({
       productId: id,
+      skuId: selectedSku.id,
+      skuSpec: selectedSku.spec,
       productName: name,
-      basePrice,
-      displayPrice,
+      // 圖片快照：優先用 SKU 專屬圖，否則取商品主圖（後台換圖不影響歷史訂單）
+      imageUrl: selectedSku.imageUrl ?? mediaUrl ?? undefined,
+      basePrice,     // 加入購物車時快照原始定價（spec §10.2）
+      displayPrice,  // 供購物車側邊欄顯示跳動價格
     })
   }
 
@@ -82,20 +97,25 @@ const ProductCard = ({ product, rotation }: ProductCardProps) => {
         <span className={styles.darkMark} title="極度危險">☠</span>
       )}
 
-      {/* 媒體區 */}
-      <div className={styles.media}>
-        {mediaUrl ? (
-          mediaUrl.endsWith('.mp4') ? (
-            <video src={mediaUrl} autoPlay loop muted playsInline />
-          ) : (
-            <img src={mediaUrl} alt={name} />
-          )
-        ) : (
-          <span className={styles.mediaPlaceholder}>
-            {MEDIA_PLACEHOLDER[dangerLevel] ?? '🧙'}
-          </span>
-        )}
-      </div>
+      {/* 媒體區：點擊跳轉商品詳情頁 */}
+      <Link to={`/product/${id}`} className={styles.mediaLink}>
+        <div className={styles.media}>
+          {/* 中文註解：優先顯示目前選中 SKU 的專屬圖；無則顯示商品主圖 */}
+          {(() => {
+            const displayUrl = selectedSku?.imageUrl || mediaUrl
+            if (displayUrl) {
+              return displayUrl.endsWith('.mp4')
+                ? <video src={displayUrl} autoPlay loop muted playsInline />
+                : <img src={displayUrl} alt={name} />
+            }
+            return (
+              <span className={styles.mediaPlaceholder}>
+                {MEDIA_PLACEHOLDER[dangerLevel] ?? '🧙'}
+              </span>
+            )
+          })()}
+        </div>
+      </Link>
 
       {/* 卡片內容 */}
       <div className={styles.body}>
@@ -104,10 +124,12 @@ const ProductCard = ({ product, rotation }: ProductCardProps) => {
           {CATEGORY_EMOJI[category]} {CATEGORY_LABELS[category] ?? category}
         </span>
 
-        {/* 商品名稱 */}
-        <h3 className={`${styles.name} ${isExtremeDanger ? styles.dangerTitle : ''}`}>
-          {name}
-        </h3>
+        {/* 商品名稱：點擊跳轉詳情頁 */}
+        <Link to={`/product/${id}`} className={styles.nameLink}>
+          <h3 className={`${styles.name} ${isExtremeDanger ? styles.dangerTitle : ''}`}>
+            {name}
+          </h3>
+        </Link>
 
         {/* 危險等級星星 */}
         <div className={styles.stars} title={`危險等級 ${dangerLevel}`}>
@@ -118,15 +140,33 @@ const ProductCard = ({ product, rotation }: ProductCardProps) => {
           ))}
         </div>
 
-        {/* 商品描述 */}
+        {/* 商品描述（卡片截兩行，詳情頁可看完整） */}
         <p className={styles.description}>{description}</p>
 
-        {/* 庫存數量 */}
+        {/* SKU 規格選擇（多規格時顯示，spec §6.1） */}
+        {hasMultipleSkus && (
+          <div className={styles.skuSelector}>
+            {skuItems.map((sku, idx) => (
+              <button
+                key={sku.id}
+                className={`${styles.skuBtn} ${selectedSkuIdx === idx ? styles.skuBtnActive : ''} ${sku.stock === 0 ? styles.skuBtnSoldOut : ''}`}
+                onClick={() => setSelectedSkuIdx(idx)}
+                disabled={sku.stock === 0}
+                title={sku.stock === 0 ? '此規格已被石內卜沒收' : `庫存：${sku.stock}`}
+              >
+                {sku.spec}
+                {sku.stock === 0 && <span className={styles.skuSoldOutMark}>✗</span>}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* 庫存數量（顯示剩餘可購數量，已扣除購物車中數量） */}
         <p className={styles.stock}>
-          {isOutOfStock ? '' : `庫存：${stock} 件`}
+          {!isOutOfStock && `庫存：${availableStock} 件`}
         </p>
 
-        {/* 價格 */}
+        {/* 價格（依選中 SKU 顯示） */}
         <div className={styles.priceRow}>
           <span className={styles.priceIcon}>💰</span>
           <span className={`${styles.price} ${prankModeEnabled ? styles.prankPrice : ''}`}>
@@ -143,7 +183,7 @@ const ProductCard = ({ product, rotation }: ProductCardProps) => {
           </button>
         ) : isAtMax ? (
           <button className={styles.soldOutBtn} disabled>
-            已達庫存上限（{stock} 件）
+            已達庫存上限（{selectedSku?.stock} 件）
           </button>
         ) : (
           <button className={styles.buyBtn} onClick={handleAddToCart}>

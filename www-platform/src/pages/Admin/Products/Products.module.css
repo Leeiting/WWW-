@@ -91,22 +91,164 @@ tr.hidden td { opacity: 0.45; }
 /* 危險等級星星 */
 .stars { color: var(--red-bright); font-size: 11px; white-space: nowrap; }
 
-/* 庫存數量 */
-.stockNormal { color: var(--green); font-weight: 700; }
-.stockZero { color: var(--red-bright); font-weight: 700; }
+/* ── 庫存警示列 ── */
+/* 庫存 = 0：整列深紅底 + 左側紅光邊線 */
+tr.rowOutOfStock td {
+  background: rgba(139, 0, 0, 0.08) !important;
+  box-shadow: inset 4px 0 0 rgba(200, 0, 0, 0.6);
+  animation: rowPulse 2s ease-in-out infinite;
+}
+/* 庫存 1-4：整列橘紅淡底 + 左側橘色邊線 */
+tr.rowLowStock td {
+  background: rgba(180, 80, 0, 0.07) !important;
+  box-shadow: inset 4px 0 0 rgba(220, 100, 0, 0.55);
+}
+/* 警示列脈衝動畫（只有缺貨才有） */
+@keyframes rowPulse {
+  0%, 100% { background: rgba(139, 0, 0, 0.08) !important; }
+  50%       { background: rgba(139, 0, 0, 0.18) !important; }
+}
 
-/* 從辦公室偷回按鈕 */
+/* ── 警示燈圓點 ── */
+/* 低庫存：橘色呼吸燈 */
+.alertDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e06020;
+  box-shadow: 0 0 6px 2px rgba(220, 100, 0, 0.6);
+  flex-shrink: 0;
+  animation: breatheOrange 1.8s ease-in-out infinite;
+}
+/* 缺貨：紅色急閃 */
+.alertDotOut {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d00000;
+  box-shadow: 0 0 8px 3px rgba(200, 0, 0, 0.7);
+  flex-shrink: 0;
+  animation: flashRed 0.9s ease-in-out infinite;
+}
+@keyframes breatheOrange {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px 2px rgba(220, 100, 0, 0.6); }
+  50%       { opacity: 0.55; box-shadow: 0 0 2px 1px rgba(220, 100, 0, 0.3); }
+}
+@keyframes flashRed {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px 3px rgba(200, 0, 0, 0.7); }
+  50%       { opacity: 0.35; box-shadow: 0 0 2px 1px rgba(200, 0, 0, 0.3); }
+}
+
+/* ── 庫存數量 ── */
+.stockNormal { color: var(--green); font-weight: 700; }
+.stockZero   { color: var(--red-bright); font-weight: 700; }
+.stockLow    { color: #e06020; font-weight: 700; }  /* 中文註解：橘色代表偏低但非缺貨 */
+
+/* ── 每 SKU 庫存列表 ── */
+.skuStockList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skuStockRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(90, 58, 26, 0.2);
+}
+.skuStockRow:last-child { border-bottom: none; padding-bottom: 0; }
+
+.skuStockInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.skuStockSpec {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+/* ── 從辦公室偷回 ── */
+/* 主按鈕 */
 .restockBtn {
+  display: block;
   padding: 4px 10px;
-  background: var(--red);
+  background: rgba(180, 60, 0, 0.7);
   color: #fff;
   border: none;
   border-radius: 4px;
   font-size: 11px;
   white-space: nowrap;
+  cursor: pointer;
   transition: background var(--transition);
 }
-.restockBtn:hover { background: var(--red-bright); }
+.restockBtn:hover { background: rgba(200, 80, 0, 0.9); }
+
+/* 偷回數量輸入面板 */
+.restockPanel {
+  margin-top: 8px;
+  padding: 10px;
+  background: rgba(180, 60, 0, 0.12);
+  border: 1px solid rgba(200, 80, 0, 0.35);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.restockPanelLabel {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.7);
+}
+.restockInput {
+  width: 72px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(200, 80, 0, 0.4);
+  border-radius: 4px;
+  color: var(--text, #F4E7D3);
+  font-size: 13px;
+}
+.restockBtns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+/* 確認偷回（綠） */
+.restockConfirmBtn {
+  padding: 4px 10px;
+  background: rgba(60, 140, 60, 0.6);
+  border: 1px solid rgba(80, 180, 80, 0.45);
+  border-radius: 4px;
+  color: #8de08d;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.restockConfirmBtn:hover { background: rgba(60, 140, 60, 0.85); }
+/* 取消（淡色） */
+.restockCancelBtn {
+  padding: 4px 10px;
+  background: none;
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: 4px;
+  color: rgba(244, 231, 211, 0.5);
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.restockCancelBtn:hover { border-color: rgba(244, 231, 211, 0.5); }
 
 /* 隱身咒 Toggle */
 .toggle {
@@ -332,6 +474,120 @@ tr.hidden td { opacity: 0.45; }
   transition: all var(--transition);
 }
 .cancelBtn:hover { border-color: var(--red); color: var(--red); }
+
+/* 主圖預覽框 */
+.mediaPreview {
+  margin-top: 8px;
+  width: 80px;
+  height: 80px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface2);
+}
+.mediaPreview img,
+.mediaPreview video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── SKU 規格管理區塊 ── */
+.skuSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.skuSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skuHint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin: -4px 0 4px;
+  opacity: 0.8;
+}
+
+.addSkuBtn {
+  padding: 5px 14px;
+  background: rgba(201,151,46,0.12);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  color: var(--gold);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.addSkuBtn:hover { background: rgba(201,151,46,0.25); }
+
+/* SKU 草稿卡片 */
+.skuCard {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skuCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.skuCardTitle {
+  font-family: var(--font-title);
+  font-size: 12px;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+
+.removeSkuBtn {
+  padding: 3px 10px;
+  background: none;
+  border: 1px solid rgba(220,80,80,0.35);
+  border-radius: 6px;
+  color: rgba(220,80,80,0.7);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.removeSkuBtn:hover { border-color: var(--red); color: var(--red-bright); }
+
+/* SKU 欄位列 */
+.skuRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skuLabel {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+}
+
+/* SKU 定價三欄 */
+.skuPriceRow {
+  display: flex;
+  gap: 8px;
+}
+
+.skuPriceField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
 
 /* 空狀態 */
 .emptyRow td {

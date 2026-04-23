@@ -1,0 +1,423 @@
+/* 整頁容器 */
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  padding: 0 0 60px;
+}
+
+/* 頂部導覽列 */
+.topNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(var(--surface-rgb, 30, 20, 10), 0.8);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.backBtn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-dim);
+  font-size: 13px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.backBtn:hover { border-color: var(--gold); color: var(--gold); }
+
+.homeLink {
+  font-family: var(--font-title);
+  font-size: 13px;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.homeLink:hover { color: var(--gold-light); }
+
+/* 找不到商品 */
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 20px;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+.backLink {
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 13px;
+}
+.backLink:hover { color: var(--gold-light); }
+
+/* 雙欄佈局 */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ── 左欄：媒體區 ── */
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 70px;
+  align-self: start;
+}
+
+/* 主媒體框 */
+.mainMedia {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mainMedia img,
+.mainMedia video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s;
+}
+
+.mainMediaOut { opacity: 0.7; }
+
+.mediaGray { filter: grayscale(100%); }
+
+.mediaPlaceholder {
+  font-size: 80px;
+  opacity: 0.25;
+}
+
+/* 缺貨遮罩 */
+.outOfStockOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 16px;
+  color: var(--red-bright);
+  letter-spacing: 1px;
+}
+
+/* SKU 縮圖列 */
+.skuThumbs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.skuThumb {
+  width: 64px;
+  height: 64px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--surface2);
+  padding: 0;
+  position: relative;
+  transition: border-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.skuThumb:hover { border-color: var(--gold); }
+.skuThumbActive { border-color: var(--gold); box-shadow: 0 0 8px rgba(201,151,46,0.4); }
+.skuThumbOut { opacity: 0.4; }
+
+.skuThumb img,
+.skuThumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.skuThumbPlaceholder { font-size: 24px; opacity: 0.4; }
+
+.skuThumbCross {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(139,0,0,0.55);
+  color: #ff6060;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+/* 黑魔警告文字 */
+.darkWarning {
+  background: rgba(139,0,0,0.15);
+  border: 1px solid rgba(200,0,0,0.4);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #e07070;
+  line-height: 1.6;
+  animation: dangerPulse 2s ease-in-out infinite;
+}
+
+@keyframes dangerPulse {
+  0%, 100% { border-color: rgba(200,0,0,0.3); }
+  50%       { border-color: rgba(200,0,0,0.8); }
+}
+
+/* ── 右欄：商品資訊 ── */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 類別標籤 */
+.categoryBadge {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 12px;
+  width: fit-content;
+}
+
+/* 商品名稱 */
+.productName {
+  font-family: var(--font-title);
+  font-size: 26px;
+  color: var(--gold-light);
+  line-height: 1.3;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dangerTitle { animation: titleFlash 0.8s ease-in-out infinite; }
+@keyframes titleFlash {
+  0%, 100% { color: var(--gold-light); }
+  50%       { color: var(--red-bright); }
+}
+
+.skullIcon { font-size: 22px; filter: drop-shadow(0 0 6px rgba(139,0,0,0.8)); }
+
+/* 危險等級列 */
+.dangerRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.stars { display: flex; gap: 3px; font-size: 16px; }
+.starFilled { color: var(--red-bright); }
+.starEmpty { color: var(--border); }
+
+.dangerLabel {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* 分隔線 */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+/* 各小節標題 */
+.sectionTitle {
+  font-family: var(--font-title);
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+/* 商品描述 */
+.descSection { display: flex; flex-direction: column; }
+.description {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+/* SKU 規格選擇 */
+.skuSection { display: flex; flex-direction: column; }
+.skuBtnRow { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.skuBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.skuBtn:hover { border-color: var(--gold); }
+.skuBtnActive {
+  background: rgba(201,151,46,0.15);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 700;
+}
+.skuBtnOut { opacity: 0.4; cursor: not-allowed; }
+
+/* SKU 按鈕內縮圖 */
+.skuBtnThumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--surface);
+}
+.skuBtnThumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.skuSoldMark {
+  font-size: 10px;
+  color: var(--red);
+  background: rgba(139,0,0,0.15);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+/* 規格表 */
+.specSection { display: flex; flex-direction: column; }
+.specTable { width: 100%; border-collapse: collapse; }
+.specTable tr + tr td { border-top: 1px solid rgba(255,255,255,0.04); }
+.specKey {
+  padding: 9px 12px 9px 0;
+  font-size: 12px;
+  color: var(--text-dim);
+  width: 90px;
+  vertical-align: top;
+}
+.specVal {
+  padding: 9px 0;
+  font-size: 13px;
+  color: var(--text);
+}
+.specValDanger { color: var(--red-bright); }
+
+/* 購買區 */
+.buySection {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* 價格列 */
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.priceIcon { font-size: 16px; }
+
+.price {
+  font-family: var(--font-title);
+  font-size: 24px;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.prankPrice {
+  color: var(--red-bright);
+  animation: prankBounce 0.4s ease;
+}
+@keyframes prankBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.prankNote { font-size: 11px; color: var(--text-dim); font-style: italic; }
+
+.cartHint { font-size: 12px; color: var(--text-dim); margin: 0; }
+
+/* 加入購物車按鈕 */
+.buyBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.buyBtn:hover { background: var(--gold-light); transform: scale(1.01); }
+.buyBtn:active { transform: scale(0.99); }
+
+/* 中文註解：加入購物車成功狀態（短暫顯示 1.5 秒後恢復原樣）*/
+.buyBtnAdded {
+  background: rgba(80, 200, 80, 0.85) !important;
+  color: #fff !important;
+  cursor: default !important;
+  transform: none !important;
+}
+
+/* 缺貨按鈕 */
+.soldOutBtn {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: var(--red);
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  font-size: 13px;
+  cursor: not-allowed;
+  opacity: 0.8;
+}

@@ -1,7 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion, useAnimationControls } from 'framer-motion'
 import { usePrankStore } from '@/store/prankStore'
+import { useCartStore } from '@/store/cartStore'
 import styles from './PeevesLayer.module.css'
+
+// 中文註解：魔法攻擊損害賠償品項，固定 skuId，locked = true 不可刪改
+const PEEVES_SKU_ID = 'SKU-PEEVES-MAGIC-ATTACK'
+const PEEVES_ATTACK_ITEM = {
+  productId: 'PEEVES-ATTACK',
+  skuId: PEEVES_SKU_ID,
+  skuSpec: '飛七特供（不可取消）',
+  productName: '⚡ 魔法攻擊損害賠償',
+  basePrice: 29,      // 中文註解：每次攻擊罰款 1 銀閃（29 Knut），spec §10.3
+  displayPrice: 29,
+  locked: true as const,
+}
 
 // 飛七在畫面內隨機產生下一個目標位置
 const randomPos = () => ({
@@ -10,8 +24,10 @@ const randomPos = () => ({
 })
 
 const PeevesLayer = () => {
+  const { pathname } = useLocation()
   const peevesPatrolActive = usePrankStore(s => s.peevesPatrolActive)
   const dismissPeevesPatrol = usePrankStore(s => s.dismissPeevesPatrol)
+  const addItem = useCartStore(s => s.addItem)  // 中文註解：同 skuId 重複呼叫會自動 +1 數量（spec §10.3）
 
   const controls = useAnimationControls()
   const [pos] = useState(randomPos)         // 初始固定位置
@@ -57,6 +73,9 @@ const PeevesLayer = () => {
       setZapping(true)
       moveRef.current = false   // 讓飛七停止移動
 
+      // 中文註解：攻擊成功 → 購物車加入魔法攻擊損害賠償品項（locked，每次攻擊 +1 數量，spec §10.3）
+      addItem(PEEVES_ATTACK_ITEM)
+
       setTimeout(() => {
         setGone(true)
         setZapping(false)
@@ -65,7 +84,8 @@ const PeevesLayer = () => {
     }
   }
 
-  if (!peevesPatrolActive || gone) return null
+  // 中文註解：飛七只在前台出現，後台路徑（/admin）不渲染
+  if (!peevesPatrolActive || gone || pathname.startsWith('/admin')) return null
 
   return (
     <motion.div

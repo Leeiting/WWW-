@@ -1,6 +1,7 @@
 // Mischief Managed — 文具店掩護頁面（Phase 6 實作）
 // 白色、無聊的普通文具店外觀，偽裝用途
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import styles from './StationeryShop.module.css'
 
 // 假商品清單（不可購買）
@@ -52,14 +53,26 @@ const FAKE_PRODUCTS = [
 // 文具店掩護頁面主元件
 const StationeryShop = () => (
   <div className={styles.page}>
+    {/* 中文註解：Mischief Managed 模式下 OG 標籤自動切換為文具店資訊（spec §12.5）*/}
+    <Helmet>
+      <title>怪洛克文具批發 — 您值得信賴的文具夥伴</title>
+      <meta name="description" content="怪洛克文具批發股份有限公司，提供各式文具批發零售業務，品質保證，服務至上。" />
+      <meta property="og:type"        content="website" />
+      <meta property="og:title"       content="怪洛克文具批發 — 您值得信賴的文具夥伴" />
+      <meta property="og:description" content="怪洛克文具批發股份有限公司，提供各式文具批發零售業務，品質保證，服務至上。" />
+      <meta property="og:site_name"   content="怪洛克文具批發股份有限公司" />
+      <meta property="og:locale"      content="zh_TW" />
+      <meta name="twitter:card"        content="summary" />
+      <meta name="twitter:title"       content="怪洛克文具批發 — 您值得信賴的文具夥伴" />
+      <meta name="twitter:description" content="怪洛克文具批發股份有限公司，文具批發零售，品質保證。" />
+    </Helmet>
+
     {/* 頂部橫幅 */}
     <header className={styles.header}>
       <div className={styles.logo}>
         <span className={styles.logoMain}>怪洛克文具批發股份有限公司</span>
         <span className={styles.logoSub}>Knockturn Stationery Co., Ltd. &nbsp;｜&nbsp; 統一編號：00000000</span>
       </div>
-      {/* 管理員隱藏入口（極不顯眼） */}
-      <Link to="/admin" className={styles.adminLink}>後台</Link>
     </header>
 
     {/* 公告橫幅 */}

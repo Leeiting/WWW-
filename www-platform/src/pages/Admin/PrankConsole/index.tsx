@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { usePrankStore } from '@/store/prankStore'
+import { useSiteDiscountStore } from '@/store/siteDiscountStore'
 import styles from './PrankConsole.module.css'
 
 const PrankConsole = () => {
@@ -8,6 +10,28 @@ const PrankConsole = () => {
     howlerConfirmed, confirmHowler,
     peevesPatrolActive, triggerPeevesPatrol, dismissPeevesPatrol,
   } = usePrankStore()
+
+  // 全站折扣
+  const siteDiscount = useSiteDiscountStore()
+  // 表單本地狀態（避免每次打字都送 API）
+  const [discLabel, setDiscLabel] = useState(siteDiscount.label)
+  // 以「折數」顯示（0.8 → 8）
+  const [discFold, setDiscFold] = useState(
+    siteDiscount.rate < 1 ? Math.round(siteDiscount.rate * 10) : 10
+  )
+  const [discSaving, setDiscSaving] = useState(false)
+
+  // 儲存全站折扣
+  const handleSaveDiscount = async () => {
+    setDiscSaving(true)
+    await siteDiscount.update(siteDiscount.enabled, discLabel.trim(), discFold / 10)
+    setDiscSaving(false)
+  }
+
+  // 快捷開關（不變 label / rate，只切換 enabled）
+  const handleToggleDiscount = async () => {
+    await siteDiscount.update(!siteDiscount.enabled, discLabel.trim(), discFold / 10)
+  }
 
   return (
     <div>
@@ -151,6 +175,84 @@ const PrankConsole = () => {
           </div>
         </div>
 
+      </div>
+
+      {/* ── 全站折扣 ── */}
+      <p className={styles.sectionLabel}>促銷活動</p>
+      <div className={`${styles.card} ${siteDiscount.enabled ? styles.active : ''}`} style={{ maxWidth: '520px' }}>
+        <div className={styles.cardHeader}>
+          <span className={styles.cardIcon}>🏷️</span>
+          <div className={styles.cardInfo}>
+            <p className={styles.cardTitle}>全站折扣</p>
+            <p className={styles.cardDesc}>
+              啟用後，結帳時所有商品小計自動套用指定折扣（與優惠券可並用）。
+            </p>
+          </div>
+          {/* 快捷開關 */}
+          <label className={styles.toggle}>
+            <input
+              type="checkbox"
+              checked={siteDiscount.enabled}
+              onChange={() => void handleToggleDiscount()}
+            />
+            <span className={styles.toggleTrack} />
+          </label>
+        </div>
+
+        {/* 狀態燈 */}
+        <div className={styles.statusBadge}>
+          <span className={`${styles.dot} ${siteDiscount.enabled ? styles.on : ''}`} />
+          <span style={{ color: siteDiscount.enabled ? 'var(--gold)' : 'var(--text-dim)' }}>
+            {siteDiscount.enabled
+              ? `ON — ${siteDiscount.label || '全站折扣'} (${Math.round(siteDiscount.rate * 10)}折)`
+              : 'OFF'}
+          </span>
+        </div>
+
+        {/* 設定欄位 */}
+        <div className={styles.discountForm}>
+          {/* 活動標籤 */}
+          <div className={styles.discountField}>
+            <label className={styles.discountLabel}>活動標籤</label>
+            <input
+              className={styles.discountInput}
+              type="text"
+              placeholder="例：開學季全館 8 折"
+              value={discLabel}
+              maxLength={30}
+              onChange={e => setDiscLabel(e.target.value)}
+            />
+          </div>
+
+          {/* 折數（1–9 折） */}
+          <div className={styles.discountField}>
+            <label className={styles.discountLabel}>折數（幾折）</label>
+            <div className={styles.discountSliderRow}>
+              <input
+                className={styles.discountSlider}
+                type="range"
+                min={1}
+                max={9}
+                step={1}
+                value={discFold}
+                onChange={e => setDiscFold(Number(e.target.value))}
+              />
+              <span className={styles.discountValue}>
+                <strong>{discFold}</strong> 折
+                <span className={styles.discountRateNote}>（原價 × {(discFold / 10).toFixed(1)}）</span>
+              </span>
+            </div>
+          </div>
+
+          <button
+            className={styles.triggerBtn}
+            style={{ marginTop: '4px' }}
+            onClick={() => void handleSaveDiscount()}
+            disabled={discSaving}
+          >
+            {discSaving ? '儲存中…' : '💾 儲存設定'}
+          </button>
+        </div>
       </div>
 
       {/* ── 使用說明 ── */}

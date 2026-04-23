@@ -17,135 +17,201 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
 }
 
-/* ── Step 1：榮恩身份確認 ── */
-.ronStep {
-  padding: 40px 36px;
-  text-align: center;
-}
-
-.ronIcon {
-  font-size: 56px;
-  margin-bottom: 16px;
-}
-
-.ronTitle {
-  font-family: var(--font-title);
-  font-size: 20px;
-  color: var(--gold);
-  margin-bottom: 12px;
-}
-
-.ronQuestion {
-  font-size: 14px;
-  color: var(--text);
-  line-height: 1.8;
-  margin-bottom: 28px;
-}
-
-.ronBtnGroup {
+/* ── 步驟進度點 ── */
+.stepBar {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 24px 0;
 }
 
-.btnYes {
-  padding: 12px;
-  background: var(--red);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-family: var(--font-title);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  transition: background var(--transition);
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.2s;
 }
-.btnYes:hover { background: var(--red-bright); }
+.stepDotActive { background: var(--gold); transform: scale(1.4); }
+.stepDotDone { background: var(--gold-light); }
 
-.btnNo {
-  padding: 12px;
-  background: var(--gold);
-  color: var(--bg);
-  border: none;
-  border-radius: var(--radius);
-  font-family: var(--font-title);
-  font-size: 13px;
-  font-weight: 700;
-  transition: background var(--transition);
-}
-.btnNo:hover { background: var(--gold-light); }
-
-/* ── Step 1b：榮恩二次確認 ── */
-.confirmStep {
-  padding: 32px 36px;
-  text-align: center;
+/* ── 通用表單步驟 ── */
+.formStep {
+  padding: 28px 32px 32px;
 }
 
-.confirmWarning {
-  background: rgba(139, 0, 0, 0.15);
-  border: 1px solid var(--red);
-  border-radius: var(--radius);
-  padding: 16px;
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.8;
-  margin-bottom: 24px;
-}
-
-.confirmWarning strong { color: var(--red-bright); }
-
-/* ── Step 2：配送方式 ── */
+/* ── 配送 / 支付方式步驟 ── */
 .deliveryStep {
-  padding: 32px 36px;
+  padding: 28px 32px 32px;
 }
 
 .stepTitle {
   font-family: var(--font-title);
-  font-size: 18px;
+  font-size: 17px;
   color: var(--gold);
   margin-bottom: 20px;
   text-align: center;
 }
 
+/* ── 表單欄位 ── */
+.fieldGroup {
+  margin-bottom: 16px;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.fieldInput {
+  width: 100%;
+  padding: 11px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.fieldInput:focus { border-color: var(--gold); }
+.fieldInput::placeholder { color: var(--text-dim); }
+.fieldInputError { border-color: var(--red) !important; }
+.fieldInputOk { border-color: #5cb85c !important; }
+
+.fieldError {
+  font-size: 12px;
+  color: var(--red-bright);
+  margin-top: 6px;
+}
+
+/* 郵遞區號列：輸入框 + 確認文字並排 */
+.postalRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.postalInput {
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.postalOk {
+  font-size: 12px;
+  color: #5cb85c;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.fieldTextarea {
+  resize: vertical;
+  min-height: 72px;
+  font-family: inherit;
+}
+
+.fieldHint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ── 可用優惠券下拉選單 ── */
+.couponDropdown {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid rgba(201, 151, 46, 0.4);
+  border-radius: 8px;
+  color: var(--gold);
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  appearance: auto;
+}
+.couponDropdown:hover { border-color: var(--gold); }
+.couponDropdown option { background: var(--surface); color: var(--text); }
+
+/* ── 優惠券輸入列 ── */
+.couponRow {
+  display: flex;
+  gap: 8px;
+}
+
+.couponApplyBtn {
+  padding: 11px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all var(--transition);
+}
+.couponApplyBtn:hover { border-color: var(--gold); background: rgba(201, 151, 46, 0.1); }
+
+.couponError {
+  font-size: 12px;
+  color: var(--red-bright);
+  margin-top: 6px;
+}
+
+.couponSuccess {
+  font-size: 12px;
+  color: #5cb85c;
+  margin-top: 6px;
+}
+
+/* ── 配送 / 支付選項 ── */
 .deliveryOptions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .deliveryOption {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   background: var(--surface2);
   border: 2px solid var(--border);
   border-radius: var(--radius);
   cursor: pointer;
   transition: all var(--transition);
   text-align: left;
+  width: 100%;
 }
-
 .deliveryOption:hover { border-color: var(--gold); }
 .deliveryOption.selected { border-color: var(--gold); background: rgba(201, 151, 46, 0.1); }
 
-.deliveryEmoji { font-size: 28px; flex-shrink: 0; }
-
+.deliveryEmoji { font-size: 26px; flex-shrink: 0; }
 .deliveryInfo { flex: 1; }
 .deliveryName {
   font-family: var(--font-title);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text);
   margin-bottom: 2px;
 }
 .deliveryDesc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
-/* 配送時間與費用垂直排列 */
+
 .deliveryMeta {
   display: flex;
   flex-direction: column;
@@ -153,45 +219,66 @@
   gap: 2px;
   flex-shrink: 0;
 }
-.deliveryTime {
-  font-size: 11px;
-  color: var(--gold);
-  text-align: right;
-}
-.deliveryFee {
-  font-size: 11px;
-  color: var(--text);
-  font-weight: 600;
-  text-align: right;
-}
+.deliveryTime { font-size: 11px; color: var(--gold); }
+.deliveryFee { font-size: 11px; color: var(--text); font-weight: 600; }
 
-/* ── Step 3：訂單確認 ── */
+/* ── 訂單確認步驟 ── */
 .confirmOrderStep {
-  padding: 32px 36px;
+  padding: 28px 32px 32px;
 }
 
 .receipt {
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 20px;
+  padding: 14px;
+  margin-bottom: 16px;
   font-size: 13px;
 }
 
 .receiptRow {
   display: flex;
   justify-content: space-between;
-  padding: 6px 0;
+  padding: 5px 0;
   border-bottom: 1px solid var(--border);
   color: var(--text-dim);
+  gap: 8px;
 }
-
 .receiptRow:last-child { border-bottom: none; }
 
+/* SKU 規格說明（收據中）*/
+.receiptSpec {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
 .receiptRowHighlight {
-  color: var(--red);
+  color: var(--red-bright);
   font-weight: 700;
+}
+
+.receiptDiscount {
+  color: #5cb85c;
+  font-weight: 600;
+}
+
+/* 魔法部員工特惠折扣列（藍紫色，區別於一般優惠券）*/
+.receiptMinistry {
+  color: #7b9de8;
+  font-weight: 600;
+}
+
+/* 魔法部員工徽章（信箱欄位下方提示）*/
+.ministryBadge {
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  background: rgba(100, 130, 220, 0.15);
+  border: 1px solid rgba(100, 130, 220, 0.4);
+  border-radius: 6px;
+  color: #7b9de8;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .receiptTotal {
@@ -200,23 +287,51 @@
   font-family: var(--font-title);
   font-size: 16px;
   color: var(--gold-light);
-  margin-top: 12px;
-  padding-top: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-top: 2px solid var(--border);
 }
 
-.ronNote {
-  font-size: 10px;
+/* 魔法波動免責聲明（spec §6.2）*/
+.disclaimer {
+  font-size: 11px;
   color: var(--text-dim);
   text-align: center;
   margin-bottom: 16px;
+  line-height: 1.6;
   font-style: italic;
 }
+
+/* 中文註解：Step 1 的獨立免責聲明框（更醒目，符合透明告知要求） */
+.disclaimerBox {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: rgba(201, 151, 46, 0.06);
+  border: 1px solid rgba(201, 151, 46, 0.28);
+  border-left: 3px solid rgba(201, 151, 46, 0.6);
+  border-radius: 8px;
+}
+
+.disclaimerBoxTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(201, 151, 46, 0.85);
+  margin: 0 0 5px;
+  letter-spacing: 0.3px;
+}
+
+.disclaimerBoxText {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.55);
+  line-height: 1.65;
+  margin: 0;
+}
+.disclaimerBoxText strong { color: rgba(244, 231, 211, 0.8); font-weight: 600; }
 
 /* ── 通用按鈕 ── */
 .primaryBtn {
   width: 100%;
-  padding: 14px;
+  padding: 13px;
   background: var(--gold);
   color: var(--bg);
   border: none;
@@ -229,11 +344,11 @@
   margin-bottom: 8px;
 }
 .primaryBtn:hover { background: var(--gold-light); }
-.primaryBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.primaryBtn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .secondaryBtn {
   width: 100%;
-  padding: 10px;
+  padding: 9px;
   background: none;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -245,15 +360,106 @@
 
 /* ── 成功頁面 ── */
 .successStep {
-  padding: 48px 36px;
+  padding: 36px 28px;
   text-align: center;
 }
 
-.successIcon { font-size: 64px; margin-bottom: 16px; }
+.successIcon { font-size: 56px; margin-bottom: 12px; }
 .successTitle {
   font-family: var(--font-title);
-  font-size: 22px;
+  font-size: 20px;
   color: var(--gold);
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
-.successMsg { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 28px; }
+.successSubtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+}
+
+/* ── 貓頭鷹確認信訂單明細 ── */
+.successReceipt {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.successReceiptTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.successReceiptRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+  color: var(--text);
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.successReceiptRow:last-of-type { border-bottom: none; }
+
+.successReceiptSpec {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.successReceiptDiscount { color: #5cb85c; }
+.successReceiptRon      { color: var(--red-bright); font-weight: 700; }
+
+.successReceiptTotal {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-title);
+  font-size: 14px;
+  color: var(--gold-light);
+  border-top: 2px solid var(--border);
+  margin-top: 6px;
+  padding-top: 10px;
+}
+
+/* ── 收件 / 配送 / 付款資訊區塊 ── */
+.successReceiptInfo {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.successReceiptInfoRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  gap: 8px;
+}
+.successReceiptInfoRow span:first-child {
+  color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.successReceiptInfoRow span:last-child {
+  color: var(--text);
+  text-align: right;
+}
+
+.successHint {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.successDisclaimer {
+  font-size: 11px;
+  color: var(--text-dim);
+  opacity: 0.6;
+}

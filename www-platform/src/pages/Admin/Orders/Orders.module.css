@@ -1,0 +1,573 @@
+/* ── 工具列 ── */
+.toolbar {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.toolbarTitle {
+  font-family: var(--font-title);
+  font-size: 15px;
+  color: var(--gold);
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+.filterGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filterBtn {
+  padding: 5px 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-dim);
+  font-size: 11px;
+  transition: all var(--transition);
+}
+.filterBtn:hover { border-color: var(--gold); color: var(--gold); }
+.filterActive { border-color: var(--gold); color: var(--gold); background: rgba(201, 151, 46, 0.1); }
+
+/* ── 訂單卡片 ── */
+.tableWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.orderCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+.orderCard:hover { border-color: var(--border); }
+
+/* ── 訂單標題列（點擊展開）── */
+.orderHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  gap: 12px;
+  transition: background var(--transition);
+}
+.orderHeader:hover { background: var(--surface2); }
+
+/* 中文註解：訂單列 checkbox（待付款篩選模式）*/
+.orderCheckbox {
+  margin-right: 4px;
+}
+
+.orderMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.orderId {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  background: var(--surface2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.orderEmail {
+  font-size: 12px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ronBadge {
+  font-size: 10px;
+  background: rgba(139, 0, 0, 0.25);
+  border: 1px solid var(--red);
+  color: var(--red-bright);
+  padding: 1px 6px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.orderSummary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.orderDate { font-size: 11px; color: var(--text-dim); }
+.orderTotal { font-family: var(--font-title); font-size: 13px; color: var(--gold-light); }
+.expandIcon { font-size: 10px; color: var(--text-dim); }
+
+/* ── 訂單詳情（展開區）── */
+.orderDetail {
+  border-top: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--surface2);
+}
+
+.detailSection { }
+
+.detailSectionTitle {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.detailRow:last-child { border-bottom: none; }
+
+.specTag { font-size: 11px; color: var(--text-dim); }
+
+.detailDiscount { color: #5cb85c; }
+.detailRon { color: var(--red-bright); font-weight: 700; }
+.detailTotal {
+  font-family: var(--font-title);
+  font-size: 14px;
+  color: var(--gold-light);
+  border-top: 2px solid var(--border) !important;
+  margin-top: 4px;
+  padding-top: 8px !important;
+}
+
+.detailInfo {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+.detailInfo strong { color: var(--text); }
+
+/* ── 修改地址（inline 按鈕） ── */
+.editAddressBtn {
+  margin-left: 8px;
+  padding: 2px 8px;
+  background: none;
+  border: 1px solid rgba(201, 151, 46, 0.35);
+  border-radius: 4px;
+  color: rgba(201, 151, 46, 0.8);
+  font-size: 10px;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all 0.2s;
+}
+.editAddressBtn:hover {
+  background: rgba(201, 151, 46, 0.12);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* 修改地址輸入列 */
+.editAddressRow {
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.editAddressInput {
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--bg);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+  box-sizing: border-box;
+}
+.editAddressBtns {
+  display: flex;
+  gap: 6px;
+}
+.editAddressSaveBtn {
+  padding: 5px 14px;
+  background: rgba(92, 184, 92, 0.2);
+  border: 1px solid rgba(92, 184, 92, 0.45);
+  border-radius: var(--radius);
+  color: #7dcf7d;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.editAddressSaveBtn:hover:not(:disabled) { background: rgba(92, 184, 92, 0.38); }
+.editAddressSaveBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.editAddressCancelBtn {
+  padding: 5px 12px;
+  background: none;
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: var(--radius);
+  color: rgba(244, 231, 211, 0.5);
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.editAddressCancelBtn:hover { border-color: rgba(244, 231, 211, 0.5); }
+
+.trackingCode {
+  background: var(--surface);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--gold);
+}
+
+/* ── 操作區 ── */
+.detailActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.shipRow {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.trackingInput {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+}
+.trackingInput:focus { border-color: var(--gold); }
+
+.actionBtn {
+  padding: 8px 16px;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 700;
+  transition: background var(--transition);
+  white-space: nowrap;
+}
+.actionBtn:hover { background: var(--gold-light); }
+
+.cancelBtn {
+  background: none;
+  border: 1px solid var(--red);
+  color: var(--red-bright);
+}
+.cancelBtn:hover { background: rgba(139, 0, 0, 0.15); }
+
+/* ── 篩選徽章（退款審核中數量）── */
+.filterRefunding {
+  border-color: #f0ad4e;
+  color: #f0ad4e;
+}
+.filterRefunding.filterActive { background: rgba(240, 173, 78, 0.12); }
+
+/* 退款失敗篩選按鈕 */
+.filterRefundFailed {
+  border-color: #8b0000;
+  color: #c0392b;
+}
+.filterRefundFailed.filterActive { background: rgba(139, 0, 0, 0.12); }
+
+.filterBadge {
+  display: inline-block;
+  margin-left: 5px;
+  background: #f0ad4e;
+  color: #1a0e05;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0 5px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+
+/* 退款失敗徽章（紅色）*/
+.filterBadgeRed {
+  background: #8b0000;
+  color: #fff;
+}
+
+/* ── 批量操作列 ── */
+.bulkBar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  background: rgba(201, 151, 46, 0.07);
+  border: 1px solid rgba(201, 151, 46, 0.22);
+  border-radius: var(--radius);
+}
+
+/* 全選 label */
+.selectAllLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* 批量 checkbox 共用樣式 */
+.bulkCheckbox,
+.orderCheckbox {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--gold);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* 已選資訊 + 釋放按鈕群 */
+.releaseInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.releaseCount {
+  font-size: 12px;
+  color: var(--gold);
+}
+
+.releaseBtn {
+  padding: 5px 14px;
+  background: none;
+  border: 1px solid rgba(220, 80, 80, 0.5);
+  border-radius: 6px;
+  color: rgba(220, 80, 80, 0.9);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.releaseBtn:hover { background: rgba(220, 80, 80, 0.12); border-color: rgba(220, 80, 80, 0.8); }
+
+/* 二次確認區 */
+.releaseConfirm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.releaseWarning {
+  font-size: 12px;
+  color: rgba(220, 80, 80, 0.9);
+  font-weight: 600;
+}
+
+.releaseConfirmBtn {
+  padding: 5px 14px;
+  background: rgba(139, 0, 0, 0.3);
+  border: 1px solid rgba(200, 0, 0, 0.5);
+  border-radius: 6px;
+  color: #e07070;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.releaseConfirmBtn:hover:not(:disabled) { background: rgba(139, 0, 0, 0.5); }
+.releaseConfirmBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.releaseCancelBtn {
+  padding: 5px 12px;
+  background: none;
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: 6px;
+  color: rgba(244, 231, 211, 0.5);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.releaseCancelBtn:hover { border-color: rgba(244, 231, 211, 0.45); }
+
+/* 訂單卡片選取高亮 */
+.orderCardSelected {
+  border-color: rgba(201, 151, 46, 0.4) !important;
+  background: rgba(201, 151, 46, 0.04);
+}
+
+/* ── 退款審核區塊 ── */
+.refundActions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.refundNotice {
+  font-size: 12px;
+  color: #f0ad4e;
+  background: rgba(240, 173, 78, 0.08);
+  border: 1px solid rgba(240, 173, 78, 0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  line-height: 1.5;
+}
+
+.refundBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.approveRefundBtn {
+  flex: 1;
+  padding: 9px 16px;
+  background: rgba(92, 184, 92, 0.15);
+  border: 1px solid rgba(92, 184, 92, 0.45);
+  border-radius: var(--radius);
+  color: #5cb85c;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.approveRefundBtn:hover:not(:disabled) { background: rgba(92, 184, 92, 0.28); }
+.approveRefundBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.rejectRefundBtn {
+  flex: 1;
+  padding: 9px 16px;
+  background: none;
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  color: var(--red-bright);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.rejectRefundBtn:hover:not(:disabled) { background: rgba(139, 0, 0, 0.15); }
+.rejectRefundBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── 拒絕退款原因輸入區 ── */
+.rejectReasonArea {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rejectReasonLabel {
+  font-size: 11px;
+  color: var(--red-bright);
+  font-weight: 600;
+}
+
+.rejectReasonInput {
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--bg);
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 12px;
+  font-family: inherit;
+  outline: none;
+  resize: vertical;
+  box-sizing: border-box;
+  line-height: 1.5;
+  transition: border-color 0.2s;
+}
+.rejectReasonInput:focus { border-color: var(--red-bright); }
+.rejectReasonInput::placeholder { color: var(--text-dim); }
+
+.rejectReasonBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.rejectReasonCancelBtn {
+  padding: 9px 16px;
+  background: none;
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: var(--radius);
+  color: rgba(244, 231, 211, 0.45);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.rejectReasonCancelBtn:hover { border-color: rgba(244, 231, 211, 0.4); }
+
+/* ── 退貨中篩選按鈕 ── */
+.filterReturnPending {
+  border-color: #9b59b6;
+  color: #9b59b6;
+}
+.filterReturnPending.filterActive { background: rgba(155, 89, 182, 0.12); }
+
+/* ── 配送異常篩選按鈕 ── */
+.filterShippingFailed {
+  border-color: #e67e22;
+  color: #e67e22;
+}
+.filterShippingFailed.filterActive { background: rgba(230, 126, 34, 0.12); }
+
+/* ── 需注意的徽章（退款審核中 / 退貨中 / 配送異常）── */
+.filterBadgeAlert {
+  background: #e67e22;
+  color: #fff;
+}
+
+/* ── 警告操作按鈕（配送異常標記用）── */
+.warningBtn {
+  background: rgba(230, 126, 34, 0.1);
+  border-color: rgba(230, 126, 34, 0.4);
+  color: #e67e22;
+}
+.warningBtn:hover { background: rgba(230, 126, 34, 0.2); }
+
+/* ── 退貨中操作區 ── */
+.returnPendingActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

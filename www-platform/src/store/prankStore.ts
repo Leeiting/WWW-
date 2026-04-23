@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { auditLog } from './auditLogStore'
 
 // 惡搞狀態介面
 interface PrankStore {
@@ -28,21 +29,29 @@ export const usePrankStore = create<PrankStore>()(
       peevesPatrolActive: false,
       misManagedActive: false,
 
-      togglePrankMode: () =>
-        set(s => ({ prankModeEnabled: !s.prankModeEnabled })),
+      togglePrankMode: () => {
+        const next = !get().prankModeEnabled
+        set({ prankModeEnabled: next })
+        auditLog({ category: 'config', action: next ? '開啟惡搞模式' : '關閉惡搞模式', target: 'Prank Console' })
+      },
 
       // 關閉時同步重置確認狀態，下次開啟需重新確認
-      toggleHowlerMode: () =>
+      toggleHowlerMode: () => {
+        const next = !get().howlerModeEnabled
         set(s => ({
           howlerModeEnabled: !s.howlerModeEnabled,
           howlerConfirmed: s.howlerModeEnabled ? false : s.howlerConfirmed,
-        })),
+        }))
+        auditLog({ category: 'config', action: next ? '開啟吼叫信' : '關閉吼叫信', target: 'Prank Console' })
+      },
 
       // 後台點擊確認後，前台才顯示橫幅
       confirmHowler: () => set({ howlerConfirmed: true }),
 
-      triggerPeevesPatrol: () =>
-        set({ peevesPatrolActive: true }),
+      triggerPeevesPatrol: () => {
+        set({ peevesPatrolActive: true })
+        auditLog({ category: 'config', action: '啟動飛七巡邏', target: 'Prank Console' })
+      },
 
       dismissPeevesPatrol: () =>
         set({ peevesPatrolActive: false }),
@@ -62,6 +71,7 @@ export const usePrankStore = create<PrankStore>()(
           howlerConfirmed: false,
           peevesPatrolActive: false,
         })
+        auditLog({ category: 'config', action: '啟動 Mischief Managed', target: '掩護模式', detail: '前台切換為文具店' })
       },
 
       // 解除掩護：恢復之前的惡搞狀態
@@ -73,6 +83,7 @@ export const usePrankStore = create<PrankStore>()(
         } catch {
           set({ misManagedActive: false })
         }
+        auditLog({ category: 'config', action: '解除 Mischief Managed', target: '掩護模式', detail: '前台恢復法寶店' })
       },
     }),
     {

@@ -1,0 +1,97 @@
+/* 置頂橫幅容器 */
+/* 中文註解：fixed 確保滾動時橫幅永遠釘在頂部（spec §12.5 優惠券橫幅）*/
+.banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px;
+  background: linear-gradient(90deg, rgba(24, 14, 9, 0.97), rgba(40, 20, 10, 0.97));
+  border-bottom: 1px solid rgba(201, 151, 46, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+/* 「優惠券」標籤 */
+.tag {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold, #c9972e);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* 橫向捲動軌道 */
+.track {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE/Edge */
+}
+.track::-webkit-scrollbar { display: none; }
+
+/* 單張券 chip */
+.chip {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(201, 151, 46, 0.1);
+  border: 1px solid rgba(201, 151, 46, 0.3);
+  border-radius: 20px;
+}
+
+/* 魔法部專屬券用藍紫色 */
+.chipMinistry {
+  background: rgba(100, 130, 220, 0.1);
+  border-color: rgba(100, 130, 220, 0.35);
+}
+
+/* 代碼 */
+.code {
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-light, #f0d060);
+  letter-spacing: 0.04em;
+}
+
+.chipMinistry .code {
+  color: #8aabf0;
+}
+
+/* 折扣說明 */
+.discount {
+  font-size: 11px;
+  color: #7eca7e;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 最低消費 */
+.min {
+  font-size: 10px;
+  color: rgba(244, 231, 211, 0.4);
+  white-space: nowrap;
+}
+
+/* 關閉按鈕 */
+.close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: rgba(244, 231, 211, 0.4);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.close:hover { color: rgba(244, 231, 211, 0.8); }

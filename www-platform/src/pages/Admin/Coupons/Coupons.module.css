@@ -1,0 +1,335 @@
+/* 頁面容器 */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 標題列 */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title {
+  font-family: var(--font-title);
+  font-size: 20px;
+  color: var(--gold);
+  margin: 0 0 2px;
+}
+
+.sub {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.5);
+  margin: 0;
+}
+
+.addBtn {
+  padding: 8px 16px;
+  background: rgba(201, 151, 46, 0.15);
+  border: 1px solid rgba(201, 151, 46, 0.4);
+  border-radius: 8px;
+  color: var(--gold);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.addBtn:hover { background: rgba(201, 151, 46, 0.25); }
+
+/* 成功提示 */
+.success {
+  padding: 10px 14px;
+  background: rgba(92, 184, 92, 0.12);
+  border: 1px solid rgba(92, 184, 92, 0.3);
+  border-radius: 8px;
+  color: #7eca7e;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ── 新增表單 ── */
+.form {
+  padding: 20px;
+  background: rgba(244, 231, 211, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.formTitle {
+  font-family: var(--font-title);
+  font-size: 14px;
+  color: var(--gold-light);
+  margin: 0 0 16px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.6);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.input {
+  padding: 8px 10px;
+  background: rgba(244, 231, 211, 0.06);
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input:focus { border-color: rgba(201, 151, 46, 0.5); }
+
+.inputHint {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.4);
+}
+
+/* 折扣類型切換按鈕 */
+.typeRow {
+  display: flex;
+  gap: 8px;
+}
+
+.typeBtn {
+  flex: 1;
+  padding: 7px;
+  background: rgba(244, 231, 211, 0.05);
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: 6px;
+  color: rgba(244, 231, 211, 0.6);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.typeBtnActive {
+  background: rgba(201, 151, 46, 0.18);
+  border-color: rgba(201, 151, 46, 0.5);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* checkbox 列 */
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(244, 231, 211, 0.8);
+  cursor: pointer;
+}
+
+.formError {
+  margin: 10px 0 0;
+  color: #e07070;
+  font-size: 13px;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.submitBtn {
+  padding: 10px 20px;
+  background: rgba(201, 151, 46, 0.2);
+  border: 1px solid rgba(201, 151, 46, 0.5);
+  border-radius: 8px;
+  color: var(--gold);
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.submitBtn:hover:not(:disabled) { background: rgba(201, 151, 46, 0.35); }
+.submitBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.cancelBtn {
+  padding: 10px 16px;
+  background: none;
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: 8px;
+  color: rgba(244, 231, 211, 0.6);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.cancelBtn:hover { border-color: rgba(244, 231, 211, 0.4); }
+
+/* ── 折價券列表 ── */
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table thead th {
+  padding: 10px 14px;
+  background: rgba(244, 231, 211, 0.06);
+  color: rgba(244, 231, 211, 0.55);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tbody tr {
+  border-bottom: 1px solid rgba(244, 231, 211, 0.06);
+  transition: background 0.15s;
+}
+.table tbody tr:last-child { border-bottom: none; }
+.table tbody tr:hover { background: rgba(244, 231, 211, 0.03); }
+
+.table tbody td {
+  padding: 12px 14px;
+  vertical-align: top;
+}
+
+/* 非啟用列半透明 */
+.rowInactive td {
+  opacity: 0.45;
+}
+
+/* 代碼欄 */
+.codeCell {
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--gold-light, #f0d060);
+  background: rgba(201, 151, 46, 0.1);
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: block;
+  width: fit-content;
+  margin-bottom: 4px;
+}
+
+.protectedTag {
+  display: inline-block;
+  padding: 1px 6px;
+  background: rgba(244, 231, 211, 0.1);
+  border-radius: 10px;
+  color: rgba(244, 231, 211, 0.45);
+  font-size: 10px;
+  margin-right: 4px;
+}
+
+.ministryTag {
+  display: inline-block;
+  padding: 1px 6px;
+  background: rgba(100, 130, 220, 0.15);
+  border: 1px solid rgba(100, 130, 220, 0.35);
+  border-radius: 10px;
+  color: #7b9de8;
+  font-size: 10px;
+}
+
+/* 名稱 / 說明 */
+.couponLabel {
+  margin: 0 0 3px;
+  font-weight: 600;
+  color: rgba(244, 231, 211, 0.9);
+}
+
+.couponDesc {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.5);
+}
+
+/* 折扣欄 */
+.discountCell {
+  color: #5cb85c;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 限制欄 */
+.limitCell {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.55);
+  white-space: nowrap;
+}
+
+/* 狀態徽章 */
+.statusBadge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statusOn {
+  background: rgba(92, 184, 92, 0.15);
+  border: 1px solid rgba(92, 184, 92, 0.4);
+  color: #5cb85c;
+}
+
+.statusOff {
+  background: rgba(100, 100, 100, 0.15);
+  border: 1px solid rgba(100, 100, 100, 0.35);
+  color: rgba(244, 231, 211, 0.4);
+}
+
+/* 操作按鈕組 */
+.actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.toggleBtn {
+  padding: 5px 10px;
+  background: rgba(201, 151, 46, 0.1);
+  border: 1px solid rgba(201, 151, 46, 0.35);
+  border-radius: 6px;
+  color: var(--gold);
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.toggleBtn:hover { background: rgba(201, 151, 46, 0.22); }
+
+.deleteBtn {
+  padding: 5px 10px;
+  background: rgba(139, 0, 0, 0.1);
+  border: 1px solid rgba(139, 0, 0, 0.35);
+  border-radius: 6px;
+  color: #c84b4b;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.deleteBtn:hover { background: rgba(139, 0, 0, 0.2); }

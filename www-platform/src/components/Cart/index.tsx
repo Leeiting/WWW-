@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { useCartStore, formatPrice } from '@/store/cartStore'
 import { useProductStore } from '@/store/productStore'
+import { useAuthStore } from '@/store/authStore'
 import styles from './Cart.module.css'
 
 const CATEGORY_EMOJI: Record<string, string> = {
@@ -21,11 +23,24 @@ const Cart = ({ onClose, onCheckout }: CartProps) => {
   const updateQty = useCartStore(s => s.updateQty)
   const removeItem = useCartStore(s => s.removeItem)
   const clearCart = useCartStore(s => s.clearCart)
+  const user = useAuthStore(s => s.user)
 
-  // 建立商品 id → 庫存 的對照表，用於限制加購數量
+  // 建立 skuId → 庫存 & 類別 的對照表（從 productStore 讀取 SKU 庫存上限）
   const products = useProductStore(s => s.products)
-  const stockMap = useMemo(
-    () => Object.fromEntries(products.map(p => [p.id, p.stock])),
+  const skuStockMap = useMemo(
+    () => {
+      const map: Record<string, number> = {}
+      for (const p of products) {
+        for (const s of p.skuItems) {
+          map[s.id] = s.stock
+        }
+      }
+      return map
+    },
+    [products]
+  )
+  const categoryMap = useMemo(
+    () => Object.fromEntries(products.map(p => [p.id, p.category])),
     [products]
   )
 
@@ -52,39 +67,57 @@ const Cart = ({ onClose, onCheckout }: CartProps) => {
         ) : (
           <div className={styles.itemList}>
             {items.map(item => (
-              <div key={item.productId} className={styles.item}>
+              <div
+                key={item.skuId}
+                className={`${styles.item} ${item.locked ? styles.itemLocked : ''}`}
+              >
+                {/* 鎖定品項顯示特殊圖示，一般品項顯示類別 emoji */}
                 <span className={styles.itemEmoji}>
-                  {CATEGORY_EMOJI['prank']}
+                  {item.locked ? '⚡' : (CATEGORY_EMOJI[categoryMap[item.productId] ?? 'prank'] ?? '🎁')}
                 </span>
                 <div className={styles.itemInfo}>
-                  <p className={styles.itemName}>{item.productName}</p>
+                  {/* 商品名稱 + 規格標籤 */}
+                  <p className={styles.itemName}>
+                    {item.productName}
+                    {item.skuSpec && item.skuSpec !== '標準版' && (
+                      <span className={styles.skuBadge}>{item.skuSpec}</span>
+                    )}
+                    {/* 中文註解：鎖定品項（spec §10.3）顯示鎖定標記，提示用戶不可刪改 */}
+                    {item.locked && <span className={styles.lockedBadge}>🔒 不可取消</span>}
+                  </p>
                   <p className={styles.itemPrice}>
                     {formatPrice(item.displayPrice)} × {item.quantity}
                     　＝　{formatPrice(item.displayPrice * item.quantity)}
                   </p>
                 </div>
 
-                {/* 數量調整 */}
-                <div className={styles.qtyControl}>
-                  <button
-                    className={styles.qtyBtn}
-                    onClick={() => updateQty(item.productId, item.quantity - 1)}
-                  >－</button>
-                  <span className={styles.qty}>{item.quantity}</span>
-                  <button
-                    className={styles.qtyBtn}
-                    onClick={() => updateQty(item.productId, item.quantity + 1)}
-                    disabled={item.quantity >= (stockMap[item.productId] ?? Infinity)}
-                    title={item.quantity >= (stockMap[item.productId] ?? Infinity) ? '已達庫存上限' : undefined}
-                  >＋</button>
-                </div>
+                {/* 數量調整：鎖定品項隱藏按鈕，只顯示數量 */}
+                {item.locked ? (
+                  <span className={styles.lockedQty}>{item.quantity}</span>
+                ) : (
+                  <div className={styles.qtyControl}>
+                    <button
+                      className={styles.qtyBtn}
+                      onClick={() => updateQty(item.skuId, item.quantity - 1)}
+                    >－</button>
+                    <span className={styles.qty}>{item.quantity}</span>
+                    <button
+                      className={styles.qtyBtn}
+                      onClick={() => updateQty(item.skuId, item.quantity + 1)}
+                      disabled={item.quantity >= (skuStockMap[item.skuId] ?? Infinity)}
+                      title={item.quantity >= (skuStockMap[item.skuId] ?? Infinity) ? '已達庫存上限' : undefined}
+                    >＋</button>
+                  </div>
+                )}
 
-                {/* 移除 */}
-                <button
-                  className={styles.removeBtn}
-                  onClick={() => removeItem(item.productId)}
-                  title="移除商品"
-                >🗑</button>
+                {/* 移除：鎖定品項不顯示刪除按鈕 */}
+                {!item.locked && (
+                  <button
+                    className={styles.removeBtn}
+                    onClick={() => removeItem(item.skuId)}
+                    title="移除商品"
+                  >🗑</button>
+                )}
               </div>
             ))}
           </div>
@@ -98,7 +131,7 @@ const Cart = ({ onClose, onCheckout }: CartProps) => {
               <span>{formatPrice(subtotal())}</span>
             </div>
 
-            {/* 榮恩稅說明 */}
+            {/* 榮恩稅說明（若已辨識為榮恩才顯示） */}
             {isRon && (
               <div className={styles.subtotalRow} style={{ color: 'var(--red)' }}>
                 <span>家屬服務費 100%</span>
@@ -111,9 +144,18 @@ const Cart = ({ onClose, onCheckout }: CartProps) => {
               <span>{formatPrice(total())}</span>
             </div>
 
-            <button className={styles.checkoutBtn} onClick={onCheckout}>
-              前往結帳 →
-            </button>
+            {user ? (
+              <button className={styles.checkoutBtn} onClick={onCheckout}>
+                前往結帳 →
+              </button>
+            ) : (
+              <div className={styles.loginPrompt}>
+                <p className={styles.loginPromptText}>⚠️ 請先登入才能下訂單</p>
+                <Link to="/auth" className={styles.loginPromptBtn} onClick={onClose}>
+                  🦉 前往登入 / 註冊
+                </Link>
+              </div>
+            )}
             <button className={styles.clearBtn} onClick={clearCart}>
               清空購物車
             </button>

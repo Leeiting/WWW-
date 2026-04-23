@@ -1,0 +1,222 @@
+// Prisma Schema（資料庫結構定義，對應 WWW-spec.md §5）
+// 預設使用 SQLite，方便本機直接跑；若要改 MySQL，將 provider 改為 "mysql" 並設定 DATABASE_URL。
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum AuthProvider {
+  local
+  google
+  facebook
+}
+
+enum UserLevel {
+  normal
+  ron
+  vip
+  admin
+}
+
+enum ProductCategory {
+  prank
+  defense
+  love_potion
+  fireworks
+  magical_beast
+}
+
+enum OrderStatus {
+  unpaid
+  processing
+  shipped
+  completed
+  cancelled
+  refunding       // 退款審核中
+  return_pending  // 退貨中：管理員批准退款，等待用戶寄回商品
+  shipping_failed // 配送異常：貓頭鷹找不到地址或被截胡
+  rejected        // 退款被拒絕：管理員拒絕退款，可再轉為 completed
+  refunded
+  refund_failed   // 已棄用：請用 rejected；保留供舊資料相容
+}
+
+enum ShippingMethod {
+  instant
+  broom
+  thestral
+  knight_bus
+}
+
+enum PaymentMethod {
+  vault_transfer
+  cash_on_delivery
+  mock_card
+}
+
+enum CouponDiscountType {
+  percentage
+  fixed
+}
+
+model User {
+  u_id          String       @id @default(uuid())
+  email         String       @unique
+  password_hash String?
+  auth_provider AuthProvider @default(local)
+  avatar_url    String?
+  display_name  String?
+  user_level    UserLevel    @default(normal)
+  created_at    DateTime     @default(now())
+  updated_at    DateTime     @updatedAt
+
+  orders        Order[]
+  audit_logs    AdminAuditLog[] @relation("AdminUserAuditLogs")
+}
+
+model Product {
+  p_id         String          @id @default(uuid())
+  name         String
+  category     ProductCategory
+  description  String?
+  danger_level Int
+  media_url    String?
+  is_hidden    Boolean         @default(false)
+  created_at   DateTime        @default(now())
+
+  skus         SKUItem[]
+}
+
+model SKUItem {
+  s_id           String   @id @default(uuid())
+  p_id           String
+  spec           String
+  price_knut     Decimal
+  stock          Int      @default(0)
+  stock_reserved Int      @default(0) // 凍結庫存（對應 spec §9.2）
+  weight_g       Int?
+  image_url      String?
+
+  product        Product  @relation(fields: [p_id], references: [p_id], onDelete: Cascade)
+  order_items    OrderItem[]
+  stock_logs     StockLog[]  // 中文註解：此 SKU 的所有庫存異動紀錄
+
+  @@unique([p_id, spec])
+}
+
+model Coupon {
+  c_id           String             @id @default(uuid())
+  code           String             @unique
+  discount_type  CouponDiscountType
+  discount_value Decimal
+  min_spend_knut Decimal            @default(0)
+  max_uses       Int?
+  used_count     Int                @default(0)
+  expires_at     DateTime?
+  is_active      Boolean            @default(true)
+  created_at     DateTime           @default(now())
+
+  orders         Order[]
+}
+
+model Order {
+  o_id                 String        @id @default(uuid())
+  u_id                 String
+  status               OrderStatus   @default(unpaid)
+  total_knut           Decimal
+  shipping_method      ShippingMethod
+  payment_method       PaymentMethod
+  tracking_number      String?
+  shipping_address     String
+  is_ron               Boolean       @default(false)
+  coupon_id            String?
+  discount_snapshot    Json?
+  payment_id           String?
+  final_captured_amount Decimal?
+  idempotency_key      String?       @unique  // 中文註解：冪等鍵，防止網路重試或連點造成重複下單
+  refund_reject_reason String?                // 中文註解：管理員拒絕退款時填寫的原因，前台顯示給顧客
+  created_at           DateTime      @default(now())
+  updated_at           DateTime      @updatedAt
+
+  user                 User          @relation(fields: [u_id], references: [u_id], onDelete: Cascade)
+  coupon               Coupon?       @relation(fields: [coupon_id], references: [c_id], onDelete: SetNull)
+  items                OrderItem[]
+  stock_logs           StockLog[]    // 中文註解：此訂單觸發的庫存異動紀錄
+}
+
+model OrderItem {
+  oi_id             String   @id @default(uuid())
+  o_id              String
+  s_id              String
+  quantity          Int
+  unit_price_knut   Decimal
+  snapshot_name     String   @default("")
+  snapshot_spec     String   @default("")
+  snapshot_image_url String?
+
+  order             Order    @relation(fields: [o_id], references: [o_id], onDelete: Cascade)
+  sku               SKUItem  @relation(fields: [s_id], references: [s_id], onDelete: Restrict)
+}
+
+// 中文註解：庫存變動紀錄表，追蹤所有 stock 欄位異動事件（訂單扣款 / 退款還原 / 手動補貨）
+model StockLog {
+  log_id           String   @id @default(uuid())
+  s_id             String
+  change_qty       Int                              // 正數 = 庫存增加（補貨/退款還原）；負數 = 庫存減少（訂單扣款）
+  reason           String                           // 'order_placed'|'payment_confirmed'|'order_cancelled'|'refund_approved'|'manual_restock'|'steal_back'|'sku_update'
+  related_order_id String?                          // 關聯訂單 ID（手動補貨時為空）
+  note             String?                          // 系統自動填寫的說明
+  created_at       DateTime @default(now())
+
+  sku              SKUItem  @relation(fields: [s_id], references: [s_id], onDelete: Cascade)
+  order            Order?   @relation(fields: [related_order_id], references: [o_id], onDelete: SetNull)
+}
+
+model AdminAuditLog {
+  log_id      String   @id @default(uuid())
+  admin_id    String
+  action      String
+  target_type String?
+  target_id   String?
+  payload     Json?
+  ip_address  String?
+  created_at  DateTime @default(now())
+
+  admin       User     @relation("AdminUserAuditLogs", fields: [admin_id], references: [u_id], onDelete: Cascade)
+}
+
+// 中文註解：IP 黑名單（魔法部監控名單），mischiefGuard 中介層用來比對訪客 IP
+model IpBlacklist {
+  id         Int      @id @default(autoincrement())
+  ip_cidr    String   @unique  // IPv4 / IPv6 位址或 CIDR（如 192.168.1.100、10.0.0.0/8）
+  note       String?           // 備註（如「魔法部總部 IP 段」）
+  created_at DateTime @default(now())
+}
+
+// 中文註解：Mischief Managed 自動觸發日誌（IP 黑名單命中 / 高頻訪問）
+model MischiefTriggerLog {
+  id           Int      @id @default(autoincrement())
+  source_ip    String
+  trigger_type String   // 'ip_blacklist' | 'rate_limit'
+  note         String?
+  created_at   DateTime @default(now())
+}
+
+model SystemConfig {
+  id                     Int      @id @default(1)
+  prank_mode_enabled     Boolean  @default(false)
+  howler_mode_enabled    Boolean  @default(false)
+  peeves_patrol_active   Boolean  @default(false)
+  mis_managed_active     Boolean  @default(false)
+  price_random_min       Float    @default(0.5)
+  price_random_max       Float    @default(5.0)
+  // 中文註解：全站折扣（管理員可設定標籤與折扣倍率，0.8 = 8折）
+  site_discount_enabled  Boolean  @default(false)
+  site_discount_label    String   @default("")
+  site_discount_rate     Float    @default(1.0)
+  updated_at             DateTime @updatedAt
+}

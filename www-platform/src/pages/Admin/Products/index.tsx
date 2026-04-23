@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useProductStore, toKnut } from '@/store/productStore'
 import { formatPrice } from '@/store/cartStore'
-import type { Product, ProductCategory } from '@/types'
+import type { Product, ProductCategory, SKUItem } from '@/types'
 import styles from './Products.module.css'
 
 // 類別選項
@@ -29,21 +29,63 @@ const emptyForm = {
 
 type FormData = typeof emptyForm
 
+// SKU 草稿格式（含臨時 key 供 UI 操作）
+interface SkuDraft {
+  draftKey: string        // 中文註解：UI 操作用的臨時唯一鍵（非資料庫 ID）
+  spec: string
+  galleon: number
+  sickle: number
+  knut: number
+  stock: number
+  imageUrl: string
+  weightG: string         // 中文註解：空字串代表未填
+}
+
+// 建立空白 SKU 草稿
+const emptySkuDraft = (): SkuDraft => ({
+  draftKey: `draft-${Date.now()}-${Math.random()}`,
+  spec: '',
+  galleon: 0,
+  sickle: 0,
+  knut: 0,
+  stock: 10,
+  imageUrl: '',
+  weightG: '',
+})
+
+// 將 SKUItem 轉為草稿格式（供編輯時填入）
+const skuToDraft = (sku: SKUItem): SkuDraft => ({
+  draftKey: sku.id,
+  spec: sku.spec,
+  galleon: sku.price.galleon,
+  sickle: sku.price.sickle,
+  knut: sku.price.knut,
+  stock: sku.stock,
+  imageUrl: sku.imageUrl ?? '',
+  weightG: sku.weightG !== undefined ? String(sku.weightG) : '',
+})
+
 const AdminProducts = () => {
   const products = useProductStore(s => s.products)
   const addProduct = useProductStore(s => s.addProduct)
   const updateProduct = useProductStore(s => s.updateProduct)
   const deleteProduct = useProductStore(s => s.deleteProduct)
-  const restockProduct = useProductStore(s => s.restockProduct)
+  const restockSKU = useProductStore(s => s.restockSKU)
   const toggleHidden = useProductStore(s => s.toggleHidden)
 
   const [showForm, setShowForm] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [form, setForm] = useState<FormData>(emptyForm)
+  // 中文註解：SKU 草稿列表（獨立管理，與主表單欄位分離）
+  const [skuDrafts, setSkuDrafts] = useState<SkuDraft[]>([])
+  // 從辦公室偷回：記錄目標 SKU（productId + skuId）與輸入數量
+  const [restockTarget, setRestockTarget] = useState<{ productId: string; skuId: string } | null>(null)
+  const [restockQty, setRestockQty] = useState(5)
 
   // 開啟新增表單
   const openAdd = () => {
     setForm(emptyForm)
+    setSkuDrafts([emptySkuDraft()])  // 中文註解：預設一個空白 SKU
     setEditingId(null)
     setShowForm(true)
   }
@@ -62,6 +104,8 @@ const AdminProducts = () => {
       isHidden: p.isHidden,
       description: p.description,
     })
+    // 中文註解：將現有 SKU 轉為草稿格式；若無 SKU 則預設一個空白
+    setSkuDrafts(p.skuItems.length > 0 ? p.skuItems.map(skuToDraft) : [emptySkuDraft()])
     setEditingId(p.id)
     setShowForm(true)
   }
@@ -69,6 +113,19 @@ const AdminProducts = () => {
   // 儲存（新增 or 更新）
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    // 中文註解：過濾掉規格名稱未填的草稿，並轉回 SKUItem 格式
+    const validSkus = skuDrafts
+      .filter(d => d.spec.trim() !== '')
+      .map((d, idx) => ({
+        id: editingId ? d.draftKey : `SKU-${editingId ?? 'new'}-${idx}`,
+        productId: editingId ?? '',
+        spec: d.spec.trim(),
+        price: { galleon: d.galleon, sickle: d.sickle, knut: d.knut },
+        stock: d.stock,
+        imageUrl: d.imageUrl.trim() || undefined,
+        weightG: d.weightG !== '' ? Number(d.weightG) : undefined,
+      } satisfies Omit<SKUItem, 'productId'> & { productId: string }))
+
     const data = {
       name: form.name.trim(),
       category: form.category,
@@ -78,6 +135,7 @@ const AdminProducts = () => {
       mediaUrl: form.mediaUrl.trim(),
       isHidden: form.isHidden,
       description: form.description.trim(),
+      skuItems: validSkus,  // 中文註解：傳入完整 SKU 列表（空陣列時 store 自動補標準版）
     }
     if (editingId) {
       updateProduct(editingId, data)
@@ -97,6 +155,17 @@ const AdminProducts = () => {
   // 表單欄位更新
   const set = <K extends keyof FormData>(key: K, value: FormData[K]) =>
     setForm(prev => ({ ...prev, [key]: value }))
+
+  // SKU 草稿欄位更新
+  const setSku = <K extends keyof SkuDraft>(draftKey: string, field: K, value: SkuDraft[K]) =>
+    setSkuDrafts(prev => prev.map(d => d.draftKey === draftKey ? { ...d, [field]: value } : d))
+
+  // 新增 SKU 草稿
+  const addSkuDraft = () => setSkuDrafts(prev => [...prev, emptySkuDraft()])
+
+  // 刪除 SKU 草稿
+  const removeSkuDraft = (draftKey: string) =>
+    setSkuDrafts(prev => prev.filter(d => d.draftKey !== draftKey))
 
   return (
     <>
@@ -125,12 +194,31 @@ const AdminProducts = () => {
               <tr className={styles.emptyRow}>
                 <td colSpan={7}>尚無商品，點擊「新增商品」開始吧！</td>
               </tr>
-            ) : products.map(p => (
-              <tr key={p.id} className={p.isHidden ? styles.hidden : ''}>
+            ) : products.map(p => {
+              // 中文註解：根據所有 SKU 判斷警示等級（任一 SKU 缺貨即視為缺貨；任一 SKU 偏低即視為偏低）
+              const hasOutOfStock = p.skuItems.some(s => s.stock === 0)
+              const hasLowStock = !hasOutOfStock && p.skuItems.some(s => s.stock > 0 && s.stock < 5)
+              const needsRestock = hasOutOfStock || hasLowStock
+
+              return (
+              <tr
+                key={p.id}
+                className={[
+                  p.isHidden ? styles.hidden : '',
+                  hasOutOfStock ? styles.rowOutOfStock : hasLowStock ? styles.rowLowStock : '',
+                ].filter(Boolean).join(' ')}
+              >
                 {/* 商品名稱 */}
                 <td>
-                  <p className={styles.productName} title={p.name}>{p.name}</p>
-                  <p style={{ fontSize: '10px', color: 'var(--text-dim)', marginTop: '2px' }}>{p.id}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {needsRestock && (
+                      <span className={hasOutOfStock ? styles.alertDotOut : styles.alertDot} title={hasOutOfStock ? '有 SKU 缺貨' : '有 SKU 庫存偏低'} />
+                    )}
+                    <div>
+                      <p className={styles.productName} title={p.name}>{p.name}</p>
+                      <p style={{ fontSize: '10px', color: 'var(--text-dim)', marginTop: '2px' }}>{p.id}</p>
+                    </div>
+                  </div>
                 </td>
 
                 {/* 類別 */}
@@ -145,22 +233,70 @@ const AdminProducts = () => {
                   {formatPrice(toKnut(p.price.galleon, p.price.sickle, p.price.knut))}
                 </td>
 
-                {/* 庫存 */}
-                <td>
-                  {p.stock === 0 ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span className={styles.stockZero}>0（缺貨）</span>
-                      <button
-                        className={styles.restockBtn}
-                        onClick={() => restockProduct(p.id)}
-                        title="從辦公室偷回（恢復庫存 5）"
-                      >
-                        從辦公室偷回
-                      </button>
-                    </div>
-                  ) : (
-                    <span className={styles.stockNormal}>{p.stock}</span>
-                  )}
+                {/* 庫存：每個 SKU 獨立顯示 */}
+                <td style={{ verticalAlign: 'top', minWidth: '140px' }}>
+                  <div className={styles.skuStockList}>
+                    {p.skuItems.map(sku => {
+                      const isOut = sku.stock === 0
+                      const isLow = sku.stock > 0 && sku.stock < 5
+                      const isActive = restockTarget?.productId === p.id && restockTarget?.skuId === sku.id
+                      return (
+                        <div key={sku.id} className={styles.skuStockRow}>
+                          <div className={styles.skuStockInfo}>
+                            <span className={styles.skuStockSpec}>{sku.spec}</span>
+                            {isOut ? (
+                              <span className={styles.stockZero}>0 缺貨</span>
+                            ) : isLow ? (
+                              <span className={styles.stockLow}>{sku.stock} 偏低</span>
+                            ) : (
+                              <span className={styles.stockNormal}>{sku.stock}</span>
+                            )}
+                          </div>
+
+                          {/* 從辦公室偷回（庫存 < 5 的 SKU） */}
+                          {(isOut || isLow) && (
+                            isActive ? (
+                              <div className={styles.restockPanel}>
+                                <span className={styles.restockPanelLabel}>偷幾個？（最少 5）</span>
+                                <input
+                                  className={styles.restockInput}
+                                  type="number"
+                                  min={5}
+                                  value={restockQty}
+                                  onChange={e => setRestockQty(Math.max(5, Number(e.target.value)))}
+                                />
+                                <div className={styles.restockBtns}>
+                                  <button
+                                    className={styles.restockConfirmBtn}
+                                    onClick={() => {
+                                      restockSKU(p.id, sku.id, restockQty)
+                                      setRestockTarget(null)
+                                      setRestockQty(5)
+                                    }}
+                                  >
+                                    ✅ 確認偷回 {restockQty} 個
+                                  </button>
+                                  <button
+                                    className={styles.restockCancelBtn}
+                                    onClick={() => { setRestockTarget(null); setRestockQty(5) }}
+                                  >
+                                    取消
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <button
+                                className={styles.restockBtn}
+                                onClick={() => { setRestockTarget({ productId: p.id, skuId: sku.id }); setRestockQty(5) }}
+                              >
+                                🏃 偷回
+                              </button>
+                            )
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
                 </td>
 
                 {/* 危險等級 */}
@@ -190,7 +326,8 @@ const AdminProducts = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+            )})}
+
           </tbody>
         </table>
       </div>
@@ -237,7 +374,7 @@ const AdminProducts = () => {
 
               {/* 定價（Galleon / Sickle / Knut） */}
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>定價</label>
+                <label className={styles.fieldLabel}>主要定價（第一 SKU 的預設值）</label>
                 <div className={styles.priceRow}>
                   <div className={styles.priceField}>
                     <span className={styles.priceLabel}>金加隆 (G)</span>
@@ -271,7 +408,7 @@ const AdminProducts = () => {
 
               {/* 庫存量 */}
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>庫存量</label>
+                <label className={styles.fieldLabel}>主要庫存（第一 SKU 的預設值）</label>
                 <input
                   className={styles.fieldInput}
                   type="number" min={0}
@@ -298,15 +435,24 @@ const AdminProducts = () => {
                 </div>
               </div>
 
-              {/* 商品動圖 URL */}
+              {/* 商品主圖 / 動圖 URL */}
               <div className={styles.fieldGroup}>
-                <label className={styles.fieldLabel}>商品動圖 URL（.gif 或 .mp4）</label>
+                <label className={styles.fieldLabel}>商品主圖 / 動圖 URL（.gif 或 .mp4）</label>
                 <input
                   className={styles.fieldInput}
                   value={form.mediaUrl}
                   onChange={e => set('mediaUrl', e.target.value)}
                   placeholder="https://example.com/item.gif"
                 />
+                {/* 中文註解：主圖預覽（有填 URL 才顯示） */}
+                {form.mediaUrl.trim() && (
+                  <div className={styles.mediaPreview}>
+                    {form.mediaUrl.trim().endsWith('.mp4')
+                      ? <video src={form.mediaUrl.trim()} autoPlay loop muted playsInline />
+                      : <img src={form.mediaUrl.trim()} alt="預覽" />
+                    }
+                  </div>
+                )}
               </div>
 
               {/* 商品描述 */}
@@ -335,6 +481,113 @@ const AdminProducts = () => {
                   </label>
                   <span>{form.isHidden ? '🫥 已隱藏（前台不顯示）' : '👁 顯示中'}</span>
                 </div>
+              </div>
+
+              {/* ── SKU 規格管理 ── */}
+              <div className={styles.skuSection}>
+                <div className={styles.skuSectionHeader}>
+                  <span className={styles.fieldLabel} style={{ marginBottom: 0 }}>
+                    🎁 規格 SKU（{skuDrafts.length} 個）
+                  </span>
+                  <button type="button" className={styles.addSkuBtn} onClick={addSkuDraft}>
+                    + 新增規格
+                  </button>
+                </div>
+                <p className={styles.skuHint}>每個規格可有獨立定價、庫存與規格圖片；規格名稱留空將被略過。</p>
+
+                {skuDrafts.map((draft, idx) => (
+                  <div key={draft.draftKey} className={styles.skuCard}>
+                    {/* SKU 標題列 */}
+                    <div className={styles.skuCardHeader}>
+                      <span className={styles.skuCardTitle}>規格 #{idx + 1}</span>
+                      {skuDrafts.length > 1 && (
+                        <button
+                          type="button"
+                          className={styles.removeSkuBtn}
+                          onClick={() => removeSkuDraft(draft.draftKey)}
+                        >
+                          刪除
+                        </button>
+                      )}
+                    </div>
+
+                    {/* 規格名稱 */}
+                    <div className={styles.skuRow}>
+                      <label className={styles.skuLabel}>規格名稱 *</label>
+                      <input
+                        className={styles.fieldInput}
+                        value={draft.spec}
+                        onChange={e => setSku(draft.draftKey, 'spec', e.target.value)}
+                        placeholder="例：10ml、標準版、6顆裝"
+                      />
+                    </div>
+
+                    {/* SKU 定價 */}
+                    <div className={styles.skuRow}>
+                      <label className={styles.skuLabel}>定價</label>
+                      <div className={styles.skuPriceRow}>
+                        <div className={styles.skuPriceField}>
+                          <span className={styles.priceLabel}>G</span>
+                          <input className={styles.fieldInput} type="number" min={0}
+                            value={draft.galleon}
+                            onChange={e => setSku(draft.draftKey, 'galleon', Number(e.target.value))} />
+                        </div>
+                        <div className={styles.skuPriceField}>
+                          <span className={styles.priceLabel}>S</span>
+                          <input className={styles.fieldInput} type="number" min={0} max={16}
+                            value={draft.sickle}
+                            onChange={e => setSku(draft.draftKey, 'sickle', Number(e.target.value))} />
+                        </div>
+                        <div className={styles.skuPriceField}>
+                          <span className={styles.priceLabel}>K</span>
+                          <input className={styles.fieldInput} type="number" min={0} max={28}
+                            value={draft.knut}
+                            onChange={e => setSku(draft.draftKey, 'knut', Number(e.target.value))} />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SKU 庫存 */}
+                    <div className={styles.skuRow}>
+                      <label className={styles.skuLabel}>庫存</label>
+                      <input className={styles.fieldInput} type="number" min={0}
+                        value={draft.stock}
+                        onChange={e => setSku(draft.draftKey, 'stock', Number(e.target.value))} />
+                    </div>
+
+                    {/* 中文註解：SKU 專屬規格圖（選填，有填則覆蓋商品主圖） */}
+                    <div className={styles.skuRow}>
+                      <label className={styles.skuLabel}>規格圖 URL（選填）</label>
+                      <input
+                        className={styles.fieldInput}
+                        value={draft.imageUrl}
+                        onChange={e => setSku(draft.draftKey, 'imageUrl', e.target.value)}
+                        placeholder="此規格專屬圖片 / 動圖 URL（覆蓋主圖）"
+                      />
+                      {/* 規格圖預覽 */}
+                      {draft.imageUrl.trim() && (
+                        <div className={styles.mediaPreview}>
+                          {draft.imageUrl.trim().endsWith('.mp4')
+                            ? <video src={draft.imageUrl.trim()} autoPlay loop muted playsInline />
+                            : <img src={draft.imageUrl.trim()} alt={`規格 ${draft.spec} 預覽`} />
+                          }
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 重量（選填） */}
+                    <div className={styles.skuRow}>
+                      <label className={styles.skuLabel}>重量（公克，選填）</label>
+                      <input
+                        className={styles.fieldInput}
+                        type="number" min={0}
+                        value={draft.weightG}
+                        onChange={e => setSku(draft.draftKey, 'weightG', e.target.value)}
+                        placeholder="例：50（供運費計算）"
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
             </form>
 

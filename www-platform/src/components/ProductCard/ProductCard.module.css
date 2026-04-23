@@ -38,6 +38,12 @@
   filter: drop-shadow(0 0 6px rgba(139,0,0,0.8));
 }
 
+/* ── 媒體連結包裝（點擊跳轉詳情頁） ── */
+.mediaLink {
+  display: block;
+  text-decoration: none;
+}
+
 /* ── 媒體區域（動圖 / 佔位） ── */
 .media {
   width: 100%;
@@ -48,7 +54,9 @@
   justify-content: center;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
+  transition: opacity 0.2s;
 }
+.mediaLink:hover .media { opacity: 0.88; }
 
 .media img,
 .media video {
@@ -92,6 +100,13 @@
   width: fit-content;
 }
 
+/* 商品名稱連結（點擊跳轉詳情頁） */
+.nameLink {
+  text-decoration: none;
+  display: block;
+}
+.nameLink:hover .name { color: var(--gold-light); text-decoration: underline; text-decoration-color: rgba(201,151,46,0.4); }
+
 /* 商品名稱 */
 .name {
   font-family: var(--font-title);
@@ -126,6 +141,41 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ── SKU 規格選擇器（多規格時顯示，spec §6.1） ── */
+.skuSelector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.skuBtn {
+  padding: 4px 10px;
+  font-size: 11px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.skuBtn:hover { border-color: var(--gold); color: var(--gold); }
+.skuBtnActive {
+  background: rgba(201, 151, 46, 0.15);
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 700;
+}
+.skuBtnSoldOut {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+.skuSoldOutMark { color: var(--red); font-size: 10px; }
 
 /* 庫存數量提示 */
 .stock {

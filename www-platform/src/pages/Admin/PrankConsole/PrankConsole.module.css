@@ -182,6 +182,56 @@
   color: var(--text-dim);
 }
 
+/* ── 全站折扣設定表單 ── */
+.discountForm {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.discountField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.discountLabel {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+.discountInput {
+  padding: 7px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.discountInput:focus { border-color: var(--gold); }
+.discountSliderRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.discountSlider {
+  flex: 1;
+  accent-color: var(--gold);
+}
+.discountValue {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.discountRateNote {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-dim);
+  margin-left: 6px;
+}
+
 /* ── 即時預覽區 ── */
 .preview {
   margin-top: 8px;

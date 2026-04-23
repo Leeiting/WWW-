@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Marauder v2.2 — 衛氏巫師法寶店規格書</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+TC:wght@300;400;700&display=swap');
+
+    :root {
+      --bg: #1a0f07;
+      --surface: #2c1810;
+      --surface2: #3d2215;
+      --gold: #c9972e;
+      --gold-light: #e8b84b;
+      --red: #8b0000;
+      --red-bright: #cc2200;
+      --text: #e8d5b0;
+      --text-dim: #a08060;
+      --border: #5a3a1a;
+      --green: #2d6a2d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(139,0,0,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(201,151,46,0.06) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9972e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      color: var(--text);
+      font-family: 'Noto Serif TC', serif;
+      min-height: 100vh;
+    }
+
+    /* ── 側邊欄 ── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 240px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #sidebar .logo {
+      padding: 28px 20px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    #sidebar .logo h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+    #sidebar .logo p {
+      color: var(--text-dim);
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    #sidebar nav { padding: 16px 0; flex: 1; }
+    #sidebar nav a {
+      display: block;
+      padding: 9px 20px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 12px;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    #sidebar nav a:hover,
+    #sidebar nav a.active {
+      color: var(--gold);
+      border-left-color: var(--gold);
+      background: rgba(201,151,46,0.08);
+    }
+    #sidebar nav .section-label {
+      padding: 14px 20px 4px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    #sidebar .version-tag {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .badge {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .badge.new {
+      background: var(--green);
+    }
+
+    /* ── 主內容 ── */
+    #main {
+      margin-left: 240px;
+      padding: 0 48px 80px;
+      max-width: 1100px;
+    }
+
+    /* 封面 */
+    .cover {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+    .cover .eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .cover h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--gold-light);
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-shadow: 0 0 40px rgba(201,151,46,0.3);
+    }
+    .cover .subtitle {
+      font-size: 16px;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .meta-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .meta-item .label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .meta-item .value {
+      font-size: 14px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* 章節 */
+    section { margin-bottom: 64px; scroll-margin-top: 24px; }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 22px;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    h2 .num {
+      background: var(--gold);
+      color: var(--bg);
+      font-size: 12px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      color: var(--gold-light);
+      margin: 28px 0 14px;
+      padding-left: 12px;
+      border-left: 3px solid var(--gold);
+    }
+
+    h4 {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 700;
+      margin: 20px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    p { line-height: 1.8; margin-bottom: 14px; color: var(--text); font-size: 14px; }
+
+    /* 表格 */
+    .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead tr { background: var(--surface2); }
+    th {
+      padding: 10px 14px;
+      text-align: left;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(90,58,26,0.4);
+      color: var(--text);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+    tr:hover td { background: rgba(201,151,46,0.04); }
+    td code, th code { font-family: monospace; background: rgba(255,255,255,0.07); padding: 1px 6px; border-radius: 3px; font-size: 12px; }
+
+    /* 卡片 */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .card.danger { border-color: var(--red); }
+    .card.gold { border-color: var(--gold); }
+
+    /* code block */
+    pre {
+      background: #0d0805;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.7;
+      margin-bottom: 16px;
+      color: #c8b89a;
+    }
+    code { font-family: 'Fira Code', 'Courier New', monospace; }
+
+    /* 清單 */
+    ul, ol { padding-left: 20px; margin-bottom: 14px; }
+    li { line-height: 1.8; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+
+    /* inline */
+    strong { color: var(--gold-light); }
+    em { color: var(--text-dim); font-style: italic; }
+
+    /* 狀態機 / 流程圖 */
+    .flowbox {
+      background: #0d0805;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.9;
+      color: #c8b89a;
+      margin-bottom: 16px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    /* 權限 ✅❌ */
+    td.center { text-align: center; }
+
+    /* AC 標籤 */
+    .ac-tag {
+      display: inline-block;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      font-family: monospace;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .ac-tag.new-ac {
+      background: rgba(45,106,45,0.2);
+      border-color: var(--green);
+      color: #5cba5c;
+    }
+
+    /* 里程碑 */
+    .phase {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .phase h4 { margin-top: 0; color: var(--gold); font-size: 14px; }
+    .phase ul { list-style: none; padding: 0; }
+    .phase ul li::before { content: "□ "; color: var(--text-dim); }
+
+    /* 風險 */
+    .risk-row td:first-child { color: var(--gold-light); font-weight: bold; }
+
+    /* 備注 blockquote */
+    blockquote {
+      border-left: 4px solid var(--red);
+      background: rgba(139,0,0,0.1);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    blockquote em { color: var(--gold); font-style: italic; display: block; margin-top: 8px; }
+
+    /* callout */
+    .callout {
+      background: rgba(201,151,46,0.08);
+      border: 1px solid rgba(201,151,46,0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      color: var(--text-dim);
+    }
+    .callout strong { color: var(--gold); }
+    .callout.info {
+      background: rgba(45,106,45,0.08);
+      border-color: rgba(45,106,45,0.4);
+    }
+    .callout.info strong { color: #5cba5c; }
+
+    /* ASCII 元件圖 */
+    .ascii {
+      background: #0d0805;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #c8b89a;
+      white-space: pre;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    @media (max-width: 768px) {
+      #sidebar { display: none; }
+      #main { margin-left: 0; padding: 0 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 側邊欄 -->
+<nav id="sidebar">
+  <div class="logo">
+    <h2>⚡ Project<br>Marauder</h2>
+    <p>衛氏巫師法寶店規格書</p>
+  </div>
+  <nav>
+    <div class="section-label">文件導覽</div>
+    <a href="#cover">封面資訊</a>
+    <div class="section-label">章節</div>
+    <a href="#s1">一、專案概述</a>
+    <a href="#s2">二、使用者角色</a>
+    <a href="#s3">三、系統架構</a>
+    <a href="#s4">四、認證系統</a>
+    <a href="#s5">五、資料庫設計</a>
+    <a href="#s6">六、前台消費者功能</a>
+    <a href="#s7">七、後台管理平台</a>
+    <a href="#s8">八、支付方式管理</a>
+    <a href="#s9">九、訂單生命週期</a>
+    <a href="#s10">十、Prank Console</a>
+    <a href="#s11">十一、Mischief Managed</a>
+    <a href="#s12">十二、介面規格</a>
+    <a href="#s13">十三、驗收標準</a>
+    <a href="#s14">十四、開發里程碑</a>
+    <a href="#s15">十五、風險事項</a>
+    <a href="#s16">十六、備緩方案</a>
+    <div class="section-label">附錄</div>
+    <a href="#appA">附錄 A：訂單狀態圖</a>
+    <a href="#appB">附錄 B：錯誤碼對照表</a>
+    <a href="#appC">附錄 C：法律聲明草稿</a>
+  </nav>
+  <div class="version-tag">v2.5 · 2026-04-15 <span class="badge new">結構補全 + 邏輯一致性修正</span></div>
+</nav>
+
+<!-- 主內容 -->
+<div id="main">
+
+  <!-- 封面 -->
+  <div class="cover" id="cover">
+    <p class="eyebrow">Project Marauder · 正式開發規格書 PRD</p>
+    <h1>衛氏巫師法寶店<br>數位轉型平台</h1>
+    <p class="subtitle">Weasleys' Wizard Wheezes — 魔法電商規格書 v2.2</p>
+    <div class="meta-grid">
+      <div class="meta-item"><div class="label">專案代號</div><div class="value">Project Marauder</div></div>
+      <div class="meta-item"><div class="label">版本</div><div class="value">v2.2</div></div>
+      <div class="meta-item"><div class="label">文件狀態</div><div class="value">草案（PM 審閱修正）</div></div>
+      <div class="meta-item"><div class="label">建立日期</div><div class="value">2026-04-10</div></div>
+      <div class="meta-item"><div class="label">最後更新</div><div class="value">2026-04-14</div></div>
+      <div class="meta-item"><div class="label">作者</div><div class="value">喬治 / 弗雷 / 李亦婷</div></div>
+    </div>
+  </div>
+
+  <!-- 一、專案概述 -->
+  <section id="s1">
+    <h2><span class="num">1</span>專案概述</h2>
+
+    <h3>1.1 專案目標</h3>
+    <p>打造一個充滿驚喜與不確定性的電商平台，透過後台強大的「惡作劇控制系統（Prank Console）」，讓管理員（喬治與弗雷）能即時操控前台消費者的購物體驗，藉此對抗無聊的魔法部法規。</p>
+
+    <h3>1.2 核心價值</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>面向</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>前台</strong></td><td>混亂、有趣、沉浸式的斜角巷購物感</td></tr>
+          <tr><td><strong>後台</strong></td><td>高度可控的商品管理、動態定價機制與突發事件觸發器</td></tr>
+          <tr><td><strong>差異化</strong></td><td>唯一一家會主動嚇跑顧客又能讓顧客上癮的魔法電商</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.3 專案範圍（Scope）</h3>
+    <div class="card gold">
+      <h4>納入（In-Scope）</h4>
+      <ul>
+        <li>會員註冊 / 登入（本地帳號 + Google / Facebook OAuth）</li>
+        <li>商品瀏覽（含 SKU 規格選擇）、搜尋、加入購物車、結帳</li>
+        <li>模擬支付（魔法卡 / 巫師金庫轉帳 / 貨到付款）</li>
+        <li>完整訂單生命週期（待付款 → 待出貨 → 運送中 → 已完成）</li>
+        <li>後台商品 CRUD（含 SKU 維護）、訂單管理、促銷管理、數據報表</li>
+        <li>惡搞模式（純視覺動態定價、音效、飛七圖層；結帳金額以加入購物車當下的資料庫定價為準）</li>
+        <li>榮恩識別系統（Email 彩蛋自動偵測，無結帳彈窗）</li>
+        <li>緊急切換「文具店模式」（Mischief Managed）</li>
+      </ul>
+    </div>
+    <div class="card danger">
+      <h4>排除（Out-Scope）</h4>
+      <ul>
+        <li>真實金流串接（Galleon 不可兌換現金）</li>
+        <li>行動 App（iOS / Android）</li>
+        <li>多語言支援（僅繁體中文）</li>
+        <li>真實的石內卜教授</li>
+      </ul>
+    </div>
+
+    <h3>1.4 術語說明</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>術語</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>Galleon（金加隆）</td><td>主要貨幣單位，1 Galleon = 17 Sickle</td></tr>
+          <tr><td>Sickle（銀閃）</td><td>次要貨幣單位，1 Sickle = 29 Knut</td></tr>
+          <tr><td>Knut（納特）</td><td>最小貨幣單位</td></tr>
+          <tr><td>SKU</td><td>最小庫存單位，對應商品特定規格（如：迷情劑 10ml / 50ml）</td></tr>
+          <tr><td>SPU</td><td>標準商品單元，對應商品主表（如：迷情劑）</td></tr>
+          <tr><td>榮恩稅</td><td>結帳總額 × 2 的家屬服務費彩蛋邏輯；由後端以 Email 關鍵字自動識別，<strong>不在前端彈窗詢問</strong>，避免打斷結帳流程</td></tr>
+          <tr><td>石內卜來訪</td><td>庫存歸零時觸發的缺貨警告狀態</td></tr>
+          <tr><td>Prank Console</td><td>後台惡作劇控制中心</td></tr>
+          <tr><td>Mischief Managed</td><td>緊急切換「普通文具店」模式的掩護機制</td></tr>
+          <tr><td>OMS</td><td>Order Management System，訂單管理系統</td></tr>
+          <tr><td>CRM</td><td>Customer Relationship Management，會員資料管理</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 二、使用者角色 -->
+  <section id="s2">
+    <h2><span class="num">2</span>使用者角色與權限</h2>
+
+    <h3>2.1 角色定義</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>角色</th><th>識別方式</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>一般消費者</strong></td><td>Email / Google / Facebook 帳號</td><td>瀏覽商品、加入購物車、結帳，需承受隨機惡搞特效</td></tr>
+          <tr><td><strong>家屬榮恩</strong></td><td>登入 Email 含 <code>ron</code> 關鍵字時後端自動識別</td><td>系統於訂單明細自動加入「家屬服務費 100%」，結帳金額 × 2；收據顯示「衛斯理家族特供方案已啟用」</td></tr>
+          <tr><td><strong>魔法部 VIP</strong></td><td>後台設定用戶等級</td><td>享有專屬折扣或優惠（由管理員手動升級）</td></tr>
+          <tr><td><strong>管理員（喬治/弗雷/李亦婷）</strong></td><td>後台帳號密碼</td><td>擁有完整後台控制權限，依職責分工負責營運、金流或物流領域</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.2 功能存取權限</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>功能</th><th>一般消費者</th><th>榮恩</th><th>魔法部 VIP</th><th>管理員</th></tr></thead>
+        <tbody>
+          <tr><td>瀏覽商品</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td></tr>
+          <tr><td>加入購物車</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td></tr>
+          <tr><td>結帳（正常價格）</td><td class="center">✅</td><td class="center">❌</td><td class="center">✅</td><td class="center">✅</td></tr>
+          <tr><td>結帳（Email 含 ron 自動加倍）</td><td class="center">❌</td><td class="center">✅（自動觸發）</td><td class="center">❌</td><td class="center">❌</td></tr>
+          <tr><td>查看訂單紀錄</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td><td class="center">✅</td></tr>
+          <tr><td>商品 CRUD</td><td class="center">❌</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+          <tr><td>觸發惡搞 / 吼叫信 / 飛七</td><td class="center">❌</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+          <tr><td>啟用 Mischief Managed</td><td class="center">❌</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+          <tr><td>管理訂單（出貨/取消）</td><td class="center">❌</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+          <tr><td>管理優惠券</td><td class="center">❌</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+          <tr><td>查看報表</td><td class="center">❌</td><td class="center">❌</td><td class="center">❌</td><td class="center">✅</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.3 管理員職責分工</h3>
+    <p>衛氏巫師法寶店後台共三位管理員，各自負責不同業務領域，權限層級相同，但日常操作重心不同。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>管理員</th><th>職稱</th><th>負責領域</th><th>主要操作範疇</th></tr></thead>
+        <tbody>
+          <tr><td><strong>喬治・衛斯理</strong></td><td>營運總監</td><td>📊 營運</td><td>商品上下架、SKU 庫存管理、惡搞控制台（Prank Console）、Mischief Managed 掩護模式、訂單出貨標記</td></tr>
+          <tr><td><strong>弗雷・衛斯理</strong></td><td>財務長</td><td>💰 金流</td><td>退款審核與批准、榮恩稅追蹤、優惠券新增/停用、全站折扣設定、營收報表查閱</td></tr>
+          <tr><td><strong>李亦婷</strong></td><td>物流協調員</td><td>🚚 物流</td><td>配送異常處理、收件地址修改、退貨入庫確認、批量庫存釋放、物流報表查閱</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>各領域報表存取對應</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>報表分頁</th><th>主責管理員</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>📊 營運人員（營收統計、訂單分佈、熱門商品、轉化漏斗、庫存預警）</td><td>喬治</td><td>整體經營健康度追蹤</td></tr>
+          <tr><td>💰 金流（退款明細、榮恩稅統計、優惠券折抵）</td><td>弗雷</td><td>金加隆流向管控</td></tr>
+          <tr><td>🚚 物流（配送異常追蹤、庫存周轉、物流方式佔比、退貨入庫）</td><td>李亦婷</td><td>貓頭鷹物流效率監控</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">注意：所有管理員皆可查看完整後台，上表為日常職責分工，並非系統權限限制。緊急狀況下任何管理員均可代為處理其他領域的操作。</p>
+  </section>
+
+  <!-- 三、系統架構 -->
+  <section id="s3">
+    <h2><span class="num">3</span>系統架構與技術選型</h2>
+
+    <h3>3.1 前端技術棧</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>選擇</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td>框架</td><td><code>React 19 + TypeScript</code></td><td>類型安全，元件化開發</td></tr>
+          <tr><td>建構工具</td><td><code>Vite</code></td><td>快速 HMR</td></tr>
+          <tr><td>樣式</td><td><code>CSS Modules + CSS 變數</code></td><td>元件隔離，支援主題切換</td></tr>
+          <tr><td>狀態管理</td><td><code>Zustand</code></td><td>輕量，適合商品 / 購物車 / 惡搞開關</td></tr>
+          <tr><td>路由</td><td><code>React Router v7</code></td><td>前後台路由分離</td></tr>
+          <tr><td>動畫</td><td><code>Framer Motion</code></td><td>飛七浮動圖層、頁面震動效果</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3.2 後端技術棧</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>選擇</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td>執行環境</td><td><code>Node.js + Express</code></td><td>輕量，與前端同語言（TypeScript）</td></tr>
+          <tr><td>資料庫</td><td><code>MySQL</code></td><td>關聯式結構適合訂單、SKU、優惠券等多表關聯</td></tr>
+          <tr><td>ORM</td><td><code>Prisma</code></td><td>Type-safe DB 操作，自動產生型別</td></tr>
+          <tr><td>認證</td><td><code>JWT + bcrypt</code></td><td>本地登入；OAuth token 由 Google / Facebook 發行</td></tr>
+          <tr><td>第三方 OAuth</td><td><code>Passport.js</code></td><td>標準 OAuth 2.0 流程（Google / Facebook Strategy）</td></tr>
+          <tr><td>郵件通知</td><td><code>Nodemailer + Gmail SMTP</code></td><td>發送貓頭鷹確認信</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout"><strong>MVP 建議：</strong>Phase 1-2 使用 <code>localStorage</code> 模擬後端，Phase 5 再接入 Node.js + MySQL。</div>
+
+    <h3>3.3 Mischief Managed 切換機制</h3>
+    <div class="flowbox">
+[管理員按下 "Mischief Managed"]
+         │
+         ▼
+  prankStore.activateMischiefManaged()
+         │
+         ├─ 關閉所有惡搞開關（prankMode、howler、peeves）
+         ├─ 前台路由重導至 /stationery（普通文具店頁面）
+         ├─ 後台顯示「文具店模式進行中」提示
+         └─ localStorage 記錄原始商品資料（不清除）
+
+[管理員按下解除]
+         │
+         ▼
+  prankStore.deactivateMischiefManaged()
+         │
+         └─ 前台路由恢復 /，惡搞設定恢復上次狀態</div>
+  </section>
+
+  <!-- 四、認證系統 -->
+  <section id="s4">
+    <h2><span class="num">4</span>認證系統（Authentication）</h2>
+
+    <h3>4.1 登入 / 註冊</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>方式</th><th>流程說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>本地登入</strong></td><td>巫師信箱（Email）+ 密碼；後端以 bcrypt 雜湊儲存密碼</td></tr>
+          <tr><td><strong>Google 登入</strong></td><td>OAuth 2.0，跳轉 Google 授權頁；成功後後端驗證並發行 JWT</td></tr>
+          <tr><td><strong>Facebook 登入</strong></td><td>OAuth 2.0，流程同 Google；取得用戶公開大頭貼與姓名</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>登入後行為：</strong>自動抓取第三方頭像（<code>avatar_url</code>）與顯示名稱存入資料庫；發行雙 Token：<strong>Access Token</strong>（15 分鐘，存 <code>access_token</code> httpOnly Cookie）+ <strong>Refresh Token</strong>（7 天，存 <code>refresh_token</code> httpOnly Cookie）。前端攔截器於 <code>401 TOKEN_EXPIRED</code> 時自動呼叫 <code>POST /api/auth/refresh</code> 無感刷新，管理員可透過 Redis 黑名單強制使所有 Token 失效。
+    </div>
+
+    <h3>4.2 會員資料（CRM）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>欄位</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><code>u_id</code></td><td>UUID 主鍵</td></tr>
+          <tr><td><code>email</code></td><td>唯一，來自本地或 OAuth</td></tr>
+          <tr><td><code>auth_provider</code></td><td><code>local</code> / <code>google</code> / <code>facebook</code></td></tr>
+          <tr><td><code>avatar_url</code></td><td>第三方頭像 URL</td></tr>
+          <tr><td><code>display_name</code></td><td>顯示名稱</td></tr>
+          <tr><td><code>user_level</code></td><td><code>normal</code>（一般巫師）/ <code>ron</code>（家屬榮恩）/ <code>vip</code>（魔法部 VIP）</td></tr>
+          <tr><td><code>created_at</code></td><td>帳號建立時間</td></tr>
+          <tr><td><code>updated_at</code></td><td>最後更新時間（換頭像、改顯示名稱等）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 五、資料庫設計 -->
+  <section id="s5">
+    <h2><span class="num">5</span>資料庫設計（Database Schema）</h2>
+
+    <h3>5.1 資料表總覽</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>資料表</th><th>核心欄位</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><code>Users</code></td><td><code>u_id, email, auth_provider, user_level</code></td><td>會員基本資料 + CRM</td></tr>
+          <tr><td><code>Products</code></td><td><code>p_id, name, category, danger_level, is_hidden</code></td><td>SPU 商品主表</td></tr>
+          <tr><td><code>SKU_Items</code></td><td><code>s_id, p_id, spec, price_knut, stock</code></td><td>具體規格與庫存</td></tr>
+          <tr><td><code>Orders</code></td><td><code>o_id, u_id, status, payment_method, is_ron</code></td><td>訂單流轉狀態</td></tr>
+          <tr><td><code>Order_Items</code></td><td><code>oi_id, o_id, s_id, quantity, unit_price_knut</code></td><td>訂單明細快照</td></tr>
+          <tr><td><code>Coupons</code></td><td><code>c_id, code, discount_type, min_spend_knut</code></td><td>優惠券邏輯</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.2 Orders 訂單狀態 Enum</h3>
+    <pre><code>status: ENUM('unpaid', 'processing', 'shipped', 'completed', 'cancelled',
+             'refunding', 'return_pending', 'shipping_failed', 'rejected', 'refunded',
+             'refund_failed'  -- 已棄用，請用 rejected；保留供舊資料相容)
+-- refunding      = 退款審核中（庫存鎖定，等管理員批准）
+-- return_pending = 退貨中（管理員批准退款，等用戶寄回商品）
+-- shipping_failed = 配送異常（貓頭鷹找不到地址）
+-- rejected       = 退款被拒絕（可再轉 completed）
+-- refunded       = 退款完成（確認退貨後庫存回補）
+payment_method: ENUM('vault_transfer', 'cash_on_delivery', 'mock_card')
+shipping_method: ENUM('instant', 'broom', 'thestral', 'knight_bus')
+
+-- SKU_Items 新增凍結庫存欄位（v2.1）
+stock_reserved INT UNSIGNED NOT NULL DEFAULT 0
+-- 可用庫存 = stock - stock_reserved
+-- unpaid 建立時：stock_reserved += quantity
+-- 進入 processing：stock -= quantity，stock_reserved -= quantity
+-- 取消訂單時：stock_reserved -= quantity（釋放凍結）</code></pre>
+
+    <h3>5.3 TypeScript 型別定義</h3>
+    <pre><code>// SKU 規格
+interface SKUItem {
+  id: string;
+  productId: string;
+  spec: string;          // 如「10ml」「50ml」
+  price: { galleon: number; sickle: number; knut: number; };
+  stock: number;
+  weightG?: number;
+  imageUrl?: string;
+}
+
+// 訂單
+interface Order {
+  id: string;
+  userId: string;
+  status: 'unpaid' | 'processing' | 'shipped' | 'completed' | 'cancelled'
+        | 'refunding' | 'return_pending' | 'shipping_failed' | 'rejected' | 'refunded'
+        | 'refund_failed';  // 已棄用，請用 rejected
+  totalKnut: string;    // DECIMAL(15,4) 以字串傳輸，前端 parseFloat 後顯示，避免 JS 浮點誤差
+  shippingMethod: 'instant' | 'broom' | 'thestral' | 'knight_bus';
+  paymentMethod: 'vault_transfer' | 'cash_on_delivery' | 'mock_card';
+  trackingNumber?: string;
+  isRon: boolean;       // 後端靜默判斷 email.includes('ron')，前端不詢問
+  couponId?: string;
+  items: OrderItem[];
+  createdAt: string;
+}</code></pre>
+
+    <h3>5.4 API 端點</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>方法</th><th>路徑</th><th>說明</th><th>權限</th></tr></thead>
+        <tbody>
+          <tr><td><code>POST</code></td><td><code>/api/auth/register</code></td><td>本地帳號註冊</td><td>公開</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/auth/login</code></td><td>本地帳號登入</td><td>公開</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/auth/refresh</code></td><td>以 Refresh Token 取得新 Access Token</td><td>公開（需有效 refresh_token Cookie）</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/auth/logout</code></td><td>登出，清除 Cookie 並將 Refresh Token 加入 Redis 黑名單</td><td>登入用戶</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/auth/google</code></td><td>Google OAuth 跳轉</td><td>公開</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/auth/facebook</code></td><td>Facebook OAuth 跳轉</td><td>公開</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/products</code></td><td>取得所有商品（排除隱藏）；支援 <code>?q=&amp;category=&amp;danger=&amp;page=&amp;limit=</code></td><td>公開</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/products/all</code></td><td>取得所有商品（含隱藏）；查詢參數同上</td><td>管理員</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/products</code></td><td>新增商品 SPU（SKU 由獨立端點管理）</td><td>管理員</td></tr>
+          <tr><td><code>PUT</code></td><td><code>/api/products/:id</code></td><td>更新商品 SPU 資訊</td><td>管理員</td></tr>
+          <tr><td><code>DELETE</code></td><td><code>/api/products/:id</code></td><td>刪除商品（同時刪除所有 SKU）</td><td>管理員</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/products/:id/skus</code></td><td>取得商品所有 SKU</td><td>公開</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/products/:id/skus</code></td><td>新增 SKU 規格</td><td>管理員</td></tr>
+          <tr><td><code>PUT</code></td><td><code>/api/products/:id/skus/:skuId</code></td><td>更新 SKU（價格、庫存、重量、圖片）</td><td>管理員</td></tr>
+          <tr><td><code>PATCH</code></td><td><code>/api/products/:id/skus/:skuId/stock</code></td><td>更新單一 SKU 庫存（含「從辦公室偷回」）</td><td>管理員</td></tr>
+          <tr><td><code>DELETE</code></td><td><code>/api/products/:id/skus/:skuId</code></td><td>刪除 SKU（需確認無未完成訂單）</td><td>管理員</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/admin/audit-logs</code></td><td>取得管理員操作日誌（支援 <code>?action=&amp;page=</code>）</td><td>管理員</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/orders</code></td><td>取得我的訂單</td><td>登入用戶</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/orders/all</code></td><td>取得所有訂單</td><td>管理員</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/orders</code></td><td>建立訂單</td><td>登入用戶</td></tr>
+          <tr><td><code>PATCH</code></td><td><code>/api/orders/:id/status</code></td><td>更新訂單狀態</td><td>管理員</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/orders/:id/payment</code></td><td>模擬付款</td><td>登入用戶</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/orders/:id/cancel</code></td><td>取消訂單（自動釋放凍結庫存）</td><td>登入用戶 / 管理員</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/orders/:id/refund</code></td><td>申請退款（進入 refunding 審核佇列）</td><td>登入用戶</td></tr>
+          <tr><td><code>PATCH</code></td><td><code>/api/orders/:id/refund/approve</code></td><td>批准退款（庫存回補、狀態→refunded）</td><td>管理員</td></tr>
+          <tr><td><code>POST</code></td><td><code>/api/coupons/validate</code></td><td>驗證優惠券代碼</td><td>登入用戶</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/reports/revenue</code></td><td>營收報表</td><td>管理員</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/reports/top-products</code></td><td>商品銷量排行</td><td>管理員</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.4 API 異常清單</h3>
+    <p style="color:var(--text-dim);font-size:13px;margin-bottom:12px;">所有 API 端點共用的標準化錯誤回應格式與錯誤碼定義。</p>
+    <pre class="code-block">{
+  "success": false,
+  "code": "OUT_OF_STOCK",
+  "message": "石內卜已沒收最後一件，庫存不足",
+  "detail": { "skuId": "xxx", "requested": 2, "available": 0 }
+}</pre>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>HTTP 狀態</th><th>錯誤碼</th><th>前台顯示訊息</th><th>觸發情境</th></tr></thead>
+        <tbody>
+          <tr><td>400</td><td><code>INVALID_EMAIL</code></td><td>「貓頭鷹找不到這個魔法信箱格式」</td><td>Email 格式錯誤</td></tr>
+          <tr><td>400</td><td><code>INVALID_QUANTITY</code></td><td>「訂購數量不可超過庫存上限」</td><td>加入購物車數量 &gt; 庫存</td></tr>
+          <tr><td>400</td><td><code>COUPON_EXPIRED</code></td><td>「此優惠券已過期或不存在」</td><td>優惠券驗證失敗</td></tr>
+          <tr><td>400</td><td><code>COUPON_MIN_SPEND</code></td><td>「消費未達最低門檻，無法使用此優惠券」</td><td>未達 <code>min_spend_knut</code></td></tr>
+          <tr><td>400</td><td><code>COUPON_MAX_USES</code></td><td>「此優惠券已超過使用次數上限」</td><td><code>used_count &gt;= max_uses</code></td></tr>
+          <tr><td>401</td><td><code>UNAUTHORIZED</code></td><td>「請先登入您的魔法帳號」</td><td>JWT 缺失或無效</td></tr>
+          <tr><td>401</td><td><code>TOKEN_EXPIRED</code></td><td>「登入憑證已過期，請重新登入」</td><td>JWT 過期</td></tr>
+          <tr><td>403</td><td><code>FORBIDDEN</code></td><td>「您沒有施展此魔法的權限」</td><td>非管理員存取後台 API</td></tr>
+          <tr><td>404</td><td><code>PRODUCT_NOT_FOUND</code></td><td>「此法寶已消失在斜角巷某處」</td><td>商品 ID 不存在</td></tr>
+          <tr><td>404</td><td><code>ORDER_NOT_FOUND</code></td><td>「找不到此訂單記錄」</td><td>訂單 ID 不存在</td></tr>
+          <tr><td>409</td><td><code>OUT_OF_STOCK</code></td><td>「石內卜已沒收最後一件，庫存不足」</td><td>下單時庫存為 0</td></tr>
+          <tr><td>409</td><td><code>DUPLICATE_EMAIL</code></td><td>「此魔法信箱已被其他巫師註冊」</td><td>重複 Email 註冊</td></tr>
+          <tr><td>409</td><td><code>ORDER_STATUS_CONFLICT</code></td><td>「此訂單當前狀態不允許執行此操作」</td><td>狀態機衝突（如取消已完成訂單）</td></tr>
+          <tr><td>422</td><td><code>PAYMENT_FAILED</code></td><td>「魔法傳輸失敗，請稍後重試」</td><td>模擬支付超時</td></tr>
+          <tr><td>429</td><td><code>RATE_LIMIT</code></td><td>「請求過於頻繁，石內卜警告您放慢腳步」</td><td>單 IP 超過 30 次/分鐘</td></tr>
+          <tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>「魔法部干擾導致伺服器異常，請稍後再試」</td><td>未預期後端錯誤</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.5 下單等冪性機制（Idempotency Key）</h3>
+    <div class="callout info"><strong>設計原則（PM 修正 v2.3）：</strong>結帳按鈕因網路延遲或用戶手滑可能被連續點擊，導致後端收到多個重複下單請求。Idempotency Key 確保同一筆結帳動作無論重送幾次，資料庫只建立一筆訂單。</div>
+    <pre class="code-block">// Key 生命週期：成功後清除；業務/伺服器錯誤清除（下次用新 Key）；網路中斷保留（重試同一筆）
+const handleCheckout = async () => {
+  let idemKey = sessionStorage.getItem('checkout_idem_key')
+  if (!idemKey) {
+    idemKey = crypto.randomUUID()                         // 瀏覽器原生 UUID
+    sessionStorage.setItem('checkout_idem_key', idemKey)
+  }
+  setSubmitting(true)                                     // 按鈕進入 disabled 狀態
+  try {
+    await api.post('/api/orders', payload, {
+      headers: { 'X-Idempotency-Key': idemKey }
+    })
+    sessionStorage.removeItem('checkout_idem_key')
+    navigate('/orders/success')
+  } catch (err) {
+    if (err.code === 'NETWORK_ERROR') {
+      // 網路中斷：保留 Key，重試帶同一筆；後端若已建單回傳快取，不重複建立訂單
+    } else {
+      // 業務錯誤（含 422 PAYMENT_FAILED、409 OUT_OF_STOCK）或 5xx：清除 Key
+      // 後端不快取任何 4xx/5xx，故 422 不存在「舊失敗快取」，清除後可安全用新 Key 重試
+      sessionStorage.removeItem('checkout_idem_key')
+    }
+  } finally { setSubmitting(false) }
+}</pre>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>狀態</th><th>按鈕文字</th><th>disabled</th></tr></thead>
+        <tbody>
+          <tr><td>可送出</td><td>「確定交出金加隆」</td><td>false</td></tr>
+          <tr><td>傳輸中</td><td>「魔法傳輸中...」</td><td>true</td></tr>
+          <tr><td>已完成</td><td>「訂單已建立！」</td><td>true</td></tr>
+          <tr><td>業務錯誤</td><td>「確定交出金加隆」（重置）</td><td>false</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Key 生命週期分類（PM 修正 v2.4）</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>錯誤類型</th><th>HTTP 狀態碼</th><th>前端 Key 處置</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>成功</td><td>200 / 201</td><td><strong>清除</strong></td><td>訂單已建立，此 Key 完成任務</td></tr>
+          <tr><td>網路中斷</td><td>無回應</td><td><strong>保留</strong></td><td>請求可能已達後端；重試帶同 Key，後端若已建單回傳快取，不重複建單</td></tr>
+          <tr><td>支付失敗（可重試）</td><td>422 <code>PAYMENT_FAILED</code></td><td><strong>清除</strong></td><td>後端不快取 4xx；清除 Key 讓用戶換卡後以全新請求重試，不會誤返舊失敗結果</td></tr>
+          <tr><td>業務衝突</td><td>409 <code>OUT_OF_STOCK</code> 等</td><td><strong>清除</strong></td><td>狀態已改變（庫存不足），不可重送同一筆，需修正後以新 Key 重試</td></tr>
+          <tr><td>伺服器錯誤</td><td>5xx</td><td><strong>清除</strong></td><td>後端異常，不確定訂單是否建立；清除 Key，讓用戶確認後以新 Key 重試</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warning"><strong>Redis 快取規則（關鍵）：</strong>Idempotency Guard <strong>僅快取 HTTP 200 / 201 的成功回應</strong>，任何 4xx / 5xx 絕不寫入 Redis。此規則確保可重試的失敗（如 422 PAYMENT_FAILED）不會被永久快取，用戶清除 Key 後以新 Key 重試，後端不會誤判為「已處理」而回傳舊失敗結果。</div>
+    <pre class="code-block">// server/middleware/idempotency.ts
+// 以 Redis 快取 Key，10 分鐘內重複請求直接回傳快取結果
+// ⚠️  僅快取成功回應（200/201）；4xx/5xx 一律不存入快取
+export const idempotencyGuard = async (req, res, next) => {
+  const key = req.headers['x-idempotency-key']
+  if (!key) return next()
+  const cached = await redis.get(`idem:${key}`)
+  if (cached) return res.status(200).json(JSON.parse(cached))
+  res.on('finish', async () => {
+    // 只有成功回應才存入 Redis；失敗回應不快取，讓前端可以用新 Key 重試
+    if (res.statusCode === 200 || res.statusCode === 201)
+      await redis.setex(`idem:${key}`, 600, JSON.stringify(res.locals.responseBody))
+    // 4xx / 5xx：不寫入 Redis，Key 在前端被清除後即失效
+  })
+  next()
+}</pre>
+  </section>
+
+  <!-- 六、前台消費者功能 -->
+  <section id="s6">
+    <h2><span class="num">6</span>前台消費者功能</h2>
+
+    <h3>6.1 商品瀏覽</h3>
+    <ul>
+      <li><strong>SKU 選擇：</strong>商品卡片展開規格選單（如：迷情劑 10ml / 50ml），選擇後即時更新價格與庫存顯示</li>
+      <li><strong>篩選功能：</strong>可依「魔法類別」與「危險等級」過濾商品</li>
+      <li>庫存 &gt; 0：「立即交出金加隆」按鈕可用</li>
+      <li>庫存 = 0：圖片灰階，按鈕禁用，顯示「石內卜來訪：已被沒收」</li>
+    </ul>
+
+    <h3>6.2 結帳流程</h3>
+    <div class="callout info"><strong>設計原則（v2.1 修正）：</strong>榮恩識別改為「彩蛋式自動偵測」，由後端靜默判斷，不中斷結帳流程，避免轉化率受損。</div>
+    <div class="flowbox">
+用戶點擊「結帳」
+     │
+     ▼
+填寫收件資訊（地址）
+     │
+     ▼
+選擇配送方式 → 選擇支付方式 → 輸入優惠券代碼（選填）
+     │
+     ▼
+確認訂單
+     │
+     ▼
+後端靜默判斷：Email 是否含 "ron"（不分大小寫）
+├─ 是 ──→ is_ron = TRUE，自動加入「衛斯理家族特供方案 +100%」明細
+└─ 否 ──→ is_ron = FALSE，正常定價
+     │
+     ▼
+⚠️  結帳頁顯示「魔法波動免責聲明」：
+   「本店商品定價受斜角巷魔法擾動影響，最終成交金額以訂單確認頁為準」
+     │
+     ▼
+建立訂單（status: unpaid）→ 跳轉訂單追蹤頁面</div>
+    <pre><code>// 後端 POST /api/orders — 建立訂單時靜默判斷榮恩身份
+const isRon = user.email.toLowerCase().includes('ron')
+const finalTotal = isRon ? subtotal * 2 : subtotal
+if (isRon) {
+  orderItems.push({ label: '衛斯理家族特供方案', amount: subtotal })
+}</code></pre>
+
+    <h3>6.3 配送方式</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>選項</th><th>代碼</th><th>說明</th><th>預估時間</th></tr></thead>
+        <tbody>
+          <tr><td>消影術</td><td><code>instant</code></td><td>瞬間送達，不保證完整性</td><td>即時</td></tr>
+          <tr><td>飛天掃帚</td><td><code>broom</code></td><td>快速空運</td><td>1-2 小時</td></tr>
+          <tr><td>騎士墜鬼馬</td><td><code>thestral</code></td><td>標準陸運（僅目睹死亡者可見配送員）</td><td>1-3 天</td></tr>
+          <tr><td>騎士公車</td><td><code>knight_bus</code></td><td>社交體驗方案，途中可能繞路數次</td><td>不定</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6.4 訂單狀態全集（Master Status List v3.0）</h3>
+    <p>用戶可在「我的訂單」頁面查看訂單狀態進度條（主流程）：</p>
+    <div class="flowbox">待付款（Unpaid）→ 待出貨（Processing）→ 運送中（Shipped）→ 已完成（Completed）</div>
+
+    <h4 style="margin:16px 0 8px;color:var(--gold)">▸ 進行中</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>狀態代碼</th><th>顯示名稱</th><th>庫存動作</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><code>unpaid</code></td><td>⏳ 待付款</td><td>建單時 <code>stock -= qty</code>（非 COD 額外 <code>stock_reserved += qty</code>）</td><td>所有付款方式皆立即扣庫存</td></tr>
+          <tr><td><code>processing</code></td><td>📦 待出貨</td><td><code>stock_reserved -= qty</code>（僅釋放凍結）</td><td>付款成功，通知備貨</td></tr>
+          <tr><td><code>shipped</code></td><td>🚀 運送中</td><td>無變動</td><td>管理員已填貓頭鷹物流單號</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="margin:16px 0 8px;color:#9b59b6">▸ 逆向流程</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>狀態代碼</th><th>顯示名稱</th><th>庫存動作</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><code>refunding</code></td><td>🔄 退款審核中</td><td>鎖定中</td><td>付款後用戶申請退款，等管理員審核</td></tr>
+          <tr><td><code>return_pending</code></td><td>📮 退貨中</td><td>鎖定中</td><td>管理員批准退款，等待用戶寄回商品</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="margin:16px 0 8px;color:#e67e22">▸ 異常處理</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>狀態代碼</th><th>顯示名稱</th><th>庫存動作</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><code>shipping_failed</code></td><td>⚠️ 配送異常</td><td>維持扣除</td><td>貓頭鷹找不到地址，管理員介入後可重新出貨</td></tr>
+          <tr><td><code>rejected</code></td><td>🚫 退款被拒絕</td><td>維持扣除</td><td>管理員拒絕退款，可再手動轉為 <code>completed</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="margin:16px 0 8px;color:#5cb85c">▸ 終點站</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>狀態代碼</th><th>顯示名稱</th><th>庫存動作</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><code>completed</code></td><td>✅ 已完成</td><td>無變動，發驚喜券</td><td>用戶確認收貨，交易圓滿結案</td></tr>
+          <tr><td><code>cancelled</code></td><td>❌ 已取消</td><td><code>stock += qty</code> + <code>stock_reserved -= qty</code></td><td>付款前終止，庫存完整回補</td></tr>
+          <tr><td><code>refunded</code></td><td>💸 已退款</td><td><code>stock += qty</code>（確認退貨後）</td><td>退貨確認入庫後完成退款</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="margin:16px 0 8px;color:var(--gold)">▸ 核心流程路徑</h4>
+    <div class="flowbox" style="text-align:left;line-height:1.9">
+      <strong>付款前取消：</strong> UNPAID → CANCELLED（stock 回補）<br>
+      <strong>付款後退款：</strong> PROCESSING / SHIPPED / COMPLETED → REFUNDING → RETURN_PENDING → REFUNDED<br>
+      <strong>退款被拒：</strong> REFUNDING → REJECTED（附原因）→ COMPLETED<br>
+      <strong>配送異常：</strong> SHIPPED → SHIPPING_FAILED → SHIPPED（重新出貨）/ CANCELLED
+    </div>
+
+    <h3>6.5 商品分頁加載（Pagination）</h3>
+    <div class="callout info">前台商品列表採「無限滾動（Infinite Scroll）」分頁，每次加載 20 筆，避免一次載入大量 GIF 動圖導致瀏覽器崩潰。</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>參數</th><th>說明</th><th>預設值</th></tr></thead>
+        <tbody>
+          <tr><td><code>page</code></td><td>頁碼（從 1 開始）</td><td>1</td></tr>
+          <tr><td><code>limit</code></td><td>每頁筆數（最大 50）</td><td>20</td></tr>
+          <tr><td><code>category</code></td><td>魔法類別篩選（選填）</td><td>—</td></tr>
+          <tr><td><code>dangerLevel</code></td><td>危險等級篩選 1-5（選填）</td><td>—</td></tr>
+          <tr><td><code>sort</code></td><td><code>createdAt_desc</code> / <code>price_asc</code> / <code>danger_desc</code></td><td>createdAt_desc</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="code-block">GET /api/products?page=1&limit=20&category=prank&dangerLevel=5&sort=createdAt_desc
+
+// 回應格式
+{
+  "data": [ ...商品陣列 ],
+  "meta": { "page": 1, "limit": 20, "total": 87, "totalPages": 5, "hasNextPage": true }
+}</pre>
+    <pre class="code-block">// hooks/useProductPagination.ts
+// 觀察列表底部 sentinel 元素，進入視窗時自動加載下一頁
+const observer = new IntersectionObserver(
+  ([entry]) => { if (entry.isIntersecting &amp;&amp; hasNextPage) fetchNextPage() },
+  { rootMargin: '200px' }  // 提前 200px 預載，避免用戶等待
+)</pre>
+    <div class="callout">
+      <strong>Loading 狀態說明：</strong><br>
+      ・初次加載：顯示 8 個骨架卡片（Skeleton）<br>
+      ・加載更多：「🧙 召喚更多法寶中...」旋轉指示器<br>
+      ・全部加載完畢：「✨ 斜角巷的法寶已全數展示」
+    </div>
+  </section>
+
+  <!-- 七、後台管理平台 -->
+  <section id="s7">
+    <h2><span class="num">7</span>後台管理平台</h2>
+
+    <h3>7.1 商品與庫存管理</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>功能</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>上下架</strong></td><td>一鍵切換 Hidden / Visible（隱身咒）</td></tr>
+          <tr><td><strong>SKU 維護</strong></td><td>可設定不同規格的價格、庫存、重量、圖片</td></tr>
+          <tr><td><strong>庫存預警</strong></td><td>任何 SKU 庫存低於 5 件時，後台導覽列顯示紅光閃爍</td></tr>
+          <tr><td><strong>從辦公室偷回</strong></td><td>庫存 = 0 時顯示，按下後該 SKU 庫存恢復為 5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7.2 訂單管理（OMS）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>功能</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>訂單列表</strong></td><td>顯示訂單號、下單時間、付款方式、訂單總額、訂單狀態</td></tr>
+          <tr><td><strong>狀態篩選</strong></td><td>可依全部 11 種訂單狀態篩選；<code>refunding</code>、<code>return_pending</code>、<code>shipping_failed</code> 顯示數量徽章提醒</td></tr>
+          <tr><td><strong>一鍵出貨</strong></td><td>填入貓頭鷹物流單號，前台用戶狀態即時更新</td></tr>
+          <tr><td><strong>標記配送異常</strong></td><td><code>shipped</code> 狀態下標記為 <code>shipping_failed</code>；修正地址後可重新出貨或取消</td></tr>
+          <tr><td><strong>取消訂單</strong></td><td><code>unpaid</code> 狀態下庫存全數回補並釋放凍結；<code>shipping_failed</code> 亦可取消</td></tr>
+          <tr><td><strong>修改地址</strong></td><td>管理員可修改收件地址（僅限 <code>processing</code> 狀態）</td></tr>
+          <tr><td><strong>退款批准</strong></td><td><code>refunding</code> → <code>return_pending</code>，通知用戶寄回商品</td></tr>
+          <tr><td><strong>確認收到退貨</strong></td><td><code>return_pending</code> → <code>refunded</code>，庫存自動回補（<code>stock += qty</code>）</td></tr>
+          <tr><td><strong>退款拒絕</strong></td><td>填寫拒絕原因，<code>refunding</code> → <code>rejected</code>；後續可再轉 <code>completed</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7.3 促銷管理</h3>
+    <div class="card gold">
+      <h4>全站折扣</h4>
+      <p>設定「開學季全館 8 折」（<code>percentage</code> 類型），套用於結帳時所有商品小計。</p>
+    </div>
+    <div class="card gold">
+      <h4>優惠券（Coupon）</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>欄位</th><th>範例</th></tr></thead>
+          <tbody>
+            <tr><td>代碼</td><td><code>MischiefManaged</code></td></tr>
+            <tr><td>折扣類型</td><td>固定金額折扣（<code>fixed</code>）</td></tr>
+            <tr><td>折扣金額</td><td>5 金加隆</td></tr>
+            <tr><td>最低消費</td><td>50 金加隆</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3>7.4 數據報表（Analytics Dashboard）</h3>
+
+    <h4>7.4.1 營運人員報表</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>報表項目</th><th>說明</th><th>關鍵指標</th></tr></thead>
+        <tbody>
+          <tr><td><strong>營收統計</strong></td><td>以折線圖顯示今日 / 本週 / 本月營業額</td><td>日 / 週 / 月營業額</td></tr>
+          <tr><td><strong>今日訂單數</strong></td><td>當日新增訂單總數</td><td>訂單數</td></tr>
+          <tr><td><strong>累積營業額</strong></td><td>所有 <code>completed</code> 訂單加總</td><td>累積金加隆數</td></tr>
+          <tr><td><strong>商品銷量排行</strong></td><td>「最常整到人的法寶」Top 5（依銷售量排行）</td><td>銷售量 Top 5</td></tr>
+          <tr><td><strong>轉化率</strong></td><td>進站人數 vs. 完成下單人數百分比</td><td>轉化率 %</td></tr>
+          <tr><td><strong>庫存預警列表</strong></td><td>SKU 庫存 &lt; 5 的品項一覽（石內卜警告色）</td><td>低庫存 SKU 數</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>7.4.2 金流報表</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>報表項目</th><th>說明</th><th>關鍵指標</th><th>資料來源</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>退款明細報表</strong></td>
+            <td>列出所有 <code>refunded</code> 狀態訂單，含退款原因（<code>refund_reject_reason</code>）、原始單號、退款耗時（<code>updated_at − created_at</code>）</td>
+            <td>退款總額、平均退款耗時</td>
+            <td><code>Order</code> where <code>status = 'refunded'</code></td>
+          </tr>
+          <tr>
+            <td><strong>榮恩稅專案收入</strong></td>
+            <td>統計 <code>is_ron = true</code> 的訂單所產生的 100% 家屬服務費（<code>total_knut / 2</code> 為服務費金額，因結帳時已 ×2）</td>
+            <td>家族貢獻度總額（金加隆）、榮恩訂單筆數</td>
+            <td><code>Order</code> where <code>is_ron = true</code></td>
+          </tr>
+          <tr>
+            <td><strong>優惠券折抵統計</strong></td>
+            <td>各優惠券代碼被使用次數（<code>Coupon.used_count</code>）與折抵總金額（由 <code>discount_snapshot</code> 加總）</td>
+            <td>使用次數、折扣成本（金加隆）</td>
+            <td><code>Coupon</code> JOIN <code>Order</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>設計決策：</strong>「交易對帳總表」因模擬支付無獨立帳本，系統訂單額與金庫入帳額為同一數據來源，差異恆為零，不予實作。
+    </div>
+
+    <h4>7.4.3 物流報表</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>報表項目</th><th>說明</th><th>關鍵指標</th><th>資料來源</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>配送異常追蹤表</strong></td>
+            <td>列出所有 <code>shipping_failed</code> 狀態訂單，含收件地址與配送方式，提供管理員優先處理依據</td>
+            <td>異常包裹數、各配送方式異常率</td>
+            <td><code>Order</code> where <code>status = 'shipping_failed'</code></td>
+          </tr>
+          <tr>
+            <td><strong>庫存周轉分析</strong></td>
+            <td>依各 SKU 的 <code>StockLog</code>（<code>reason = 'order_placed'</code>）統計銷售速度；熱賣法寶與滯銷品分區顯示</td>
+            <td>庫存周轉天數（DIO）、熱賣 Top 5 / 滯銷 Bottom 5</td>
+            <td><code>StockLog</code> GROUP BY <code>s_id</code> JOIN <code>SKUItem</code></td>
+          </tr>
+          <tr>
+            <td><strong>物流方式佔比</strong></td>
+            <td>統計用戶選擇消影術 / 飛天掃帚 / 賽斯托 / 騎士公車的訂單比例與件數</td>
+            <td>各方式佔比（%）、件數</td>
+            <td><code>Order.shipping_method GROUP BY</code></td>
+          </tr>
+          <tr>
+            <td><strong>退貨入庫統計</strong></td>
+            <td>統計 <code>return_pending</code> 最終轉為 <code>refunded</code> 的件數；不含毀損率（schema 無對應欄位，需人工標記）</td>
+            <td>退貨件數、退款完成件數、待確認件數</td>
+            <td><code>Order</code> where <code>status IN ('return_pending', 'refunded')</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>設計決策：</strong>「物流時效監控表」因 <code>Order</code> 表僅有 <code>created_at</code> / <code>updated_at</code>，缺乏 per-status 時間戳，無法準確計算各階段耗時，待後續補充 status history 表後再行實作。
+    </div>
+
+    <h3>7.5 圖片／影片上傳規格</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>類型</th><th>欄位</th><th>允許格式</th><th>大小上限</th><th>建議尺寸</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>商品動圖</td><td><code>Products.media_url</code></td><td>GIF、APNG、WebP（動態）</td><td><strong>3 MB</strong></td><td>400×400px</td><td>商品主展示動圖</td></tr>
+          <tr><td>商品靜態圖</td><td><code>Products.media_url</code></td><td>JPEG、PNG、WebP</td><td><strong>1 MB</strong></td><td>400×400px</td><td>無動圖時的備用靜態圖</td></tr>
+          <tr><td>SKU 規格圖</td><td><code>SKU_Items.image_url</code></td><td>JPEG、PNG、WebP</td><td><strong>1 MB</strong></td><td>200×200px</td><td>各規格差異圖（如顏色、容量）</td></tr>
+          <tr><td>飛七動圖</td><td><code>public/images/peeves.gif</code></td><td>GIF</td><td><strong>500 KB</strong></td><td>120×120px</td><td>前台浮動圖層，尺寸固定</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>前端效能規則：</strong> GIF 超過 1 MB 時商品卡片先顯示 loading skeleton；<code>media_url</code> 為空時顯示預設黑魔法師帽 SVG 佔位圖。後台上傳欄位：<code>accept="image/jpeg,image/png,image/webp,image/gif,image/apng"</code>
+    </div>
+    <pre class="code-block">// server/middleware/uploadMiddleware.ts
+// 限制上傳大小與格式，防止非圖片檔案入庫
+const upload = multer({
+  limits: { fileSize: 3 * 1024 * 1024 },        // 最大 3 MB
+  fileFilter: (_req, file, cb) => {
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/apng']
+    cb(null, allowed.includes(file.mimetype))    // 非允許格式直接拒絕
+  }
+})</pre>
+
+    <h3>7.6 操作日誌（Audit Log）</h3>
+    <div class="callout info">後台所有寫入操作均自動記錄至 <code>Admin_Audit_Logs</code> 表，追蹤「誰在何時做了什麼」，解決喬治與弗雷互推責任問題。</div>
+    <pre class="code-block">-- 管理員操作記錄，防止甩鍋（石內卜例外）
+CREATE TABLE Admin_Audit_Logs (
+  log_id      CHAR(36)    PRIMARY KEY DEFAULT (UUID()),
+  admin_id    CHAR(36)    NOT NULL REFERENCES Users(u_id),  -- 操作者
+  action      VARCHAR(64) NOT NULL,   -- 動作代碼，如 PRODUCT_UPDATE、PRANK_TOGGLE
+  target_type VARCHAR(32),            -- 操作對象類型：product / order / coupon / config
+  target_id   CHAR(36),              -- 操作對象 UUID
+  payload     JSON,                  -- 變更前後的 diff：{ before: {}, after: {} }
+  ip          VARCHAR(45),           -- 管理員 IP（支援 IPv6）
+  created_at  DATETIME NOT NULL DEFAULT NOW()
+);</pre>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>動作代碼</th><th>觸發情境</th><th>payload 範例</th></tr></thead>
+        <tbody>
+          <tr><td><code>PRODUCT_CREATE</code></td><td>新增商品</td><td><code>{ after: { name: "測奸器", dangerLevel: 5 } }</code></td></tr>
+          <tr><td><code>PRODUCT_UPDATE</code></td><td>修改商品欄位</td><td><code>{ before: { price: 100 }, after: { price: 150 } }</code></td></tr>
+          <tr><td><code>PRODUCT_DELETE</code></td><td>刪除商品</td><td><code>{ before: { name: "過期迷情劑" } }</code></td></tr>
+          <tr><td><code>STOCK_RESTORE</code></td><td>從辦公室偷回（庫存 0→5）</td><td><code>{ skuId: "xxx", before: 0, after: 5 }</code></td></tr>
+          <tr><td><code>PRANK_TOGGLE</code></td><td>惡搞 / 吼叫信 / 飛七開關</td><td><code>{ feature: "prankMode", before: false, after: true }</code></td></tr>
+          <tr><td><code>MISCHIEF_ACTIVATE</code></td><td>啟動 Mischief Managed</td><td><code>{ trigger: "manual", adminId: "xxx" }</code></td></tr>
+          <tr><td><code>ORDER_SHIP</code></td><td>標記出貨</td><td><code>{ orderId: "xxx", trackingNumber: "OWL-123" }</code></td></tr>
+          <tr><td><code>ORDER_REFUND_APPROVE</code></td><td>批准退款</td><td><code>{ orderId: "xxx", refundKnut: 5000 }</code></td></tr>
+          <tr><td><code>COUPON_CREATE</code></td><td>新增優惠券</td><td><code>{ code: "MischiefManaged", discount: "5G" }</code></td></tr>
+          <tr><td><code>IP_BLACKLIST_ADD</code></td><td>加入 IP 黑名單</td><td><code>{ ip: "192.168.1.100", reason: "魔法部探子" }</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>7.7 批量操作工具與系統心跳（Batch Operations &amp; Health Check）</h3>
+    <div class="callout"><strong>批量強制釋放庫存</strong><br>情境：<code>node-cron</code> 排程若停擺，<code>stock_reserved</code> 不會自動歸零，需提供管理員手動校正工具。</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>功能</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>批量選取</strong></td><td>後台訂單列表支援 checkbox 多選，狀態篩選為 <code>unpaid</code></td></tr>
+          <tr><td><strong>強制釋放</strong></td><td>管理員點擊「強制釋放庫存」→ 後端批次執行 <code>stock_reserved -= quantity</code>，訂單狀態→ <code>cancelled</code>，寫入 Audit Log</td></tr>
+          <tr><td><strong>確認彈窗</strong></td><td>操作前顯示「即將取消 N 筆訂單，釋放共 M 件庫存，此操作不可逆」，需二次確認</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="code-block">// PATCH /api/orders/bulk-cancel
+// body: { orderIds: string[], reason: 'admin_force_release' }
+// 後端以 Transaction 批次更新，確保原子性</pre>
+    <div class="callout"><strong>系統心跳 API（Health Check）</strong></div>
+    <pre class="code-block">GET /api/health
+Authorization: 管理員 JWT
+
+Response 200 OK:
+{
+  "status": "ok",
+  "timestamp": "2026-04-14T12:00:00Z",
+  "services": {
+    "database":      { "status": "ok",      "latencyMs": 12 },
+    "redis":         { "status": "ok",      "latencyMs": 3  },
+    "jwtSecret":     { "status": "ok"                       },
+    "nodeCron":      { "status": "ok",      "lastRun": "2026-04-14T11:45:00Z" },
+    "mischiefGuard": { "status": "active",  "blacklistSize": 3 }
+  }
+}
+
+Response 503 Service Unavailable:
+{
+  "status": "degraded",
+  "services": { "database": { "status": "error", "error": "Connection timeout" } }
+}</pre>
+    <p>後台「系統狀態」頁面每 30 秒輪詢此端點，任一服務異常時顯示紅色警示橫幅。</p>
+  </section>
+
+  <!-- 八、支付方式 -->
+  <section id="s8">
+    <h2><span class="num">8</span>支付方式管理</h2>
+
+    <p>後台可設定開啟 / 關閉各支付選項，前台結帳時供用戶選擇。</p>
+
+    <div class="card">
+      <h4>🏛 巫師金庫轉帳（模擬銀行轉帳）</h4>
+      <ul>
+        <li>用戶輸入「古靈閣金庫帳號末五碼」</li>
+        <li>訂單維持「待付款」，直到管理員於後台點擊「確認入帳」</li>
+        <li>管理員確認後，訂單自動轉為「待出貨」</li>
+        <li><strong>超時規則：</strong>72 小時內若管理員未確認入帳，系統自動取消訂單並釋放凍結庫存，Email 通知「古靈閣轉帳逾期」（<code>node-cron</code> 每小時掃描；與魔法卡的 15 分鐘規則不同）</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h4>🦉 貨到交金加隆（模擬貨到付款）</h4>
+      <ul>
+        <li>用戶選擇後直接成立訂單（<code>status: processing</code>，無需等待付款確認）</li>
+        <li>系統備註「貓頭鷹送達時收款」</li>
+        <li>管理員出貨後，訂單送達自動轉為「已完成」</li>
+        <li><strong>超時規則：</strong>無 15 分鐘限制（訂單直接進入 <code>processing</code>，庫存已正式扣除）</li>
+      </ul>
+    </div>
+
+    <div class="card gold">
+      <h4>✨ 魔法卡（模擬信用卡）</h4>
+      <ul>
+        <li>用戶輸入任意 16 位數卡號（前端不驗證真實性）</li>
+        <li>點擊「送出魔法傳輸」後，播放 3 秒「魔法傳輸中...」動畫</li>
+        <li>動畫結束後後端直接回傳「支付成功」，訂單更新為「待出貨」</li>
+      </ul>
+      <pre><code>// 模擬支付流程（前端）
+const handleMockPayment = async () => {
+  setPaymentStatus('processing')
+  await new Promise(resolve => setTimeout(resolve, 3000))  // 3 秒動畫
+  await api.post(`/orders/${orderId}/payment`)             // 通知後端
+  setPaymentStatus('success')
+  navigate(`/orders/${orderId}`)
+}</code></pre>
+    </div>
+
+    <h3>8.4 支付安全與隱私規範</h3>
+    <div class="callout info"><strong>PCI-DSS 模擬合規規範：</strong>即便為模擬支付，卡號屬於 PCI-DSS 管制的敏感驗證資料（SAD）。本系統確保模擬環境亦符合最小特權原則。</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>規則</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>卡號不落地</strong></td><td>後端收到 <code>POST /api/orders/:id/payment</code> 後，卡號僅在記憶體中驗證格式（16 位數），驗證後立即銷毀（不寫入日誌、資料庫或快取）</td></tr>
+          <tr><td><strong>僅儲存 payment_id</strong></td><td>資料庫 <code>Orders</code> 表僅儲存系統自產的 <code>payment_id</code>（UUID），不含卡號或持卡人姓名</td></tr>
+          <tr><td><strong>HTTPS 強制</strong></td><td>所有含卡號欄位的表單請求必須透過 HTTPS 傳輸（開發環境使用 <code>mkcert</code> 本地憑證）</td></tr>
+          <tr><td><strong>前端遮罩</strong></td><td>卡號輸入欄位使用動態遮罩（顯示 <code>**** **** **** 1234</code>），不以明文存入 React state</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="code-block">-- 模擬支付完成後記錄支付識別碼，卡號本身絕不儲存
+ALTER TABLE Orders ADD COLUMN payment_id CHAR(36) DEFAULT NULL;
+-- payment_id = UUID()，由後端於支付成功時寫入</pre>
+    <div class="callout"><strong>榮恩識別隱私規範（Magic GDPR）</strong></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>規則</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>最小化原則</strong></td><td>Email 僅用於 <code>is_ron</code> 判斷，不另行建立「疑似榮恩名單」資料庫</td></tr>
+          <tr><td><strong>透明告知</strong></td><td>結帳頁「魔法波動免責聲明」已告知「最終金額以訂單確認頁為準」，隱含自動定價調整可能性</td></tr>
+          <tr><td><strong>用戶查詢權</strong></td><td>用戶可透過「我的帳號」查看自身 <code>user_level</code>，若為 <code>ron</code> 可申請人工審核</td></tr>
+          <tr><td><strong>資料留存</strong></td><td><code>is_ron</code> 欄位隨訂單資料保留，保留期限 7 年（符合電商交易記錄法規）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 九、訂單生命週期 -->
+  <section id="s9">
+    <h2><span class="num">9</span>訂單生命週期</h2>
+
+    <h3>9.1 完整流程</h3>
+    <div class="flowbox">
+[下單階段]
+用戶按「確定交出金加隆」
+         │
+         ▼
+建立訂單（status: unpaid）
+立即扣除 SKU 庫存（stock -= quantity）← v2 新機制：所有付款方式皆立即扣庫存
+非 COD 另外凍結（stock_reserved += quantity）
+         │
+         ▼
+[支付階段]
+用戶選擇支付方式並完成付款
+         │
+         ├─ 魔法卡：3 秒動畫後直接成功
+         ├─ 金庫轉帳：等管理員「確認入帳」
+         └─ 貨到付款：直接進入 processing
+         │
+         ▼
+訂單狀態 → processing
+釋放凍結庫存（stock_reserved -= quantity）← stock 已在建單時扣除，此處不再扣
+發送「訂單成功確認信」至用戶 Email（貓頭鷹確認信）
+         │
+         ▼
+[出貨階段]
+管理員選擇「貓頭鷹配送」，輸入追蹤單號
+         │
+         ▼
+訂單狀態 → shipped
+前台用戶看到狀態更新，收到「貓頭鷹已啟程」通知
+         │
+         ▼
+[結案階段]
+用戶點擊「確認收到商品」
+         │
+         ▼
+訂單狀態 → completed
+發放「下次折抵 1 納特」驚喜優惠券至用戶帳號</div>
+
+    <h3>9.2 異常流程：支付失敗、取消與退款</h3>
+    <div class="callout info"><strong>v3.0 更新：</strong>退款流程新增 return_pending（退貨中）步驟；拒絕退款改為 rejected 狀態；新增配送異常流程。</div>
+    <div class="flowbox">
+[支付失敗]
+後端回傳錯誤（超時 / 格式錯誤）
+         │
+         ▼
+訂單維持 unpaid（stock 已在建單時扣除，不再變動）
+         ├─ 15 分鐘內重試 ──→ 正常流程繼續
+         └─ 超時無付款 ──→ node-cron 自動取消
+                           status → cancelled
+                           stock += quantity（庫存回補）
+                           stock_reserved -= quantity（釋放凍結）
+                           Email：「訂單已因超時自動取消」
+
+[退款流程（含退貨步驟）]
+用戶申請退款（processing / shipped / completed 均可申請）
+⚠️ completed 狀態：需在訂單完成後 7 天內申請，逾時系統拒絕。
+         │
+         ▼
+status → refunding（庫存鎖定，等管理員審核）
+         │
+         ├─ 批准 ──→ status → return_pending（通知用戶寄回商品）
+         │              │
+         │              ▼
+         │          管理員確認收到退貨
+         │              │
+         │              ▼
+         │          stock += quantity（庫存回補）
+         │          status → refunded
+         │          Email：「魔法部已批准退款，金加隆返還中」
+         │
+         └─ 拒絕 ──→ status → rejected（附拒絕原因）
+                    管理員可手動轉為 completed
+                    Email 通知拒絕原因
+
+[配送異常流程]
+管理員確認貓頭鷹無法送達
+         │
+         ▼
+status → shipping_failed
+         ├─ 修正地址後重新出貨 ──→ status → shipped（新物流單號）
+         └─ 放棄配送 ──→ status → cancelled（stock += quantity 回補）</div>
+
+    <h3>9.3 Email 通知時機</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>觸發時機</th><th>通知主旨</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>訂單建立（unpaid）</td><td>「您的訂單已收到，等待付款」</td><td>含訂單摘要</td></tr>
+          <tr><td>支付成功（→ processing）</td><td>「貓頭鷹確認信：訂單確認！」</td><td>含訂單明細</td></tr>
+          <tr><td>出貨（→ shipped）</td><td>「貓頭鷹已啟程！」</td><td>含物流單號</td></tr>
+          <tr><td>完成（completed）</td><td>「收到了！附上 1 納特驚喜券」</td><td>含優惠券代碼</td></tr>
+          <tr><td>自動取消（unpaid 超時）</td><td>「您的訂單已因超時自動取消」</td><td>含重新下單連結</td></tr>
+          <tr><td>退款批准（→ return_pending）</td><td>「退款已批准，請寄回商品至斜角巷 93 號」</td><td>含退貨地址</td></tr>
+          <tr><td>退款完成（→ refunded）</td><td>「魔法部已批准退款，金加隆返還中」</td><td>含退款金額</td></tr>
+          <tr><td>退款拒絕（→ rejected）</td><td>「退款申請未獲批准」</td><td>含拒絕原因</td></tr>
+          <tr><td>配送異常（→ shipping_failed）</td><td>「貓頭鷹迷路了！請確認收件地址」</td><td>含客服聯繫方式</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>9.4 資料快照（Snapshot）</h3>
+    <div class="callout">
+      <strong>設計原則：</strong>訂單成立後，商品名稱、規格說明、單價等影響消費者權益的資訊必須永久凍結，不受後台後續編輯影響。確保用戶看到的訂單明細永遠與購買當下一致。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>資料項目</th><th>快照時機</th><th>儲存位置</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>商品名稱</td><td>加入購物車時</td><td><code>Order_Items.snapshot_name</code></td><td>後台改名後舊訂單仍顯示原名</td></tr>
+          <tr><td>SKU 規格說明</td><td>加入購物車時</td><td><code>Order_Items.snapshot_spec</code></td><td>後台改規格說明後不影響舊訂單</td></tr>
+          <tr><td>單價（Knut）</td><td>加入購物車時</td><td><code>Order_Items.unit_price_knut</code></td><td>已有此欄位，為價格快照</td></tr>
+          <tr><td>商品圖片 URL</td><td>建立訂單時</td><td><code>Order_Items.snapshot_image_url</code></td><td>後台換圖後舊訂單仍顯示原圖</td></tr>
+          <tr><td>優惠折扣規則</td><td>建立訂單時</td><td><code>Orders.discount_snapshot</code> (JSON)</td><td>優惠券刪除後，歷史訂單仍可顯示折扣名稱與金額（AC-24）</td></tr>
+          <tr><td><strong>實際付款總額</strong></td><td><strong>付款成功時</strong></td><td><code><strong>Orders.final_captured_amount</strong></code></td><td><strong>榮恩稅、全站折扣、優惠券套用後，用戶實際被扣款的金額；退款以此欄為基準，而非 <code>total_knut</code>（AC-32）</strong></td></tr>
+          <tr><td>惡搞顯示價格</td><td><strong>不快照</strong></td><td>—</td><td>惡搞價格僅視覺用，不進入任何持久層</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="code-block">-- 在 Order_Items 加入商品快照欄位，確保訂單資料與後台變更解耦
+ALTER TABLE Order_Items
+  ADD COLUMN snapshot_name      VARCHAR(100) NOT NULL DEFAULT '',  -- 商品名稱快照
+  ADD COLUMN snapshot_spec      VARCHAR(100) NOT NULL DEFAULT '',  -- 規格說明快照
+  ADD COLUMN snapshot_image_url TEXT;                              -- 商品圖片快照（選填）
+
+-- 在 Orders 加入折扣快照欄位，優惠券刪除後仍可重建明細
+ALTER TABLE Orders
+  ADD COLUMN discount_snapshot JSON;                               -- 下單當時的折扣快照
+
+-- 實際捕獲金額快照：付款成功後寫入，涵蓋榮恩稅 × 全站折扣 × 優惠券後的最終扣款金額
+-- 退款審核時後端讀取此欄位作為退款基準，而非 total_knut（後者不含後續疊加誤差）
+ALTER TABLE Orders
+  ADD COLUMN final_captured_amount DECIMAL(15,4) DEFAULT NULL;
+  -- NULL = 尚未付款；付款成功時由支付回調 handler 寫入</pre>
+    <div class="callout warning"><strong>榮恩退款場景說明（PM 修正 v2.4）：</strong>榮恩以 <code>ron.weasley@owl.com</code> 下單，商品小計 10,000 Knut，榮恩稅後 <code>total_knut = 20,000</code>，付款成功後 <code>final_captured_amount = 20,000</code>。若退款邏輯誤讀 <code>Order_Items.unit_price_knut</code> 加總（= 10,000），只退一半金額，引發財務糾紛。正確做法：退款金額 = <code>Orders.final_captured_amount</code>，確保用戶拿回實際付出的全額。</div>
+    <div class="callout info"><strong>discount_snapshot JSON 結構範例：</strong></div>
+    <pre class="code-block">{
+  "couponCode": "MischiefManaged",
+  "discountType": "fixed",
+  "discountKnut": 2465,
+  "globalDiscount": { "label": "開學季全館 8 折", "rate": 0.8 },
+  "ronSurcharge": false
+}</pre>
+    <pre class="code-block">// 加入購物車時同步快取商品資訊快照，確保訂單資料不隨後台修改變動
+const addToCart = (product: Product, sku: SKUItem) => {
+  cartStore.add({
+    skuId: sku.id,
+    lockedPrice: sku.price,               // 資料庫定價快照（非惡搞顯示價）
+    snapshotName: product.name,           // 商品名稱快照
+    snapshotSpec: sku.spec,               // 規格說明快照
+    snapshotImageUrl: sku.imageUrl ?? product.mediaUrl,
+  })
+}</pre>
+  </section>
+
+  <!-- 十、Prank Console -->
+  <section id="s10">
+    <h2><span class="num">10</span>後台控制中心（Prank Console）</h2>
+
+    <h3>10.1 可控開關與觸發器</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>控制項</th><th>類型</th><th>行為說明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>惡搞模式</strong></td><td>Toggle</td><td>前台所有商品<strong>顯示</strong>價格每 2 秒以隨機係數跳動（0.5x～5.0x）；<strong>結帳金額鎖定加入購物車當下的資料庫定價</strong>，非惡搞顯示價格</td></tr>
+          <tr><td><strong>吼叫信模式</strong></td><td>Toggle</td><td>前台頂部顯示全寬紅色橫幅，Web Audio API 合成警報聲（不需 mp3 檔）</td></tr>
+          <tr><td><strong>飛七巡邏</strong></td><td>一次性觸發</td><td>在前台隨機位置生成飛七浮動圖層，Framer Motion 不規則移動</td></tr>
+          <tr><td><strong>Mischief Managed</strong></td><td>緊急切換</td><td>一鍵清除所有特效，前台偽裝為文具店</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>10.2 惡搞模式技術規格</h3>
+    <div class="callout info"><strong>設計原則（v2.1 修正）：</strong>惡搞價格僅存在於 React state（視覺層），永遠不寫入 HTML <code>data-price</code> 屬性、不傳送至後端。購物車加入時以 <code>basePrice</code>（資料庫定價）快照儲存，確保結帳金額正確，避免法律糾紛。</div>
+    <pre><code>// ── 視覺展示用（前端 state 層，不影響交易） ──
+const PRANK_MAX_DISPLAY = 3.0; // 顯示上限：超過 3.0x 截斷，避免嚇跑顧客（AC-26）
+const getPrankDisplayPrice = (basePrice: number): number => {
+  const multiplier = Math.random() * (5.0 - 0.5) + 0.5; // 隨機係數範圍 0.5x ~ 5.0x
+  const capped = Math.min(multiplier, PRANK_MAX_DISPLAY);  // 顯示截斷至 3.0x
+  return Math.round(basePrice * capped);
+};
+
+useEffect(() => {
+  if (!prankModeEnabled) return;
+  const interval = setInterval(() => {
+    updateDisplayPrices(); // 只更新 Zustand displayPrice，不動 basePrice
+  }, 2000);
+  return () => clearInterval(interval);
+}, [prankModeEnabled]);
+
+// ── 加入購物車（快照資料庫定價，忽略惡搞顯示價格） ──
+const addToCart = (sku: SKUItem) => {
+  cartStore.add({ ...sku, lockedPrice: sku.price }) // ✅ 用 basePrice，非 displayPrice
+}</code></pre>
+    <div class="callout"><strong>SEO 保護：</strong>商品 HTML 結構（<code>&lt;h2&gt;</code>、<code>data-price</code>、JSON-LD Schema）永遠輸出資料庫原始定價。惡搞價格透過 CSS / React state 替換 DOM 文字節點，不影響靜態 HTML，Google 爬蟲不會抓到錯誤定價。</div>
+
+    <h3>10.3 飛七巡邏（Peeves Patrol）</h3>
+    <ul>
+      <li>觸發後在前台隨機 (x, y) 座標生成飛七浮動圖層（<code>position: fixed</code>）</li>
+      <li>Framer Motion 驅動不規則移動路徑</li>
+      <li><strong>點擊互動流程（三段式）：</strong>
+        <ol>
+          <li><strong>第一次點擊</strong>：畫面出現魔杖圖示（🪄）浮現於飛七上方，提示可以攻擊</li>
+          <li><strong>第二次點擊</strong>（魔杖已出）：出現閃電符號（⚡），觸發攻擊</li>
+          <li><strong>攻擊結果</strong>：
+            <ul>
+              <li>閃電爆炸動畫播放（scale + brightness 漸出）</li>
+              <li>飛七消失（<code>dismissPeevesPatrol()</code>）</li>
+              <li>購物車自動加入「⚡ 魔法攻擊損害賠償」品項，數量 +1（累計每次攻擊）</li>
+              <li>此品項<strong>不得更改數量、不得刪除</strong>（<code>locked: true</code>），購物車顯示鎖定標記 🔒</li>
+            </ul>
+          </li>
+        </ol>
+      </li>
+    </ul>
+
+    <h3>10.4 惡搞防呆機制（Safety Guards）</h3>
+    <div class="callout info">惡搞特效的目的是「製造驚喜」，不是「讓顧客無法購物」。以下規則確保在極端惡搞狀態下，結帳流程仍然暢通。</div>
+    <p><strong>1. 惡搞價格顯示上限（3.0x）</strong></p>
+    <pre class="code-block">// 惡搞顯示倍率上限：最高顯示原價 × 3，避免顯示離譜天價嚇跑顧客
+const MAX_PRANK_MULTIPLIER = 3.0
+const getPrankDisplayPrice = (basePrice: number): number => {
+  const raw = Math.random() * (5.0 - 0.5) + 0.5   // 原始隨機範圍 0.5x～5.0x
+  const capped = Math.min(raw, MAX_PRANK_MULTIPLIER) // 顯示上限 3.0x
+  return Math.round(basePrice * capped)
+}</pre>
+    <p><strong>2. 飛七 z-index 層級限制</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>元素</th><th>z-index</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>一般內容</td><td>1</td><td>商品卡片、列表</td></tr>
+          <tr><td>購物車側邊欄</td><td>200</td><td>蓋過商品列表</td></tr>
+          <tr><td>飛七浮動圖層</td><td>150</td><td>蓋過商品，但低於購物車</td></tr>
+          <tr><td>結帳彈窗（CheckoutModal）</td><td>500</td><td>永遠在飛七上層</td></tr>
+          <tr><td>吼叫信橫幅</td><td>600</td><td>最高層，確保警告可見</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>3. 飛七在結帳頁自動消失</strong></p>
+    <pre class="code-block">// components/PeevesLayer/index.tsx
+// 偵測當前路由，進入結帳頁時暫時隱藏飛七（不影響巡邏計時器）
+const { pathname } = useLocation()
+const isCheckoutPage = pathname === '/checkout' || pathname.startsWith('/orders/')
+if (isCheckoutPage) return null  // 結帳 / 訂單頁面不渲染飛七</pre>
+  </section>
+
+  <!-- 十一、Mischief Managed -->
+  <section id="s11">
+    <h2><span class="num">11</span>緊急掩護模式（Mischief Managed）</h2>
+
+    <div class="card danger">
+      <h4>🔴 啟動流程</h4>
+      <ul>
+        <li>後台側邊欄「Mischief Managed 🔴」紅色大按鈕</li>
+        <li>觸發後：關閉所有惡搞開關，前台路由切換至 <code>/stationery</code></li>
+      </ul>
+    </div>
+
+    <h3>文具店頁面規格</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>規格</th></tr></thead>
+        <tbody>
+          <tr><td>路由</td><td><code>/stationery</code></td></tr>
+          <tr><td>標題</td><td>「怪洛克文具批發股份有限公司」</td></tr>
+          <tr><td>假商品</td><td>鉛筆、橡皮擦、訂書機（不可購買）</td></tr>
+          <tr><td>背景色</td><td>純白 <code>#FFFFFF</code>，字型：標楷體</td></tr>
+          <tr><td>頁尾</td><td>「本店與任何魔法活動無關」</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout info"><strong>解除：</strong>點擊「解除掩護模式」→ 前台路由恢復，所有設定恢復上次狀態。</div>
+
+    <h3>11.2 自動觸發（IP 偵測）</h3>
+    <div class="callout info"><strong>v2.1 新增：</strong>支援「自動化觸發」，當訪問來源符合特定條件時，系統自動啟動掩護模式。</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>優先序</th><th>條件</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>IP 位於「魔法部黑名單」</td><td>後台可手動維護 IP 封鎖清單（CIDR 格式）</td></tr>
+          <tr><td>2</td><td>User-Agent 含 <code>MagicMinistry-Scanner</code></td><td>模擬對特定爬蟲自動掩護</td></tr>
+          <tr><td>3</td><td>單一 IP 在 60 秒內訪問後台超過 30 次</td><td>異常高頻訪問自動保護（防探測）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre><code>// server/middleware/mischiefGuard.ts
+export const mischiefGuard = async (req, res, next) => {
+  const blacklist = await getIpBlacklist()
+  if (blacklist.includes(req.ip)) {
+    await prankService.activateMischiefManaged()  // 全域啟動
+    return res.redirect('/stationery')             // 此訪客直接導向文具店
+  }
+  next()
+}</code></pre>
+    <div class="card">
+      <h4>後台 IP 管理介面</h4>
+      <ul>
+        <li>「魔法部監控名單」列表：顯示已封鎖 IP / CIDR 與備註</li>
+        <li>「新增封鎖」表單：輸入 IP 範圍（如：「魔法部總部 IP 段」）</li>
+        <li>「自動觸發記錄」：顯示觸發時間、來源 IP、觸發條件</li>
+      </ul>
+    </div>
+
+    <h3>11.3 管理員 Bypass 機制（Admin Whitelist）</h3>
+    <div class="callout warning"><strong>設計原則（PM 修正 v2.4）：</strong><code>mischiefGuard</code> 若對所有訪客一視同仁，當管理員本人的 IP 恰好位於黑名單（如辦公室共享 IP 被誤封），或系統因高頻偵測自動觸發掩護模式，管理員也會被重導向文具店頁面，喪失進入後台解除掩護的機會——形成「把自己鎖在門外」的致命困境。</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>檢查項目</th><th>優先序</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td>有效 admin JWT（<code>admin_token</code> Cookie）</td><td><strong>最優先（第 0 關）</strong></td><td>攜帶有效管理員 JWT 的請求永遠跳過所有掩護邏輯，直接 <code>next()</code></td></tr>
+          <tr><td>IP 黑名單</td><td>第 1 關</td><td>非管理員訪客才執行</td></tr>
+          <tr><td>User-Agent 偵測</td><td>第 2 關</td><td>非管理員訪客才執行</td></tr>
+          <tr><td>高頻存取偵測</td><td>第 3 關</td><td>非管理員訪客才執行</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre><code>// server/middleware/mischiefGuard.ts
+// 執行順序：① 管理員 Bypass → ② IP 黑名單 → ③ User-Agent → ④ 高頻偵測
+export const mischiefGuard = async (req, res, next) => {
+
+  // ① 管理員 Bypass（最優先）
+  // 攜帶有效 admin JWT 的請求，無論 IP 或頻率，永遠不受掩護模式影響
+  const adminJwt = req.cookies?.admin_token ?? extractBearerToken(req)
+  if (adminJwt && await verifyAdminJwt(adminJwt)) return next()
+
+  // ② IP 黑名單觸發
+  const blacklist = await getIpBlacklist()
+  if (blacklist.includes(req.ip)) {
+    await prankService.activateMischiefManaged()
+    return res.redirect('/stationery')
+  }
+
+  // ③ User-Agent 偵測
+  if (req.headers['user-agent']?.includes('MagicMinistry-Scanner')) {
+    await prankService.activateMischiefManaged()
+    return res.redirect('/stationery')
+  }
+
+  // ④ 高頻存取偵測（60 秒內 > 30 次）
+  const hitKey = `rate:mischief:${req.ip}`
+  const hitCount = await redis.incr(hitKey)
+  if (hitCount === 1) await redis.expire(hitKey, 60)
+  if (hitCount > 30) {
+    await prankService.activateMischiefManaged()
+    return res.redirect('/stationery')
+  }
+
+  next()
+}</code></pre>
+    <div class="callout info"><strong>安全要點：</strong><code>verifyAdminJwt()</code> 驗證簽名與有效期，不可信任前端傳入的任何自述身份資訊。<code>admin_token</code> Cookie 應設定 <code>httpOnly: true, secure: true, sameSite: 'strict'</code>，防止 XSS 竊取。</div>
+  </section>
+
+  <!-- 十二、介面規格 -->
+  <section id="s12">
+    <h2><span class="num">12</span>介面規格</h2>
+
+    <h3>12.1 前台視覺規範</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>設計項目</th><th>規格</th></tr></thead>
+        <tbody>
+          <tr><td><strong>整體風格</strong></td><td>斜角巷木質窗框感，偏暖褐色與暗金色</td></tr>
+          <tr><td><strong>背景</strong></td><td>深褐色（<code>#2C1810</code>），帶半透明魔法藥水污漬圖案</td></tr>
+          <tr><td><strong>主色</strong></td><td>暗金色 <code>#C9972E</code></td></tr>
+          <tr><td><strong>強調色</strong></td><td>警告紅 <code>#8B0000</code>（危險等級 5 / 石內卜警告）</td></tr>
+          <tr><td><strong>字型</strong></td><td>標題：<code>Cinzel</code>；內文：<code>Noto Serif TC</code></td></tr>
+          <tr><td><strong>黑魔標記</strong></td><td>危險等級 = 5 時，卡片右上角顯示 SVG 黑魔標記，標題閃爍紅色</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>12.2 商品卡片（ProductCard）</h3>
+    <div class="ascii">┌──────────────────────────────┐◄─ 危險等級=5 時顯示 [黑魔標記]
+│                              │
+│   [商品動圖 / 圖片區域]       │
+│   200px × 200px              │
+│                              │
+├──────────────────────────────┤
+│  商品名稱（粗體，1-2 行）      │
+│  魔法類別標籤                  │
+│  危險等級：★★★☆☆              │
+│                              │
+│  SKU 選擇：[10ml ▼]           │  ◄─ 規格下拉選單
+│  庫存：剩 3 件                 │
+│  💰 3 Galleon 5 Sickle       │  ◄─ 惡搞模式：顯示值每 2 秒跳動（加入購物車仍鎖定原價）
+│                              │
+│  [立即交出金加隆] ←正常庫存    │
+│  [石內卜來訪：已被沒收] ←缺貨  │  ◄─ 灰階圖片，按鈕禁用
+└──────────────────────────────┘</div>
+
+    <h3>12.3 後台管理介面</h3>
+    <div class="ascii">┌──────────────────────────────────────────────────────────────┐
+│  🔮 WWW 後台控制中心                    [Mischief Managed] 🔴 │
+├──────────────┬───────────────────────────────────────────────┤
+│              │                                               │
+│  📊 總覽     │  今日訂單：12 筆   本週營收：890 Galleon        │
+│  📦 商品管理 │  ─────────────────────────────────────────    │
+│  📋 訂單管理 │  [待出貨] [運送中] [已完成] 篩選Tab            │
+│  🎟 促銷管理 │  訂單號 │ 金額 │ 付款方式 │ 狀態 │ 操作         │
+│  🎭 Prank   │  ─────────────────────────────────────────    │
+│    Console  │  [惡搞模式] ●────○ ON  |  [吼叫信模式] OFF      │
+│              │  [飛七巡邏] 🚀觸發   |  庫存預警 ⚠ 3 項        │
+└──────────────┴───────────────────────────────────────────────┘</div>
+
+    <h3>12.4 行動版規則（Mobile Rules）</h3>
+    <div class="callout">
+      行動裝置（viewport 寬度 &lt; 768px）因效能與操作體驗考量，部分特效自動降級或關閉。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>特效</th><th>桌機行為</th><th>手機行為</th><th>降級原因</th></tr></thead>
+        <tbody>
+          <tr><td><strong>飛七巡邏</strong></td><td><code>position:fixed</code> 隨機浮動</td><td><strong>關閉</strong>（不生成圖層）</td><td>遮擋主要點擊區域，嚴重影響手機操作</td></tr>
+          <tr><td><strong>惡搞更新頻率</strong></td><td>每 2 秒更新</td><td><strong>降級為每 5 秒</strong></td><td>減少重繪次數，降低耗電與發熱</td></tr>
+          <tr><td><strong>吼叫信橫幅</strong></td><td>全寬固定橫幅</td><td><strong>保留</strong>，字體縮小至 14px</td><td>重要警告仍需顯示</td></tr>
+          <tr><td><strong>音效警報</strong></td><td>Web Audio API 自動嘗試</td><td><strong>保留</strong>，需用戶 touch 觸發</td><td>行動瀏覽器強制要求用戶手勢</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="code-block">// hooks/useIsMobile.ts
+// 以 matchMedia 偵測螢幕寬度，SSR 安全寫法
+export const useIsMobile = (): boolean => {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)')
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+  return isMobile
+}</pre>
+
+    <h3>12.5 SEO 與社群分享（Open Graph）</h3>
+    <div class="callout info">商品連結貼至 Facebook / LINE / Discord 時，需顯示商品圖片與名稱。惡搞模式不影響 OG 標籤（永遠使用資料庫原始定價）。</div>
+    <div class="callout warning"><strong>⚠️ SPA 限制與解決方案：</strong>本專案為 Vite + React SPA，社群爬蟲只能抓到空的 <code>index.html</code>，無法取得動態商品 OG 標籤。<strong>MVP 採用 <code>vite-plugin-prerender</code></strong>，在 build time 預渲染商品頁靜態 HTML，解決爬蟲讀不到 meta 的問題。限制：新商品上架後需重新 build 才更新 OG（每日 CI/CD 自動觸發）。未來商品量大時可遷移至 Next.js SSR。</div>
+    <pre class="code-block">&lt;!-- 動態產生（每個商品頁獨立） --&gt;
+&lt;title&gt;速效翹課糖 — 衛氏巫師法寶店&lt;/title&gt;
+&lt;meta name="description" content="危險等級 ★★★☆☆，讓你在石內卜的眼皮底下安全消失。" /&gt;
+
+&lt;!-- Open Graph --&gt;
+&lt;meta property="og:type"        content="product" /&gt;
+&lt;meta property="og:title"       content="速效翹課糖 — 衛氏巫師法寶店" /&gt;
+&lt;meta property="og:description" content="危險等級 ★★★☆☆，讓你在石內卜的眼皮底下安全消失。" /&gt;
+&lt;meta property="og:image"       content="https://www.www-shop.magic/images/skiving-snackbox.gif" /&gt;
+&lt;meta property="og:url"         content="https://www.www-shop.magic/products/{productId}" /&gt;
+&lt;meta property="og:site_name"   content="衛氏巫師法寶店" /&gt;
+&lt;meta property="og:locale"      content="zh_TW" /&gt;
+
+&lt;!-- JSON-LD Product Schema --&gt;
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "速效翹課糖",
+  "image": "https://www.www-shop.magic/images/skiving-snackbox.gif",
+  "offers": { "@type": "Offer", "price": "3.50", "priceCurrency": "Galleon" }
+}
+&lt;/script&gt;</pre>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>頁面</th><th>og:title</th><th>og:image</th></tr></thead>
+        <tbody>
+          <tr><td>首頁（<code>/</code>）</td><td>「衛氏巫師法寶店 — 斜角巷最危險的購物體驗」</td><td>店家 Banner（1200×630px）</td></tr>
+          <tr><td>商品頁（<code>/products/:id</code>）</td><td><code>{商品名稱} — 衛氏巫師法寶店</code></td><td>商品 <code>media_url</code>（400×400px）</td></tr>
+          <tr><td>文具店（<code>/stationery</code>）</td><td>「怪洛克文具批發 — 您值得信賴的文具夥伴」</td><td>文具店 Banner（白色中性設計）</td></tr>
+          <tr><td>後台（<code>/admin/*</code>）</td><td>無 OG，加 <code>noindex</code></td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 十三、驗收標準 -->
+  <section id="s13">
+    <h2><span class="num">13</span>驗收標準（UAT）</h2>
+
+    <h3>原始驗收標準（v1.0）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>編號</th><th>測試案例</th><th>預期結果</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ac-tag">AC-01</span></td><td>在後台將「測奸器」危險等級設為 5</td><td>前台對應商品出現黑魔標記，且標題變為閃爍紅色</td></tr>
+          <tr><td><span class="ac-tag">AC-02</span></td><td>庫存歸零後，管理員點擊「從辦公室偷回」</td><td>庫存恢復為 5，前台「石內卜來訪」警語消失</td></tr>
+          <tr><td><span class="ac-tag">AC-03</span></td><td>用戶以 <code>ron.weasley@owl.com</code> 登入後結帳（不顯示任何詢問彈窗）</td><td>後端自動識別，訂單明細靜默加入「衛斯理家族特供方案 +100%」，最終金額為原小計 × 2</td></tr>
+          <tr><td><span class="ac-tag">AC-04</span></td><td>飛七出現時，點擊購買「誘餌炸彈」</td><td>飛七觸發爆炸動畫並在頁面消失 300 秒</td></tr>
+          <tr><td><span class="ac-tag">AC-05</span></td><td>管理員開啟惡搞模式，等待 2 秒，然後將某商品加入購物車</td><td>前台顯示價格每 2 秒跳動（0.5x～5x），但購物車小計與結帳金額為資料庫原始定價</td></tr>
+          <tr><td><span class="ac-tag">AC-06</span></td><td>管理員關閉惡搞模式</td><td>前台所有商品顯示價格立即恢復原始定價；已在購物車的商品金額不受影響</td></tr>
+          <tr><td><span class="ac-tag">AC-07</span></td><td>管理員點擊「Mischief Managed」</td><td>所有惡搞特效停止，前台路由切換至 <code>/stationery</code></td></tr>
+          <tr><td><span class="ac-tag">AC-08</span></td><td>Mischief Managed 模式解除</td><td>前台路由恢復 <code>/</code>，惡搞設定恢復上次狀態</td></tr>
+          <tr><td><span class="ac-tag">AC-09</span></td><td>將商品「隱身咒」開關設為 ON</td><td>前台商品列表中該商品不渲染（DOM 中不存在）</td></tr>
+          <tr><td><span class="ac-tag">AC-10</span></td><td>吼叫信模式開啟</td><td>頁面頂部出現紅色橫幅，播放警報音效</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>新增驗收標準（v2.0 / v2.1 / v2.2 / v2.3 / v2.4 / v2.5）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>編號</th><th>測試案例</th><th>預期結果</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ac-tag new-ac">AC-11</span></td><td>用戶使用 Google 登入後下單購買「伸縮耳 10ml」</td><td>後台訂單增加一筆，「伸縮耳 10ml」SKU 庫存自動減少 1</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-12</span></td><td>用戶選擇「魔法卡」付款，輸入任意 16 位數卡號</td><td>前端播放 3 秒「魔法傳輸中」動畫，結束後訂單狀態變更為「待出貨」</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-13</span></td><td>管理員填入貓頭鷹物流單號並點擊「標記為已出貨」</td><td>前台用戶訂單狀態更新為「運送中」，Email 收到「貓頭鷹已啟程」通知</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-14</span></td><td>用戶點擊「確認收到商品」</td><td>訂單狀態更新為「已完成」，用戶帳號獲得「1 納特」驚喜優惠券</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-15</span></td><td>結帳時輸入優惠券代碼「MischiefManaged」（購物滿 50 金加隆）</td><td>系統驗證成功，訂單總額折扣 5 金加隆</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-16</span></td><td>任一 SKU 庫存降至 4 件（低於 5）</td><td>後台導覽列出現紅光閃爍，庫存預警列表顯示該品項</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-17</span></td><td>管理員在後台建立全站折扣「開學季 8 折」</td><td>前台所有商品結帳時自動套用 80% 折扣</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-18</span></td><td>魔法卡付款送出後，後端模擬回傳超時錯誤</td><td>訂單維持 <code>unpaid</code>，凍結庫存保留 15 分鐘；15 分鐘後自動取消並釋放庫存，Email 通知用戶</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-19</span></td><td>管理員將 <code>192.168.1.100</code> 加入 IP 黑名單，該 IP 訪問前台</td><td>系統自動啟動 Mischief Managed，訪客被導向文具店頁面，後台記錄觸發日誌</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-20</span></td><td>100 個用戶同時下單購買庫存僅剩 1 件的商品</td><td>只有最先完成付款的 1 筆訂單進入 <code>processing</code>，其餘回傳「庫存不足」錯誤（SELECT FOR UPDATE 保證不超賣）</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-21</span></td><td>後台上傳超過 3 MB 的商品圖片</td><td>系統拒絕上傳並顯示錯誤提示「圖片大小不可超過 3 MB」，資料庫不寫入</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-22</span></td><td>在手機（viewport &lt; 768px）開啟前台，管理員觸發飛七巡邏</td><td>飛七圖層不出現；頁面 10 秒震動動畫不觸發</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-23</span></td><td>訂單建立後，後台修改該商品名稱與 SKU 規格說明</td><td>舊訂單明細仍顯示建立當下的商品名稱與規格，不受後台修改影響</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-24</span></td><td>用戶以「MischiefManaged」優惠券下單，事後管理員刪除該優惠券</td><td>訂單明細頁仍顯示「折扣代碼 MischiefManaged，折抵 5 金加隆」，<code>discount_snapshot</code> 資料完整保留</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-25</span></td><td>前台商品超過 20 件，用戶滾動至頁面底部</td><td>自動加載下一頁 20 件商品，列表總數正確，無重複或遺漏</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-26</span></td><td>飛七巡邏中，用戶點擊「結帳」進入 CheckoutModal</td><td>飛七圖層不遮擋結帳彈窗（z-index 500 &gt; 150）；進入 <code>/checkout</code> 路由時飛七自動隱藏</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-27</span></td><td>將商品連結貼至 LINE 或 Facebook</td><td>預覽卡顯示商品名稱、描述與商品圖片；惡搞模式開啟時 OG 標籤不受影響，仍顯示原始定價</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-28</span></td><td>管理員在後台批量選取 5 筆 <code>unpaid</code> 訂單並點擊「強制釋放庫存」</td><td>二次確認彈窗顯示「即將取消 5 筆訂單」；確認後 5 筆訂單狀態→ <code>cancelled</code>，對應 SKU 的 <code>stock_reserved</code> 全數歸零，Audit Log 記錄操作</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-29</span></td><td>魔法卡付款成功後，查詢資料庫 <code>Orders</code> 表</td><td><code>Orders</code> 表僅有 <code>payment_id</code>（UUID）欄位有值，不存在任何卡號欄位或卡號資料</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-30</span></td><td>Google OAuth 服務無回應（模擬 5 秒逾時）</td><td>前台顯示「魔法部目前阻斷了麻瓜驗證，請使用巫師信箱登入」，本地登入表單自動展開</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-31</span></td><td>吼叫信模式開啟但 <code>AudioContext</code> 建立失敗</td><td>前台改以全螢幕紅色閃爍 + 橫幅文字抖動替代警報音效，視覺警報在 500ms 週期內閃爍</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-32</span></td><td>榮恩（Email 含 <code>ron</code>）完成付款後申請退款，管理員批准</td><td>系統退還 <code>Orders.final_captured_amount</code>（含榮恩稅的實際扣款金額），而非僅退 <code>Order_Items</code> 小計；退款金額 = 用戶當初實際付出的全額</td></tr>
+          <tr><td><span class="ac-tag new-ac">AC-33</span></td><td>系統自動觸發 Mischief Managed（IP 黑名單命中），管理員嘗試進入後台</td><td>攜帶有效 <code>admin_token</code> Cookie 的後台請求繞過掩護邏輯，管理員仍可正常看到後台並執行解除操作</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 十四、開發里程碑 -->
+  <section id="s14">
+    <h2><span class="num">14</span>開發里程碑</h2>
+
+    <div class="phase">
+      <h4>Phase 1 — 基礎架構 + 商品 CRUD（Week 1-2）</h4>
+      <ul>
+        <li>初始化 Vite + React + TypeScript 專案</li>
+        <li>建立 Zustand stores（product / cart / prank / auth / order）</li>
+        <li>商品 CRUD 後台頁面（含 SKU 欄位，localStorage 暫存）</li>
+        <li>前台商品列表（含 SKU 規格選擇）</li>
+        <li>商品卡片元件（危險等級、庫存狀態、黑魔標記）</li>
+        <li><code>useIsMobile</code> hook — 行動版特效降級邏輯</li>
+        <li><code>idempotency.ts</code> middleware — 下單等冪性保護</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h4>Phase 2 — 前台體驗 + 結帳（Week 3）</h4>
+      <ul>
+        <li>前台視覺套用（斜角巷風格）</li>
+        <li>頁面每 10 秒震動效果</li>
+        <li>購物車功能</li>
+        <li>商品分頁加載（Infinite Scroll，每頁 20 筆，IntersectionObserver）</li>
+        <li>商品 OG / JSON-LD meta 標籤（商品頁動態產生）</li>
+        <li>榮恩彩蛋識別（後端 Email 靜默偵測 + 家屬服務費自動計算，無前端彈窗）</li>
+        <li>配送方式選單 + 支付方式（魔法卡模擬動畫）</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h4>Phase 3 — Prank Console（Week 4）</h4>
+      <ul>
+        <li>惡搞模式（動態定價，含顯示上限 3.0x）</li>
+        <li>吼叫信模式（Web Audio API + 橫幅）</li>
+        <li>飛七巡邏圖層 + 誘餌炸彈互動</li>
+        <li>飛七防呆：z-index 鎖定 150，結帳頁自動隱藏</li>
+        <li>後台控制中心 UI</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h4>Phase 4 — Mischief Managed + 訂單追蹤 + 逆向流程（Week 5）</h4>
+      <ul>
+        <li>Mischief Managed 模式（文具店頁面 + 一鍵切換 + IP 黑名單自動觸發）</li>
+        <li>訂單追蹤頁面（狀態進度條，含 <code>refunding</code> / <code>refunded</code> 狀態）</li>
+        <li>後台 OMS（訂單列表、狀態篩選、一鍵出貨）</li>
+        <li>取消訂單流程（庫存自動釋放）</li>
+        <li>退款審核佇列（管理員批准 / 拒絕）</li>
+        <li>未付款訂單 15 分鐘自動取消排程（<code>node-cron</code>）</li>
+        <li>資料快照欄位（<code>Order_Items.snapshot_name / spec / image_url</code>）</li>
+        <li>折扣快照欄位（<code>Orders.discount_snapshot</code> JSON）</li>
+        <li>管理員操作日誌（<code>Admin_Audit_Logs</code> 表 + 後台日誌頁）</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h4>Phase 5 — 後端串接 + 認證（Week 6-7）</h4>
+      <ul>
+        <li>Node.js + Express + MySQL 後端建立</li>
+        <li>Prisma Schema 遷移</li>
+        <li>本地帳號註冊 / 登入（JWT）</li>
+        <li>Google / Facebook OAuth 串接（Passport.js）</li>
+        <li>前後端 API 串接（替換 localStorage）</li>
+        <li>Email 通知（Nodemailer + 貓頭鷹信範本）</li>
+        <li>Multer 圖片上傳中介層（格式 + 大小驗證）</li>
+        <li>API 錯誤碼統一回應格式（見 §5.4）</li>
+        <li>魔法卡付款僅儲存 <code>payment_id</code>，卡號記憶體銷毀（§8.4 PCI-DSS 合規）</li>
+        <li>OAuth 斷線降級邏輯（§16.1）</li>
+        <li>Web Audio 降級至視覺警報（§16.2）</li>
+        <li>後台批量強制釋放庫存工具 + Health Check API（§7.7）</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <h4>Phase 6 — 促銷 + 報表 + 上線準備（Week 8）</h4>
+      <ul>
+        <li>優惠券系統（建立、驗證、使用次數限制）</li>
+        <li>全站折扣設定</li>
+        <li>數據報表（營收折線圖、Top 5 排行、轉化率）</li>
+        <li>庫存預警（後台紅光閃爍）</li>
+        <li>全站 AC 驗收測試（AC-01 ～ AC-33）</li>
+        <li>備緩方案整合測試（§十六，模擬 OAuth 斷線 / Audio 封鎖 / cron 停擺）</li>
+        <li>部署至 Vercel（前端）+ Railway（後端 + MySQL）</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 十五、風險事項 -->
+  <section id="s15">
+    <h2><span class="num">15</span>風險與注意事項</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>風險</th><th>說明</th><th>緩解方案</th></tr></thead>
+        <tbody class="risk-row">
+          <tr><td>瀏覽器音效限制</td><td>現代瀏覽器禁止自動播放音效</td><td>偵測 user gesture 後才播放，顯示「點擊以啟動警報」提示（AC-10）</td></tr>
+          <tr><td>Math.random 效能</td><td>惡搞模式每 2 秒重算所有商品顯示價格</td><td>使用 <code>useMemo</code> 惰性計算，數量多時改用 <code>requestAnimationFrame</code></td></tr>
+          <tr><td>OAuth Token 安全</td><td>Google/FB access_token 不應暴露於前端</td><td>後端完成 OAuth 交換後僅回傳自簽 JWT；存入 <code>httpOnly Cookie</code></td></tr>
+          <tr><td>庫存超賣（高併發）</td><td>100 人同時搶購最後 1 件商品，多筆訂單可能同時通過庫存檢查</td><td>後端使用 MySQL Transaction + <code>SELECT ... FOR UPDATE</code> 鎖定 SKU 列，確保原子操作（AC-20）</td></tr>
+          <tr><td>庫存凍結洩漏</td><td>支付失敗後訂單未正確取消，<code>stock_reserved</code> 永久不歸零</td><td>部署 <code>node-cron</code> 排程，每 5 分鐘掃描超過 15 分鐘的 <code>unpaid</code> 訂單並自動取消（AC-18）</td></tr>
+          <tr><td>金額精度損失</td><td>多層折扣（榮恩稅 × 全站 8 折 × 優惠券）以 INT 運算會累積誤差</td><td>所有金額欄位改為 <code>DECIMAL(15,4)</code>；前端最終顯示時四捨五入至 Knut</td></tr>
+          <tr><td>惡搞模式法遵風險</td><td>顯示價格與結帳價格不同，可能被認定為價格詐欺</td><td>惡搞價格僅存在 React state（視覺層），購物車與結帳全程使用資料庫原始定價；結帳頁顯示「魔法波動免責聲明」</td></tr>
+          <tr><td>SEO 惡搞衝突</td><td>惡搞模式動態覆寫商品價格文字，可能被 Google 標記為價格不一致</td><td>商品 <code>data-price</code> 與 JSON-LD Schema 永遠輸出資料庫定價；惡搞只修改可見文字節點</td></tr>
+          <tr><td>IP 黑名單誤判</td><td>共享 IP（NAT / VPN）可能誤觸自動 Mischief Managed，導致正常用戶看到文具店</td><td>IP 黑名單僅封鎖 <code>/admin</code> 路由的異常訪問；前台自動觸發需搭配 User-Agent 條件（雙重驗證）</td></tr>
+          <tr><td>惡意圖片上傳</td><td>攻擊者上傳偽裝成圖片的惡意腳本（如 <code>.php</code> 改副檔名）</td><td>後端以 MIME Type 而非副檔名驗證；Multer 只允許 <code>image/*</code>；儲存時重新命名為 UUID 避免路徑穿越（AC-21）</td></tr>
+          <tr><td>手機特效相容性</td><td>飛七 / 震動等動畫在低階手機可能耗用大量 CPU，導致頁面卡頓</td><td>以 <code>useIsMobile</code> hook 在 &lt; 768px 時自動跳過特效渲染；動畫以 <code>will-change: transform</code> 啟用 GPU 加速（AC-22）</td></tr>
+          <tr><td>訂單資料過時</td><td>後台修改商品名稱或圖片後，舊訂單顯示錯誤資訊，引發客訴</td><td>建立訂單時快照 <code>snapshot_name / spec / image_url</code> 至 <code>Order_Items</code>；訂單明細永遠讀快照欄位（AC-23）</td></tr>
+          <tr><td>優惠券刪除後無法重建折扣明細</td><td>管理員刪除優惠券後，歷史訂單明細無法顯示當時套用的折扣，引發客服糾紛</td><td>建立訂單時將折扣規則序列化至 <code>Orders.discount_snapshot</code>（JSON），明細讀快照而非 Coupons 表（AC-24）</td></tr>
+          <tr><td>惡搞模式阻礙購物流程</td><td>飛七遮擋結帳按鈕，或顯示價格過高嚇跑顧客，導致業績損失</td><td>飛七 z-index 鎖定 150；結帳 / 訂單頁自動隱藏飛七；惡搞顯示倍率上限 3.0x（AC-26）</td></tr>
+          <tr><td>社群分享 OG 資訊錯誤</td><td>惡搞模式下 LINE 預覽卡顯示亂跳的價格，損害品牌形象</td><td>OG / JSON-LD 標籤由 SSR 或靜態 meta 管理，永遠輸出資料庫原始定價，與 React state 完全解耦（AC-27）</td></tr>
+          <tr><td>前端重複下單</td><td>用戶因興奮快速連擊結帳按鈕 5 下，後端可能收到 5 個建立訂單請求，導致重複扣款</td><td>前端送出後立即 disabled 按鈕並顯示「魔法傳輸中...」；後端以 Idempotency Key + Redis 快取確保同一 Key 只建立一筆訂單（AC-28）</td></tr>
+          <tr><td>卡號資料洩漏</td><td>模擬支付流程中卡號若寫入日誌或資料庫，違反 PCI-DSS 規範並引發用戶信任危機</td><td>後端收到卡號後僅在記憶體中驗證格式，驗證後立即銷毀；DB 只儲存 <code>payment_id</code>（UUID）（AC-29）</td></tr>
+          <tr><td>OAuth 服務斷線</td><td>Google / Facebook 服務中斷時，用戶無法登入，完全阻斷購物流程</td><td>前端偵測 OAuth popup 逾時（5 秒）後自動切換本地登入，顯示「魔法部阻斷麻瓜驗證」提示（AC-30）</td></tr>
+          <tr><td>Mischief Managed 把管理員鎖在門外</td><td>系統自動觸發掩護模式（IP 黑名單命中辦公室共享 IP），管理員本人也被重導文具店，無法進入後台解除</td><td><code>mischiefGuard</code> 第一步驗證 admin JWT，管理員請求永遠跳過掩護邏輯；Cookie 需設定 <code>httpOnly + secure</code>（AC-33）</td></tr>
+          <tr><td>榮恩退款金額計算錯誤</td><td>退款邏輯讀 <code>Order_Items.unit_price_knut</code> 加總，僅退一半金額（遺漏榮恩稅），引發財務糾紛</td><td>付款成功時寫入 <code>Orders.final_captured_amount</code>，退款邏輯以此欄為基準，不依賴明細重算（AC-32）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote>
+      ⚠️ <strong>備註（Project Marauder）</strong><br>
+      管理員需確保後台具備一鍵清理功能。若魔法部官員來訪，後台必須能切換為「普通的文具店」模式，此功能稱為「惡作劇完畢（Mischief Managed）」。
+      <em>I solemnly swear that I am up to no good.</em>
+    </blockquote>
+  </section>
+
+  <!-- 十六、備緩方案 -->
+  <section id="s16">
+    <h2><span class="num">16</span>備緩方案（Fallback Mechanisms）</h2>
+
+    <h3>16.1 OAuth 認證服務斷線</h3>
+    <div class="callout info"><strong>情境：</strong>Google 或 Facebook OAuth 服務暫時不可用（境外服務中斷、維護通知）。</div>
+    <p><strong>降級行為：</strong></p>
+    <ol>
+      <li>OAuth 按鈕保持可見，點擊後若 5 秒無回應自動顯示提示訊息</li>
+      <li>前台顯示：「魔法部目前阻斷了麻瓜驗證，請使用巫師信箱登入」</li>
+      <li>自動將焦點移至「本地帳號登入」表單</li>
+    </ol>
+    <pre class="code-block">// 偵測 OAuth popup 是否正常開啟，逾時自動切換至本地登入
+const handleOAuthLogin = (provider) => {
+  const popup = window.open(`/api/auth/${provider}`, '_blank', 'width=500,height=600')
+  const timer = setTimeout(() => {
+    if (!popup || popup.closed) {
+      setOAuthError('魔法部目前阻斷了麻瓜驗證，請使用巫師信箱登入')
+      setShowLocalForm(true)
+    }
+  }, 5000)
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === 'oauth_success') clearTimeout(timer)
+  }, { once: true })
+}</pre>
+
+    <h3>16.2 Web Audio API 被封鎖</h3>
+    <div class="callout info"><strong>情境：</strong>瀏覽器安全策略或系統設定導致 <code>AudioContext</code> 無法建立（如企業管理裝置），吼叫信音效靜音。</div>
+    <p><strong>降級行為（無聲版吼叫信）：</strong></p>
+    <ol>
+      <li>捕獲 <code>AudioContext</code> 建立失敗錯誤</li>
+      <li>啟動「視覺警報模式」：全螢幕紅色疊層閃爍（透明度 0 → 0.3 → 0，每 500ms）</li>
+      <li>橫幅文字加入 <code>animation: shake</code> 水平抖動 + 字體放大至 <code>1.4em</code></li>
+    </ol>
+    <pre class="code-block">// HowlerAlert 降級邏輯
+const startAlarmWithFallback = () => {
+  try {
+    const ctx = new AudioContext()
+    if (ctx.state === 'suspended') throw new Error('AudioContext suspended')
+    startAlarm(ctx)
+  } catch {
+    setVisualAlarmActive(true)    // 觸發全螢幕閃爍
+    console.warn('[HowlerAlert] 音效降級至視覺警報模式')
+  }
+}</pre>
+
+    <h3>16.3 node-cron 排程異常</h3>
+    <div class="callout info"><strong>情境：</strong>Node.js 排程意外停止，<code>stock_reserved</code> 持續累積，造成前台庫存顯示異常。</div>
+    <ul>
+      <li><strong>自動偵測：</strong><code>GET /api/health</code> 回傳 <code>services.nodeCron.lastRun</code>，距今超過 30 分鐘則後台顯示 <code>⚠️ 排程異常：庫存可能凍結</code></li>
+      <li><strong>手動處置：</strong>管理員使用 §7.7「批量強制釋放庫存」工具執行一次性清空</li>
+    </ul>
+
+    <h3>16.4 後端服務完全不可用</h3>
+    <div class="callout info"><strong>情境：</strong>Express 伺服器崩潰或部署平台斷線，前端所有 API 請求失敗。</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>功能</th><th>降級後行為</th></tr></thead>
+        <tbody>
+          <tr><td><strong>商品瀏覽</strong></td><td>使用 <code>localStorage</code> 快取的最後一次商品資料繼續顯示（標示「資料截至 xx 時間」）</td></tr>
+          <tr><td><strong>加入購物車</strong></td><td>繼續可用（僅操作本地 Zustand store）</td></tr>
+          <tr><td><strong>結帳</strong></td><td>禁用，顯示「魔法傳送門暫時封閉，請稍後再試」</td></tr>
+          <tr><td><strong>後台</strong></td><td>禁用，顯示全頁錯誤提示與 Health Check 狀態</td></tr>
+          <tr><td><strong>Prank Console</strong></td><td>本地開關繼續可切換（不同步至後端），重連後自動同步</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 附錄 A：訂單狀態圖 -->
+  <section id="appA">
+    <h2><span class="num">A</span>附錄 A：訂單狀態圖（v3.0）</h2>
+    <div class="callout info">完整訂單生命週期的所有 11 種狀態與流轉條件。v3.0 新增：<code>return_pending</code>、<code>shipping_failed</code>、<code>rejected</code>；庫存改為建單時立即扣除。</div>
+    <pre class="code-block">                    ┌──────────────────────────────────────────┐
+                    │   訂單建立（所有付款方式即時扣庫存）         │
+                    └─────────────────┬────────────────────────┘
+                                      │ stock -= qty
+                                      ▼
+                             ┌──────────────┐
+                             │   UNPAID     │ 非 COD：stock_reserved += qty
+                             └──────┬───────┘
+                     ┌─────────────┼──────────────────┐
+                     │             │                   │
+              付款成功         超時自動取消         用戶 / 管理員取消
+           (stock_reserved        │             stock += qty
+             -= qty 僅)           │           stock_reserved -= qty
+                     │             │                   │
+                     ▼             ▼                   ▼
+             ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+             │  PROCESSING  │ │  CANCELLED   │ │  CANCELLED   │
+             └──────┬───────┘ └──────────────┘ └──────────────┘
+                    │
+         ┌──────────┼──────────────────┐
+         │          │                  │
+   管理員出貨    管理員取消          用戶申請退款
+         │       stock+=qty            │
+         ▼          ▼                  ▼
+ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+ │   SHIPPED    │ │  CANCELLED   │ │  REFUNDING   │ 庫存鎖定，等審核
+ └──────┬───────┘ └──────────────┘ └──────┬───────┘
+        │                       ┌──────────┴──────────┐
+ ┌──────┴──────┐           管理員批准             管理員拒絕
+ │             │                │                     │
+配送異常    確認收到             ▼                     ▼
+ │             │      ┌──────────────────┐    ┌──────────────┐
+ ▼             ▼      │  RETURN_PENDING  │    │   REJECTED   │
+┌──────────┐ ┌──────┐ │ 等待用戶寄回商品  │    │ 附拒絕原因    │
+│SHIPPING  │ │COMP- │ └─────────┬────────┘    └──────┬───────┘
+│_FAILED   │ │LETED │   確認收到退貨             管理員手動
+└──────────┘ │驚喜券│           │                     │
+重新出貨/取消 └──────┘           ▼                     ▼
+                       ┌──────────────┐       ┌──────────────┐
+                       │   REFUNDED   │       │  COMPLETED   │
+                       │ stock += qty │       │              │
+                       └──────────────┘       └──────────────┘</pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>狀態</th><th>顯示</th><th>庫存動作</th><th>說明</th></tr></thead>
+        <tbody>
+          <tr><td><code>unpaid</code></td><td>⏳ 待付款</td><td>建單時 <code>stock -= qty</code>（非 COD 額外 <code>+stock_reserved</code>）</td><td>所有付款方式皆立即扣庫存</td></tr>
+          <tr><td><code>processing</code></td><td>📦 待出貨</td><td><code>stock_reserved -= qty</code>（僅釋放凍結）</td><td>付款成功，庫存已在建單時扣除</td></tr>
+          <tr><td><code>shipped</code></td><td>🚀 運送中</td><td>無變動</td><td>貓頭鷹已啟程</td></tr>
+          <tr><td><code>shipping_failed</code></td><td>⚠️ 配送異常</td><td>維持扣除</td><td>貓頭鷹找不到地址，管理員介入</td></tr>
+          <tr><td><code>completed</code></td><td>✅ 已完成</td><td>無變動，發驚喜券</td><td>用戶確認收到商品</td></tr>
+          <tr><td><code>cancelled</code></td><td>❌ 已取消</td><td><code>stock += qty</code> + <code>stock_reserved -= qty</code></td><td>庫存完整回補</td></tr>
+          <tr><td><code>refunding</code></td><td>🔄 退款審核中</td><td>鎖定中</td><td>等管理員審核</td></tr>
+          <tr><td><code>return_pending</code></td><td>📮 退貨中</td><td>鎖定中</td><td>批准退款，等待用戶寄回</td></tr>
+          <tr><td><code>rejected</code></td><td>🚫 退款被拒絕</td><td>維持扣除</td><td>可再轉 <code>completed</code></td></tr>
+          <tr><td><code>refunded</code></td><td>💸 已退款</td><td><code>stock += qty</code>（退貨確認後）</td><td>庫存回補完成</td></tr>
+          <tr><td><code>refund_failed</code></td><td>🚫 退款失敗</td><td>——（已棄用）</td><td>舊版相容，新系統請用 <code>rejected</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 附錄 B：API 錯誤碼對照表 -->
+  <section id="appB">
+    <h2><span class="num">B</span>附錄 B：API 錯誤碼對照表</h2>
+    <div class="callout info">本附錄為 §5.4 的擴充版，含更多業務特定錯誤碼與彩蛋錯誤。</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>HTTP</th><th>錯誤碼</th><th>前台顯示訊息</th><th>觸發情境</th><th>彩蛋</th></tr></thead>
+        <tbody>
+          <tr><td>400</td><td><code>INVALID_EMAIL</code></td><td>「貓頭鷹找不到這個魔法信箱格式」</td><td>Email 格式錯誤</td><td>—</td></tr>
+          <tr><td>400</td><td><code>INVALID_QUANTITY</code></td><td>「訂購數量不可超過庫存上限」</td><td>加入購物車數量 &gt; 庫存</td><td>—</td></tr>
+          <tr><td>400</td><td><code>COUPON_EXPIRED</code></td><td>「此優惠券已過期或不存在」</td><td>優惠券驗證失敗</td><td>—</td></tr>
+          <tr><td>400</td><td><code>COUPON_MIN_SPEND</code></td><td>「消費未達最低門檻，無法使用此優惠券」</td><td>未達 <code>min_spend_knut</code></td><td>—</td></tr>
+          <tr><td>400</td><td><code>COUPON_MAX_USES</code></td><td>「此優惠券已超過使用次數上限」</td><td><code>used_count &gt;= max_uses</code></td><td>—</td></tr>
+          <tr><td>400</td><td><code>INVALID_CARD_FORMAT</code></td><td>「魔法卡號格式不正確，請輸入 16 位數」</td><td>魔法卡號非 16 位數字</td><td>—</td></tr>
+          <tr><td>401</td><td><code>UNAUTHORIZED</code></td><td>「請先登入您的魔法帳號」</td><td>JWT 缺失或無效</td><td>—</td></tr>
+          <tr><td>401</td><td><code>TOKEN_EXPIRED</code></td><td>「登入憑證已過期，請重新登入」</td><td>JWT 過期（7 天後）</td><td>—</td></tr>
+          <tr><td>402</td><td><code>RON_DETECTED</code></td><td>「偵測到衛斯理家族成員，家屬服務費已自動套用」</td><td>Email 含 <code>ron</code>（彩蛋，僅 Log）</td><td>✅</td></tr>
+          <tr><td>403</td><td><code>FORBIDDEN</code></td><td>「您沒有施展此魔法的權限」</td><td>非管理員存取後台 API</td><td>—</td></tr>
+          <tr><td>403</td><td><code>STATIONERY_MODE</code></td><td>「本站目前為文具批發模式，魔法商品暫不供應」</td><td>Mischief Managed 啟動時存取商品 API</td><td>✅</td></tr>
+          <tr><td>404</td><td><code>PRODUCT_NOT_FOUND</code></td><td>「此法寶已消失在斜角巷某處」</td><td>商品 ID 不存在</td><td>—</td></tr>
+          <tr><td>404</td><td><code>ORDER_NOT_FOUND</code></td><td>「找不到此訂單記錄」</td><td>訂單 ID 不存在</td><td>—</td></tr>
+          <tr><td>409</td><td><code>OUT_OF_STOCK</code></td><td>「石內卜已沒收最後一件，庫存不足」</td><td>下單時庫存為 0</td><td>—</td></tr>
+          <tr><td>409</td><td><code>DUPLICATE_EMAIL</code></td><td>「此魔法信箱已被其他巫師註冊」</td><td>重複 Email 註冊</td><td>—</td></tr>
+          <tr><td>409</td><td><code>ORDER_STATUS_CONFLICT</code></td><td>「此訂單當前狀態不允許執行此操作」</td><td>狀態機衝突</td><td>—</td></tr>
+          <tr><td>422</td><td><code>PAYMENT_FAILED</code></td><td>「魔法傳輸失敗，請稍後重試」</td><td>模擬支付超時</td><td>—</td></tr>
+          <tr><td>429</td><td><code>RATE_LIMIT</code></td><td>「請求過於頻繁，石內卜警告您放慢腳步」</td><td>單 IP 超過 30 次/分鐘</td><td>—</td></tr>
+          <tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>「魔法部干擾導致伺服器異常，請稍後再試」</td><td>未預期後端錯誤</td><td>—</td></tr>
+          <tr><td>503</td><td><code>PEEVES_ATTACK</code></td><td>「飛七正在攻擊伺服器，請稍後再試」</td><td>服務維護中（計畫性停機彩蛋）</td><td>✅</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 附錄 C：法律聲明文案草稿 -->
+  <section id="appC">
+    <h2><span class="num">C</span>附錄 C：法律聲明文案草稿</h2>
+
+    <h3>C.1 結帳頁「魔法波動免責聲明」</h3>
+    <div class="callout info">顯示位置：CheckoutModal 訂單確認區塊底部，字體 12px，顏色 <code>var(--text-dim)</code></div>
+    <div class="callout">
+      ⚠️ <strong>魔法波動免責聲明</strong><br><br>
+      本店商品定價受斜角巷魔法擾動影響，前台顯示價格可能因魔法波動產生視覺差異。
+      最終成交金額以「訂單確認頁」所示金額為準，該金額為加入購物車當下的鎖定定價，不受魔法波動影響。<br><br>
+      如您對本次交易金額有任何疑慮，請在確認前仔細核對「訂單明細」欄位中的各項金額。
+      一旦點擊「確定交出金加隆」，即表示您同意本次交易金額。<br><br>
+      本聲明依《1692 年巫師保密法》第 3 條附則 B 第 7 款之規定適用於所有魔法電商交易。
+    </div>
+
+    <h3>C.2 Mischief Managed 文具店頁尾聲明</h3>
+    <div class="callout info">顯示位置：<code>/stationery</code> 頁面最底部</div>
+    <div class="callout">
+      本公司（怪洛克文具批發股份有限公司）為合法登記之文具批發商。
+      本店所有商品均為一般文具用品，包括但不限於：鉛筆、橡皮擦、訂書機及各式紙張。<br><br>
+      本公司聲明：<br>
+      1. 本店與任何魔法活動、魔法商品或魔法組織無任何關聯。<br>
+      2. 本店從未銷售或儲存任何受《巫師控制法》管制之物品。<br>
+      3. 如有任何魔法部查驗需求，歡迎出示合法搜查令後進行例行審查。<br><br>
+      © 2026 怪洛克文具批發股份有限公司。保留一切與文具相關之權利。
+    </div>
+
+    <h3>C.3 榮恩彩蛋訂單收據附註</h3>
+    <div class="callout info">顯示位置：<code>is_ron = TRUE</code> 訂單的確認 Email 底部</div>
+    <div class="callout">
+      親愛的衛斯理家族成員，<br><br>
+      感謝您光臨本店。本次消費已自動套用「衛斯理家族特供方案」。
+      此方案由喬治・衛斯理及弗雷・衛斯理親自授權，適用於所有使用家族信箱之成員。<br><br>
+      請注意：此為家族優先服務費，非一般消費者適用。
+      如有疑問，請直接聯絡喬治本人（他通常在笑）。<br><br>
+      — 衛氏巫師法寶店 客服部<br>
+      （貓頭鷹郵件系統驅動，24 小時不打烊）
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // 側邊欄 active 高亮（以 IntersectionObserver 追蹤當前章節）
+  const sections = document.querySelectorAll('section[id], .cover[id]');
+  const links = document.querySelectorAll('#sidebar nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`#sidebar nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

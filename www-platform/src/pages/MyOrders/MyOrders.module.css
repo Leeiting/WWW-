@@ -1,0 +1,955 @@
+/* 頁面背景 */
+.page {
+  min-height: 100vh;
+  background: radial-gradient(1200px 500px at 30% 10%, rgba(201, 151, 46, 0.12), transparent 70%),
+              radial-gradient(900px 420px at 80% 30%, rgba(139, 0, 0, 0.14), transparent 70%),
+              #2C1810;
+  padding: 32px 20px 60px;
+  color: var(--text, #F4E7D3);
+}
+
+.inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* 頁首 */
+.header {
+  margin-bottom: 28px;
+}
+
+.backLink {
+  display: inline-block;
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.6);
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+.backLink:hover { color: rgba(201, 151, 46, 0.9); }
+
+.title {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 22px;
+  color: var(--gold, #c9972e);
+  margin: 0 0 4px;
+}
+
+.sub {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.55);
+  margin: 0;
+}
+
+/* 空狀態 */
+.empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: rgba(244, 231, 211, 0.55);
+}
+
+.emptyIcon { font-size: 48px; margin-bottom: 12px; }
+
+.shopBtn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(201, 151, 46, 0.4);
+  color: var(--gold, #c9972e);
+  text-decoration: none;
+  font-size: 13px;
+}
+.shopBtn:hover { background: rgba(201, 151, 46, 0.08); }
+
+/* 訂單列表 */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 訂單卡片 */
+.card {
+  background: rgba(24, 14, 9, 0.75);
+  border: 1px solid rgba(201, 151, 46, 0.2);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: rgba(201, 151, 46, 0.4); }
+
+/* 卡片標題列 */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  cursor: pointer;
+  gap: 12px;
+}
+.cardHeader:hover { background: rgba(201, 151, 46, 0.04); }
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.orderId {
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.orderDate {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.45);
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.statusBadge {
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.total {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 13px;
+  color: var(--gold-light, #e2b96f);
+}
+
+.chevron {
+  font-size: 10px;
+  color: rgba(244, 231, 211, 0.4);
+}
+
+/* 卡片展開內容 */
+.cardBody {
+  border-top: 1px solid rgba(201, 151, 46, 0.15);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* 配送進度條 */
+.progressWrap {
+  padding: 4px 0 8px;
+}
+
+.progressTrack {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.progressDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(244, 231, 211, 0.15);
+  border: 2px solid rgba(244, 231, 211, 0.2);
+  transition: all 0.2s;
+  z-index: 1;
+}
+.progressDotDone {
+  background: var(--gold, #c9972e);
+  border-color: var(--gold, #c9972e);
+}
+.progressDotActive {
+  background: var(--gold, #c9972e);
+  border-color: #e2b96f;
+  box-shadow: 0 0 0 4px rgba(201, 151, 46, 0.25);
+  transform: scale(1.2);
+}
+
+.progressLabel {
+  font-size: 10px;
+  color: rgba(244, 231, 211, 0.35);
+  margin-top: 6px;
+  white-space: nowrap;
+}
+.progressLabelDone { color: var(--gold, #c9972e); }
+
+.progressLine {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: rgba(244, 231, 211, 0.12);
+  z-index: 0;
+}
+.progressLineDone { background: var(--gold, #c9972e); }
+
+/* 物流單號 */
+.trackingBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(201, 151, 46, 0.08);
+  border: 1px solid rgba(201, 151, 46, 0.25);
+  border-radius: 8px;
+}
+
+.trackingLabel {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.55);
+  white-space: nowrap;
+}
+
+.trackingCode {
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--gold, #c9972e);
+  letter-spacing: 1px;
+}
+
+/* 明細區塊 */
+.section { }
+
+.sectionTitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: rgba(244, 231, 211, 0.4);
+  margin-bottom: 8px;
+}
+
+/* 訂單明細商品圖片快照縮圖 */
+.itemThumb {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid rgba(201, 151, 46, 0.2);
+  flex-shrink: 0;
+}
+
+/* 商品名稱（佔滿剩餘空間） */
+.itemName {
+  flex: 1;
+}
+
+.itemRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.8);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(201, 151, 46, 0.08);
+  gap: 8px;
+}
+.itemRow:last-child { border-bottom: none; }
+
+.spec {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.45);
+}
+
+.discount { color: #5cb85c; }
+
+.ronRow { color: #c84b4b; font-weight: 700; }
+
+.totalRow {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 13px;
+  color: var(--gold-light, #e2b96f);
+  border-top: 1px solid rgba(201, 151, 46, 0.25) !important;
+  margin-top: 4px;
+  padding-top: 8px !important;
+}
+
+/* 配送資訊 */
+.infoRow {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.65);
+  margin: 4px 0;
+  line-height: 1.5;
+}
+.infoRow strong { color: rgba(244, 231, 211, 0.85); }
+
+/* 模擬付款區塊 */
+.payArea {
+  border-top: 1px solid rgba(201, 151, 46, 0.2);
+  padding-top: 14px;
+}
+
+.payBtn {
+  width: 100%;
+  padding: 11px;
+  background: linear-gradient(180deg, rgba(201, 151, 46, 0.35), rgba(201, 151, 46, 0.18));
+  border: 1px solid rgba(201, 151, 46, 0.6);
+  border-radius: 10px;
+  color: var(--gold, #c9972e);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.payBtn:hover { background: linear-gradient(180deg, rgba(201, 151, 46, 0.5), rgba(201, 151, 46, 0.3)); }
+
+.payPanel {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(201, 151, 46, 0.25);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.payPanelTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold, #c9972e);
+  margin: 0 0 12px;
+}
+
+/* 金庫轉帳資訊 */
+.vaultInfo {
+  background: rgba(201, 151, 46, 0.06);
+  border: 1px solid rgba(201, 151, 46, 0.15);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.vaultRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.vaultLabel {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.5);
+  white-space: nowrap;
+}
+
+.vaultCode {
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--gold, #c9972e);
+  letter-spacing: 1px;
+}
+
+.vaultAmount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-light, #e2b96f);
+}
+
+.vaultNote {
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.5);
+  word-break: break-all;
+  text-align: right;
+}
+
+.payHint {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.5);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+.payHint strong { color: var(--gold-light, #e2b96f); }
+
+.payBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.payConfirmBtn {
+  flex: 1;
+  padding: 10px;
+  background: rgba(201, 151, 46, 0.25);
+  border: 1px solid rgba(201, 151, 46, 0.6);
+  border-radius: 8px;
+  color: var(--gold, #c9972e);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.payConfirmBtn:hover { background: rgba(201, 151, 46, 0.4); }
+/* 貨到付款單獨按鈕：撐滿寬度 */
+.payArea > .payPanel > .payConfirmBtn { width: 100%; }
+
+.payBackBtn {
+  padding: 10px 14px;
+  background: none;
+  border: 1px solid rgba(244, 231, 211, 0.15);
+  border-radius: 8px;
+  color: rgba(244, 231, 211, 0.45);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s;
+}
+.payBackBtn:hover { border-color: rgba(244, 231, 211, 0.35); }
+
+/* 魔法卡傳輸動畫 */
+.cardProcessing {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  font-size: 13px;
+  color: rgba(244, 231, 211, 0.7);
+}
+
+.cardSpinner {
+  font-size: 20px;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* 取消訂單區塊 */
+.cancelArea {
+  border-top: 1px solid rgba(139, 0, 0, 0.2);
+  padding-top: 14px;
+}
+
+.cancelWarning {
+  font-size: 12px;
+  color: #c84b4b;
+  margin: 0 0 10px;
+}
+
+.cancelBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.cancelConfirmBtn {
+  flex: 1;
+  padding: 9px;
+  background: rgba(139, 0, 0, 0.3);
+  border: 1px solid rgba(139, 0, 0, 0.6);
+  border-radius: 8px;
+  color: #e07070;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.cancelConfirmBtn:hover { background: rgba(139, 0, 0, 0.5); }
+
+.cancelBackBtn {
+  padding: 9px 16px;
+  background: none;
+  border: 1px solid rgba(244, 231, 211, 0.2);
+  border-radius: 8px;
+  color: rgba(244, 231, 211, 0.55);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  white-space: nowrap;
+}
+.cancelBackBtn:hover { border-color: rgba(244, 231, 211, 0.45); }
+
+.cancelBtn {
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid rgba(139, 0, 0, 0.4);
+  border-radius: 8px;
+  color: rgba(200, 75, 75, 0.8);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cancelBtn:hover {
+  background: rgba(139, 0, 0, 0.12);
+  border-color: rgba(139, 0, 0, 0.7);
+  color: #e07070;
+}
+
+/* ── 確認收到商品區塊 ── */
+.receiptArea {
+  border-top: 1px solid rgba(91, 192, 222, 0.2);
+  padding-top: 14px;
+}
+
+/* 確認收到商品主按鈕（藍綠色） */
+.receiptBtn {
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid rgba(91, 192, 222, 0.45);
+  border-radius: 8px;
+  color: rgba(91, 192, 222, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.receiptBtn:hover {
+  background: rgba(91, 192, 222, 0.12);
+  border-color: rgba(91, 192, 222, 0.8);
+  color: #7dd6ea;
+}
+
+/* 二次確認提示文字 */
+.receiptWarning {
+  font-size: 12px;
+  color: rgba(91, 192, 222, 0.85);
+  margin: 0 0 10px;
+}
+
+/* 確認按鈕（綠色） */
+.receiptConfirmBtn {
+  flex: 1;
+  padding: 9px;
+  background: rgba(92, 184, 92, 0.2);
+  border: 1px solid rgba(92, 184, 92, 0.45);
+  border-radius: 8px;
+  color: #7dcf7d;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.receiptConfirmBtn:hover { background: rgba(92, 184, 92, 0.38); }
+
+/* 確認中動畫狀態 */
+.receiptConfirming {
+  padding: 10px 0;
+  color: rgba(91, 192, 222, 0.75);
+  font-size: 13px;
+  text-align: center;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ── 申請退款按鈕 ── */
+.refundBtn {
+  padding: 8px 16px;
+  background: none;
+  border: 1px solid rgba(100, 130, 220, 0.4);
+  border-radius: 8px;
+  color: rgba(120, 160, 230, 0.85);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.refundBtn:hover {
+  background: rgba(100, 130, 220, 0.1);
+  border-color: rgba(100, 130, 220, 0.7);
+  color: #8aabf0;
+}
+
+.refundConfirmBtn {
+  flex: 1;
+  padding: 9px;
+  background: rgba(100, 130, 220, 0.2);
+  border: 1px solid rgba(100, 130, 220, 0.45);
+  border-radius: 8px;
+  color: #8aabf0;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.refundConfirmBtn:hover { background: rgba(100, 130, 220, 0.35); }
+
+/* ── 退款進度條（申請 → 審核中 → 完成）── */
+.refundTrack {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 0 8px;
+}
+
+.refundStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.refundDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(244, 231, 211, 0.1);
+  border: 2px solid rgba(244, 231, 211, 0.2);
+  transition: all 0.2s;
+}
+
+/* 已完成步驟（藍紫色） */
+.refundDotDone {
+  background: rgba(100, 130, 220, 0.8);
+  border-color: rgba(100, 130, 220, 0.9);
+}
+
+/* 當前進行中步驟（閃爍動畫） */
+.refundDotActive {
+  background: rgba(100, 130, 220, 0.4);
+  border-color: #8aabf0;
+  box-shadow: 0 0 0 4px rgba(100, 130, 220, 0.2);
+  animation: refundPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes refundPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(100, 130, 220, 0.2); }
+  50%       { box-shadow: 0 0 0 6px rgba(100, 130, 220, 0.08); }
+}
+
+.refundLabel {
+  font-size: 10px;
+  color: rgba(244, 231, 211, 0.3);
+  white-space: nowrap;
+}
+
+.refundLabelDone  { color: rgba(100, 130, 220, 0.9); }
+.refundLabelActive { color: #8aabf0; }
+
+.refundLine {
+  flex: 1;
+  height: 2px;
+  background: rgba(244, 231, 211, 0.1);
+  margin-bottom: 16px; /* 對齊文字偏移 */
+}
+
+.refundLineDone { background: rgba(100, 130, 220, 0.7); }
+
+/* ── 退款審核中通知 ── */
+.refundingNotice {
+  border-top: 1px solid rgba(100, 130, 220, 0.25);
+  padding-top: 14px;
+  background: rgba(100, 130, 220, 0.06);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.refundingTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #8aabf0;
+  margin-bottom: 6px;
+}
+
+.refundingDesc {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.5);
+  line-height: 1.6;
+}
+
+/* ── 已退款通知 ── */
+.refundedNotice {
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: rgba(92, 184, 92, 0.07);
+  border: 1px solid rgba(92, 184, 92, 0.2);
+}
+
+.refundedTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #5cb85c;
+  margin-bottom: 6px;
+}
+
+/* ── 魔法部 / 常客優惠橫幅 ── */
+.ministryTag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  background: rgba(100, 130, 220, 0.18);
+  border: 1px solid rgba(100, 130, 220, 0.4);
+  border-radius: 20px;
+  color: #7b9de8;
+  font-size: 11px;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.perksBar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* 每張優惠卡（常客 / 魔法部）*/
+.perkCard {
+  padding: 14px 16px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.perkTitle {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 13px;
+  color: var(--gold, #c9972e);
+  margin: 0 0 6px;
+  font-weight: 700;
+}
+
+.perkDesc {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.75);
+  margin: 0 0 8px;
+  line-height: 1.6;
+}
+.perkDesc strong { color: var(--gold-light, #f0d060); }
+
+.perkCode {
+  font-family: monospace;
+  background: rgba(100, 130, 220, 0.2);
+  border: 1px solid rgba(100, 130, 220, 0.35);
+  border-radius: 4px;
+  padding: 1px 6px;
+  color: #7b9de8;
+  font-size: 12px;
+}
+
+/* 解鎖的常客折扣碼顯示 */
+.loyalCodeRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 8px 12px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px dashed rgba(212, 175, 55, 0.5);
+  border-radius: 8px;
+}
+
+.loyalCode {
+  font-family: monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold, #c9972e);
+  letter-spacing: 2px;
+}
+
+.loyalHint {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.6);
+}
+
+/* 常客進度條 */
+.loyalProgress {
+  margin-top: 8px;
+  height: 6px;
+  background: rgba(244, 231, 211, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.loyalProgressBar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold, #c9972e), #f0d060);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.loyalProgressLabel {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.5);
+  margin: 4px 0 0;
+  text-align: right;
+}
+
+/* ── 退款被拒絕通知 ── */
+.refundRejectedNotice {
+  padding: 14px 16px;
+  background: rgba(139, 0, 0, 0.08);
+  border: 1px solid rgba(139, 0, 0, 0.35);
+  border-left: 3px solid rgba(200, 0, 0, 0.6);
+  border-radius: 10px;
+}
+
+.refundRejectedTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e07070;
+  margin: 0 0 8px;
+}
+
+.refundRejectedReason {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.75);
+  line-height: 1.6;
+  margin: 0 0 8px;
+  white-space: pre-wrap;
+}
+
+.refundRejectedHint {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.4);
+  margin: 0;
+}
+
+/* ── 驚喜納特券（訂單完成自動發放）── */
+.surpriseCouponBox {
+  padding: 14px 16px;
+  background: rgba(201, 151, 46, 0.07);
+  border: 1px solid rgba(201, 151, 46, 0.35);
+  border-left: 3px solid rgba(201, 151, 46, 0.7);
+  border-radius: 10px;
+}
+
+.surpriseCouponTitle {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 13px;
+  color: var(--gold, #c9972e);
+  margin: 0 0 4px;
+  font-weight: 700;
+}
+
+.surpriseCouponDesc {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.7);
+  margin: 0 0 10px;
+}
+.surpriseCouponDesc strong { color: var(--gold-light, #e2b96f); }
+
+.surpriseCouponRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.surpriseCouponCode {
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold, #c9972e);
+  letter-spacing: 2px;
+  background: rgba(201, 151, 46, 0.12);
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px dashed rgba(201, 151, 46, 0.45);
+}
+
+.surpriseCopyBtn {
+  padding: 5px 12px;
+  background: none;
+  border: 1px solid rgba(201, 151, 46, 0.4);
+  border-radius: 6px;
+  color: rgba(201, 151, 46, 0.85);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.surpriseCopyBtn:hover { background: rgba(201, 151, 46, 0.12); border-color: var(--gold, #c9972e); }
+
+.surpriseCouponHint {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.4);
+  margin: 0;
+  line-height: 1.5;
+}
+
+
+/* ── 配送異常通知（shipping_failed）── */
+.shippingFailedNotice {
+  background: rgba(230, 126, 34, 0.08);
+  border: 1px solid rgba(230, 126, 34, 0.35);
+  border-radius: var(--radius, 8px);
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+.shippingFailedTitle {
+  color: #e67e22;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+.shippingFailedDesc {
+  color: rgba(244, 231, 211, 0.75);
+  font-size: 12px;
+  margin: 0 0 6px;
+  line-height: 1.6;
+}
+.shippingFailedAddress {
+  color: rgba(244, 231, 211, 0.6);
+  font-size: 12px;
+  margin: 0;
+}
+
+/* ── 退貨中通知（return_pending）── */
+.returnPendingNotice {
+  background: rgba(155, 89, 182, 0.08);
+  border: 1px solid rgba(155, 89, 182, 0.35);
+  border-radius: var(--radius, 8px);
+  padding: 14px 16px;
+  margin: 12px 0;
+}
+.returnPendingTitle {
+  color: #9b59b6;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+.returnPendingDesc {
+  color: rgba(244, 231, 211, 0.75);
+  font-size: 12px;
+  margin: 0 0 10px;
+  line-height: 1.6;
+}
+.returnAddress {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(155, 89, 182, 0.12);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+.returnAddressLabel {
+  font-size: 10px;
+  color: rgba(155, 89, 182, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.returnAddressValue {
+  font-size: 13px;
+  color: rgba(244, 231, 211, 0.9);
+  font-weight: 600;
+}
+.returnPendingHint {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.4);
+  margin: 0;
+}

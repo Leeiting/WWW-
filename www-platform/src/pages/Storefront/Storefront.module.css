@@ -69,6 +69,22 @@
   flex-wrap: wrap;
 }
 
+.searchEntry {
+  display: flex;
+  align-items: center;
+  padding: 5px 14px;
+  border: 1px solid rgba(201, 151, 46, 0.35);
+  border-radius: 999px;
+  background: rgba(201, 151, 46, 0.07);
+  color: var(--gold);
+  font-size: 12px;
+  text-decoration: none;
+  transition: all var(--transition);
+  margin-right: 8px;
+  white-space: nowrap;
+}
+.searchEntry:hover { background: rgba(201, 151, 46, 0.18); border-color: var(--gold); }
+
 .filterLabel {
   font-size: 11px;
   letter-spacing: 1px;
@@ -187,25 +203,117 @@
   padding: 0 5px;
 }
 
-/* ── 管理員快速連結 ── */
-.adminLink {
-  position: fixed;
-  top: 16px;
+/* ── Header 右上角快速導覽（隨頁面捲動消失，不遮蓋內容）── */
+.headerNav {
+  position: absolute;
+  top: 12px;
   right: 16px;
-  background: var(--surface);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.headerNavLink {
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   color: var(--text-dim);
   border-radius: var(--radius);
-  padding: 6px 12px;
+  padding: 5px 10px;
   font-size: 11px;
   text-decoration: none;
   transition: all var(--transition);
-  z-index: 50;
+  white-space: nowrap;
 }
 
-.adminLink:hover {
+.headerNavLink:hover {
   border-color: var(--gold);
   color: var(--gold);
+  background: rgba(201, 151, 46, 0.08);
+}
+
+/* ── 骨架卡片（初次加載） ── */
+.skeletonCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 151, 46, 0.12);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+/* 骨架圖片區塊 */
+.skeletonImg {
+  width: 100%;
+  height: 180px;
+  border-radius: 8px;
+  background: linear-gradient(90deg,
+    rgba(201, 151, 46, 0.06) 25%,
+    rgba(201, 151, 46, 0.14) 50%,
+    rgba(201, 151, 46, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* 骨架文字行 */
+.skeletonLine {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    rgba(201, 151, 46, 0.06) 25%,
+    rgba(201, 151, 46, 0.14) 50%,
+    rgba(201, 151, 46, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* 骨架掃光動畫 */
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── 底部哨兵（不可見，供 IntersectionObserver 偵測） ── */
+.sentinel {
+  height: 1px;
+  margin-top: 24px;
+}
+
+/* ── 加載更多旋轉指示器 ── */
+.loadingMore {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 0;
+  color: var(--text-dim);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+/* 旋轉魔法師 emoji */
+.loadingSpinner {
+  display: inline-block;
+  font-size: 20px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── 全部加載完畢提示 ── */
+.allLoaded {
+  text-align: center;
+  padding: 28px 0 8px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  opacity: 0.7;
 }
 
 @media (max-width: 600px) {

@@ -84,9 +84,21 @@
   font-size: 13px;
   color: var(--text);
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* SKU 規格標籤（如「6 顆裝」、「50ml」） */
+.skuBadge {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 1px 5px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .itemPrice {
@@ -138,6 +150,36 @@
   flex-shrink: 0;
 }
 .removeBtn:hover { color: var(--red-bright); }
+
+/* ── 鎖定品項（spec §10.3 魔法攻擊損害賠償）── */
+.itemLocked {
+  border: 1px solid rgba(255, 200, 0, 0.25);
+  border-radius: var(--radius);
+  background: rgba(255, 200, 0, 0.04);
+  padding: 2px 4px;
+}
+
+.lockedBadge {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 10px;
+  color: rgba(255, 180, 0, 0.8);
+  background: rgba(255, 180, 0, 0.1);
+  border: 1px solid rgba(255, 180, 0, 0.3);
+  border-radius: 4px;
+  padding: 1px 5px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.lockedQty {
+  font-size: 14px;
+  color: rgba(255, 180, 0, 0.85);
+  font-weight: 700;
+  min-width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
 
 /* 空購物車 */
 .empty {
@@ -192,6 +234,36 @@
   transition: background var(--transition);
 }
 .checkoutBtn:hover { background: var(--gold-light); }
+
+/* 未登入提示 */
+.loginPrompt {
+  text-align: center;
+  padding: 4px 0 8px;
+}
+
+.loginPromptText {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.5);
+  margin-bottom: 10px;
+}
+
+.loginPromptBtn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: rgba(201, 151, 46, 0.12);
+  border: 1px solid rgba(201, 151, 46, 0.4);
+  border-radius: var(--radius);
+  color: var(--gold);
+  font-family: var(--font-title);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.2s;
+  box-sizing: border-box;
+}
+.loginPromptBtn:hover { background: rgba(201, 151, 46, 0.25); }
 
 .clearBtn {
   width: 100%;

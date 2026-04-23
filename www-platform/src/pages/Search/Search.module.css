@@ -1,0 +1,282 @@
+/* 頁面背景 */
+.page {
+  min-height: 100vh;
+  background: radial-gradient(1200px 500px at 30% 0%, rgba(201, 151, 46, 0.08), transparent 70%),
+              #2C1810;
+  color: var(--text, #F4E7D3);
+}
+
+/* 頂部導覽 */
+.header {
+  background: rgba(13, 6, 0, 0.85);
+  border-bottom: 1px solid rgba(201, 151, 46, 0.2);
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+
+.headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.backLink {
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.55);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.backLink:hover { color: rgba(201, 151, 46, 0.9); }
+
+.pageTitle {
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 16px;
+  color: var(--gold, #c9972e);
+  margin: 0;
+}
+
+/* 搜尋欄 */
+.searchWrap {
+  max-width: 800px;
+  margin: 32px auto 0;
+  padding: 0 24px;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(201, 151, 46, 0.4);
+  border-radius: 16px;
+  padding: 14px 20px;
+  transition: border-color 0.2s;
+}
+.searchBox:focus-within { border-color: rgba(201, 151, 46, 0.8); }
+
+.searchIcon { font-size: 20px; flex-shrink: 0; }
+
+.searchInput {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text, #F4E7D3);
+  font-size: 16px;
+  min-width: 0;
+}
+.searchInput::placeholder { color: rgba(244, 231, 211, 0.35); }
+
+.clearBtn {
+  background: none;
+  border: none;
+  color: rgba(244, 231, 211, 0.4);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.clearBtn:hover { color: rgba(244, 231, 211, 0.8); }
+
+/* 篩選列 */
+.filterWrap {
+  max-width: 1200px;
+  margin: 20px auto 0;
+  padding: 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(201, 151, 46, 0.12);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterGroupLabel {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.45);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* 類別 chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  padding: 4px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(201, 151, 46, 0.2);
+  border-radius: 999px;
+  color: rgba(244, 231, 211, 0.65);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.chip:hover { border-color: rgba(201, 151, 46, 0.5); color: var(--gold, #c9972e); }
+.chipActive {
+  background: rgba(201, 151, 46, 0.18);
+  border-color: var(--gold, #c9972e);
+  color: var(--gold, #c9972e);
+  font-weight: 700;
+}
+
+/* 危險等級 slider */
+.dangerRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.slider {
+  width: 80px;
+  accent-color: var(--gold, #c9972e);
+  cursor: pointer;
+}
+
+.sliderLabel {
+  font-size: 11px;
+  color: rgba(244, 231, 211, 0.5);
+  min-width: 12px;
+  text-align: center;
+}
+
+/* 庫存開關 */
+.stockToggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(244, 231, 211, 0.65);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.stockToggle input { accent-color: var(--gold, #c9972e); cursor: pointer; }
+
+/* 排序下拉 */
+.sortSelect {
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(201, 151, 46, 0.25);
+  border-radius: 8px;
+  color: rgba(244, 231, 211, 0.75);
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+}
+.sortSelect:focus { border-color: rgba(201, 151, 46, 0.6); }
+.sortSelect option { background: #1a0e06; }
+
+/* 重設按鈕 */
+.resetBtn {
+  padding: 5px 12px;
+  background: none;
+  border: 1px solid rgba(139, 0, 0, 0.4);
+  border-radius: 8px;
+  color: rgba(200, 75, 75, 0.75);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.resetBtn:hover { background: rgba(139, 0, 0, 0.1); border-color: rgba(139, 0, 0, 0.7); }
+
+/* 結果區 */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+}
+
+.resultCount {
+  font-size: 13px;
+  color: rgba(244, 231, 211, 0.5);
+  margin-bottom: 20px;
+}
+
+/* 商品格狀佈局（與 Storefront 一致） */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+/* 空狀態 */
+.empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: rgba(244, 231, 211, 0.55);
+}
+
+.emptyIcon { font-size: 48px; margin-bottom: 16px; }
+.emptyText { font-size: 15px; margin-bottom: 8px; }
+.emptyHint { font-size: 12px; color: rgba(244, 231, 211, 0.35); margin-bottom: 20px; }
+
+.resetBtn2 {
+  display: inline-block;
+  padding: 8px 20px;
+  border: 1px solid rgba(201, 151, 46, 0.35);
+  border-radius: 10px;
+  color: var(--gold, #c9972e);
+  font-size: 13px;
+  background: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.resetBtn2:hover { background: rgba(201, 151, 46, 0.08); }
+
+/* 購物車浮動按鈕（與 Storefront 一致） */
+.cartFab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 22px;
+  background: linear-gradient(135deg, var(--gold, #c9972e), rgba(201, 151, 46, 0.7));
+  border: none;
+  border-radius: 999px;
+  color: #1a0e06;
+  font-family: var(--font-title, 'Cinzel', serif);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(201, 151, 46, 0.35);
+  z-index: 100;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.cartFab:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201, 151, 46, 0.45); }
+
+.cartCount {
+  background: #8b0000;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}

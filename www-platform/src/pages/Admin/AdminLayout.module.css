@@ -76,6 +76,20 @@
 
 .navLinkIcon { font-size: 15px; }
 
+/* 退款審核待處理數量徽章 */
+.navBadge {
+  margin-left: auto;
+  background: #f0ad4e;
+  color: #1a0e05;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 0 6px;
+  line-height: 17px;
+  min-width: 17px;
+  text-align: center;
+}
+
 /* Mischief Managed 按鈕 */
 .misManagedBtn {
   margin: 12px 16px;
